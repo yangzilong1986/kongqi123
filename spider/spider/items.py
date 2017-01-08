@@ -8,7 +8,8 @@
 import scrapy
 
 
-class SpiderItem(scrapy.Item):
+class CitiesItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    city_name = scrapy.Field()
+    city_url = scrapy.Field()
