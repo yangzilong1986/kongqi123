@@ -88,3 +88,17 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# 数据库 MySQL
+DB_MYSQL = {
+    'host': '192.168.2.27',
+    'user': 'www',
+    'passwd': 'wealink.com',
+    'port': 3306,
+    'db': 's2c'
+}
+SQLALCHEMY_DATABASE_URI_MYSQL = \
+    'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % \
+    (DB_MYSQL['user'], DB_MYSQL['passwd'], DB_MYSQL['host'], DB_MYSQL['port'], DB_MYSQL['db'])
+
+SQLALCHEMY_POOL_SIZE = 5  # 默认 pool_size=5
