@@ -39,10 +39,10 @@ ROBOTSTXT_OBEY = True
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#}
+DEFAULT_REQUEST_HEADERS = {
+   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+   'Accept-Language': 'en',
+}
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'spider.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'spider.pipelines.CitiesPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -91,11 +91,11 @@ ROBOTSTXT_OBEY = True
 
 # 数据库 MySQL
 DB_MYSQL = {
-    'host': '192.168.2.27',
-    'user': 'www',
-    'passwd': 'wealink.com',
+    'host': '10.0.0.1',
+    'user': 'root',
+    'passwd': 'ayumihamasaki',
     'port': 3306,
-    'db': 's2c'
+    'db': 'pm25'
 }
 SQLALCHEMY_DATABASE_URI_MYSQL = \
     'mysql+mysqldb://%s:%s@%s:%s/%s?charset=utf8' % \

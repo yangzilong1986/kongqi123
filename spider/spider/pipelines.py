@@ -10,6 +10,25 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from spider.items import CitiesItem
 
+from sqlalchemy import Column, DateTime, Integer, String, text
+from sqlalchemy.ext.declarative import declarative_base
+
+
+def to_dict(self):
+    return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}
+
+Base = declarative_base()
+metadata = Base.metadata
+Base.to_dict = to_dict
+
+
+class Cities(Base):
+    __tablename__ = 'cities'
+
+    city_id = Column(Integer, primary_key=True)
+    city_name = Column(String(30), server_default=text("''::character varying"))
+    city_url = Column(String(1024), server_default=text("''::character varying"))
+
 
 class CitiesPipeline(object):
 
@@ -31,7 +50,7 @@ class CitiesPipeline(object):
         try:
             if isinstance(item, CitiesItem):
                 # 数据入库
-                service_item = CitiesItem(**item)
+                service_item = Cities(**item)
                 self.session.add(service_item)
                 self.session.commit()
         except Exception as e:
