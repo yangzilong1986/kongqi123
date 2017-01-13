@@ -28,3 +28,14 @@ class CitiesSpider(scrapy.Spider):
             item['city_url'] = city_url
             yield item
 
+#
+# class MonthSpider(scrapy.Spider):
+#
+#    def __init__(self, *args, **kwargs):
+#        super(MonthSpider, self).__init__(*args, **kwargs)
+#
+#        # self.start_urls = ['http://www.example.com/categories/%s' % category]
+#
+#    def parse(self, response):
+#        pass
+#

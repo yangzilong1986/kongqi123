@@ -21,15 +21,20 @@ NEWSPIDER_MODULE = 'spider.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
+# 默认Item并发数：100
+CONCURRENT_ITEMS = 100
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+# 默认Request并发数：16
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 #DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# 默认每个域名的并发数
+CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# 每个IP的最大并发数：0表示忽略
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
@@ -83,11 +88,16 @@ ITEM_PIPELINES = {
 
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-#HTTPCACHE_ENABLED = True
+# 打开缓存
+HTTPCACHE_ENABLED = True
+# 设置缓存过期时间（单位：秒）
 #HTTPCACHE_EXPIRATION_SECS = 0
-#HTTPCACHE_DIR = 'httpcache'
-#HTTPCACHE_IGNORE_HTTP_CODES = []
-#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# 缓存路径(默认为：.scrapy/httpcache)
+HTTPCACHE_DIR = 'httpcache'
+# 忽略的状态码
+HTTPCACHE_IGNORE_HTTP_CODES = []
+# 缓存模式(文件缓存)
+HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # 数据库 MySQL
 DB_MYSQL = {
