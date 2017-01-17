@@ -8,7 +8,7 @@
 import scrapy
 
 
-class HistoryCitiesItem(scrapy.Item):
+class HistoryCityItem(scrapy.Item):
     city_name = scrapy.Field()
     city_url = scrapy.Field()
 
