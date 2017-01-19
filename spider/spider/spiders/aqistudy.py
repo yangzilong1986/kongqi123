@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from spider.items import CitiesItem
+import json
+from spider.items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
 
 
 class HistorySpider(scrapy.Spider):
-    name = "history"
+    name = "aqistudy"
     allowed_domains = ["aqistudy.cn"]
     start_urls = [
         "https://www.aqistudy.cn/historydata/index.php"
     ]
+    custom_settings = dict(
+        DOWNLOAD_DELAY=2,
+        CONCURRENT_REQUESTS_PER_DOMAIN=8,
+        CONCURRENT_REQUESTS_PER_IP=8
+    )
 
     def __init__(self, *args, **kwargs):
         super(HistorySpider, self).__init__(*args, **kwargs)
@@ -25,47 +31,71 @@ class HistorySpider(scrapy.Spider):
             city_name = city_name[0].encode('utf-8')
             city_url = city_url[0].encode('utf-8')
 
-            print "cities: %s, url: %s " % (city_name, city_url)
+            item = HistoryCityItem()
+            item['city_name'] = city_name.strip()
+            item['city_url'] = city_url.strip()
 
-            yield scrapy.Request(url=city_url,
-                                 meta={'city_name': city_name},
-                                 callback=self.parse_month,
-                                 priority=20)
-            """
-            item = CitiesItem()
-            item['city_name'] = city_name
-            item['city_url'] = city_url
+            print '----- HistoryCityItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
             yield item
-            """
+
+            url = response.urljoin(city_url)
+            meta = {'city_name': city_name}
+            yield scrapy.Request(url=url, meta=meta, callback=self.parse_month, priority=20)
 
     def parse_month(self, response):
+        city_name = response.meta['city_name']
         month_list = response.xpath('//table//tr[position()>1]')
         for month in month_list:
             # 处理日期
-            month_a = month.xpath('//a')
-            hm_day_url = month_a.xpath('@href').extract_first()
-            month_text = month_a.xpath('text()').extract_first()
+            month_a = month.xpath('.//a')
+            hm_day_url = month_a.xpath('@href').extract_first(default='')
+
+            month_text = month_a.xpath('text()').extract_first(default='')
+            if not month_text:
+                continue
             month_text = month_text.split(u'-')
-            hm_year = month_text[0]
-            hm_month = month_text[1]
+            hm_year = 0 if not month_text[0] else month_text[0]
+            hm_month = 0 if not month_text[1] else month_text[1]
 
-            hm_aqi = month.xpath('//td[2]/text()').extract_first()
+            hm_aqi = month.xpath('.//td[2]/text()').extract_first(default='0')
 
-            aqi_avg = month.xpath('//td[3]/text()').extract_first()
+            aqi_avg = month.xpath('.//td[3]/text()').extract_first(default='')
+            if not aqi_avg:
+                continue
             aqi_avg = aqi_avg.split(u'~')
-            hm_aqi_min = aqi_avg[0]
-            hm_aqi_max = aqi_avg[1]
+            hm_aqi_min = 0 if not aqi_avg[0] else aqi_avg[0]
+            hm_aqi_max = 0 if not aqi_avg[1] else aqi_avg[1]
 
-            hm_quality = month.xpath('//td[4]/text()').extract_first()
-            hm_pm25 = month.xpath('//td[5]/text()').extract_first()
-            hm_pm10 = month.xpath('//td[6]/text()').extract_first()
-            hm_so2 = month.xpath('//td[7]/text()').extract_first()
-            hm_co = month.xpath('//td[8]/text()').extract_first()
-            hm_no2 = month.xpath('//td[9]/text()').extract_first()
-            hm_o3 = month.xpath('//td[10]/text()').extract_first()
+            hm_quality = month.xpath('.//td[4]/div/text()').extract_first(default='')
+            hm_pm25 = month.xpath('.//td[5]/text()').extract_first(default='0')
+            hm_pm10 = month.xpath('.//td[6]/text()').extract_first(default='0')
+            hm_so2 = month.xpath('.//td[7]/text()').extract_first(default='0')
+            hm_co = month.xpath('.//td[8]/text()').extract_first(default='0')
+            hm_no2 = month.xpath('.//td[9]/text()').extract_first(default='0')
+            hm_o3 = month.xpath('.//td[10]/text()').extract_first(default='0')
 
-            hm_rank = month.xpath('//td[11]/text()').extract_first()
+            hm_rank = month.xpath('.//td[11]/text()').extract_first(default='0')
 
+            item = HistoryMonthItem()
+            item['city_id'] = 0
+            item['city_name'] = city_name.strip()
+            item['hm_year'] = hm_year.strip()
+            item['hm_month'] = hm_month.strip()
+            item['hm_aqi'] = hm_aqi.strip()
+            item['hm_aqi_min'] = hm_aqi_min.strip()
+            item['hm_aqi_max'] = hm_aqi_max.strip()
+            item['hm_quality'] = hm_quality.strip()
+            item['hm_pm25'] = hm_pm25.strip()
+            item['hm_pm10'] = hm_pm10.strip()
+            item['hm_so2'] = hm_so2.strip()
+            item['hm_co'] = hm_co.strip()
+            item['hm_no2'] = hm_no2.strip()
+            item['hm_o3'] = hm_o3.strip()
+            item['hm_rank'] = hm_rank.strip()
+            item['hm_day_url'] = hm_day_url.strip()
+
+            print u"----- HistoryMonthItem:%s" % json.dumps(dict(item), indent=4)
+            yield item
 
 
 
