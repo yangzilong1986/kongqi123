@@ -35,7 +35,7 @@ class HistorySpider(scrapy.Spider):
             item['city_name'] = city_name.strip()
             item['city_url'] = city_url.strip()
 
-            print '----- HistoryCityItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
+            # print '----- HistoryCityItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
             yield item
 
             url = response.urljoin(city_url)
@@ -79,22 +79,22 @@ class HistorySpider(scrapy.Spider):
             item = HistoryMonthItem()
             item['city_id'] = 0
             item['city_name'] = city_name.strip()
-            item['hm_year'] = hm_year.strip()
-            item['hm_month'] = hm_month.strip()
-            item['hm_aqi'] = hm_aqi.strip()
-            item['hm_aqi_min'] = hm_aqi_min.strip()
-            item['hm_aqi_max'] = hm_aqi_max.strip()
+            item['hm_year'] = int(hm_year.strip())
+            item['hm_month'] = int(hm_month.strip())
+            item['hm_aqi'] = float(hm_aqi.strip())
+            item['hm_aqi_min'] = float(hm_aqi_min.strip())
+            item['hm_aqi_max'] = float(hm_aqi_max.strip())
             item['hm_quality'] = hm_quality.strip()
-            item['hm_pm25'] = hm_pm25.strip()
-            item['hm_pm10'] = hm_pm10.strip()
-            item['hm_so2'] = hm_so2.strip()
-            item['hm_co'] = hm_co.strip()
-            item['hm_no2'] = hm_no2.strip()
-            item['hm_o3'] = hm_o3.strip()
-            item['hm_rank'] = hm_rank.strip()
+            item['hm_pm25'] = float(hm_pm25.strip())
+            item['hm_pm10'] = float(hm_pm10.strip())
+            item['hm_so2'] = float(hm_so2.strip())
+            item['hm_co'] = float(hm_co.strip())
+            item['hm_no2'] = float(hm_no2.strip())
+            item['hm_o3'] = float(hm_o3.strip())
+            item['hm_rank'] = int(hm_rank.strip())
             item['hm_day_url'] = hm_day_url.strip()
 
-            print u"----- HistoryMonthItem:%s" % json.dumps(dict(item), indent=4)
+            # print u"----- HistoryMonthItem:%s" % json.dumps(dict(item), indent=4)
             yield item
 
 
