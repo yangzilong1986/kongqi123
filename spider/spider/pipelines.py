@@ -123,6 +123,26 @@ class CitiesPipeline(object):
                 if not row['cnt']:
                     self.session.add(service_item)
                     self.session.commit()
+            elif isinstance(item, HistoryDayItem):
+                service_item = HistoryDay(**item)
+
+                row_sql = "select * from history_city where city_name = :city_name"
+                row_data = {"city_name": service_item.city_name}
+                row = self.session.execute(row_sql, row_data).fetchone()
+                if 'city_id' in row:
+                    service_item.city_id = row['city_id']
+                # print u"----- HistoryMonthItem:%s" % json.dumps(dict(service_item), indent=4, ensure_ascii=False)
+
+                row_sql = "select count(*) cnt from history_day " \
+                          "where city_name = :city_name and hd_date = :hd_date"
+                row_data = {
+                    "city_name": service_item.city_name,
+                    "hd_date": service_item.hd_date,
+                }
+                row = self.session.execute(row_sql, row_data).fetchone()
+                if not row['cnt']:
+                    self.session.add(service_item)
+                    self.session.commit()
         except Exception as e:
             self.session.rollback()
             raise e

@@ -44,13 +44,15 @@ class HistorySpider(scrapy.Spider):
 
     def parse_month(self, response):
         city_name = response.meta['city_name']
-        month_list = response.xpath('//table//tr[position()>1]')
+        month_list = response.xpath('//table[@class="table table-condensed table-bordered table-striped table-hover table-responsive"]//tr[position()>1]')
+        if len(month_list) < 1:
+            return
         for month in month_list:
             # 处理日期
             month_a = month.xpath('.//a')
             hm_day_url = month_a.xpath('@href').extract_first(default='')
 
-            month_text = month_a.xpath('text()').extract_first(default='')
+            month_text = month_a.xpath('text()').extract_first()
             if not month_text:
                 continue
             month_text = month_text.split(u'-')
@@ -60,11 +62,10 @@ class HistorySpider(scrapy.Spider):
             hm_aqi = month.xpath('.//td[2]/text()').extract_first(default='0')
 
             aqi_avg = month.xpath('.//td[3]/text()').extract_first(default='')
-            if not aqi_avg:
-                continue
-            aqi_avg = aqi_avg.split(u'~')
-            hm_aqi_min = 0 if not aqi_avg[0] else aqi_avg[0]
-            hm_aqi_max = 0 if not aqi_avg[1] else aqi_avg[1]
+            aqi_avg = aqi_avg.split('~')
+            hm_aqi_min = '0' if not aqi_avg[0] else aqi_avg[0]
+            hm_aqi_max = '0' if not aqi_avg[1] else aqi_avg[1]
+            # print "----- aqi_avg: %s, min: %s, max: %s" % (str(aqi_avg), str(hm_aqi_min), str(hm_aqi_max))
 
             hm_quality = month.xpath('.//td[4]/div/text()').extract_first(default='')
             hm_pm25 = month.xpath('.//td[5]/text()').extract_first(default='0')
@@ -93,10 +94,54 @@ class HistorySpider(scrapy.Spider):
             item['hm_o3'] = float(hm_o3.strip())
             item['hm_rank'] = int(hm_rank.strip())
             item['hm_day_url'] = hm_day_url.strip()
-
-            # print u"----- HistoryMonthItem:%s" % json.dumps(dict(item), indent=4)
             yield item
 
+            url = response.urljoin(item['hm_day_url'])
+            meta = {'city_name': city_name}
+            yield scrapy.Request(url=url, meta=meta, callback=self.parse_day, priority=90)
 
+    def parse_day(self, response):
+        city_name = response.meta['city_name']
+        day_list = response.xpath('//table[@class="table table-condensed table-bordered table-striped table-hover table-responsive"]//tr[position()>1]')
+        if len(day_list) < 1:
+            return
+        for day in day_list:
+            hd_date = day.xpath('.//td[1]/text()').extract_first(default='')
+            if len(hd_date) < 4:
+                continue
 
+            hd_aqi = day.xpath('.//td[2]/text()').extract_first(default='0')
+
+            aqi_avg = day.xpath('.//td[3]/text()').extract_first(default='')
+            aqi_avg = aqi_avg.split('~')
+            hd_aqi_min = '0' if not aqi_avg[0] else aqi_avg[0]
+            hd_aqi_max = '0' if not aqi_avg[1] else aqi_avg[1]
+            # print "----- aqi_avg: %s, min: %s, max: %s" % (str(aqi_avg), str(hd_aqi_min), str(hd_aqi_max))
+
+            hd_quality = day.xpath('.//td[4]/div/text()').extract_first(default='')
+            hd_pm25 = day.xpath('.//td[5]/text()').extract_first(default='0')
+            hd_pm10 = day.xpath('.//td[6]/text()').extract_first(default='0')
+            hd_so2 = day.xpath('.//td[7]/text()').extract_first(default='0')
+            hd_co = day.xpath('.//td[8]/text()').extract_first(default='0')
+            hd_no2 = day.xpath('.//td[9]/text()').extract_first(default='0')
+            hd_o3 = day.xpath('.//td[10]/text()').extract_first(default='0')
+
+            hd_rank = day.xpath('.//td[11]/text()').extract_first(default='0')
+
+            item = HistoryDayItem()
+            item['city_id'] = 0
+            item['city_name'] = city_name.strip()
+            item['hd_date'] = hd_date.strip()
+            item['hd_aqi'] = float(hd_aqi.strip())
+            item['hd_aqi_min'] = float(hd_aqi_min.strip())
+            item['hd_aqi_max'] = float(hd_aqi_max.strip())
+            item['hd_quality'] = hd_quality.strip()
+            item['hd_pm25'] = float(hd_pm25.strip())
+            item['hd_pm10'] = float(hd_pm10.strip())
+            item['hd_so2'] = float(hd_so2.strip())
+            item['hd_co'] = float(hd_co.strip())
+            item['hd_no2'] = float(hd_no2.strip())
+            item['hd_o3'] = float(hd_o3.strip())
+            item['hd_rank'] = int(hd_rank.strip())
+            yield item
 
