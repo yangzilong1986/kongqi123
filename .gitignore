@@ -176,3 +176,4 @@ src/spider/pipelines.pyc
 src/spider/settings.pyc
 src/spider/spiders/__init__.pyc
 src/spider/spiders/aqistudy.pyc
+/src/.scrapy/
