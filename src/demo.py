@@ -45,7 +45,8 @@ class Demo(object):
             return
 
         df = pd.DataFrame(data)
-        df.columns = data.keys()
+        df.columns = data[0].keys()
+        print df
 
 
 if __name__ == '__main__':
