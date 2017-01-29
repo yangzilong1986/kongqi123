@@ -3,6 +3,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import *
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.cross_validation import cross_val_score
 import pandas as pd
 import numpy as np
 
@@ -59,6 +61,10 @@ class Demo(object):
 
         print df
         print df.dtypes
+
+        clf = DecisionTreeClassifier(random_state=14)
+        x_pm25 = df['hd_pm25'].values
+        pm25 = cross_val_score(clf, pm25, y_true)
 
 
 if __name__ == '__main__':
