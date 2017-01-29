@@ -9,9 +9,13 @@ import numpy as np
 
 class Demo(object):
     def __init__(self):
-        self.engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
-        self.db_session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
-        self.session = self.db_session()
+        try:
+            self.engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+            self.db_session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+            self.session = self.db_session()
+        except Exception as e:
+            print e.message
+            exit()
 
     def get_city_info_by_id(self, city_id):
         row_sql = "select * from history_city where city_id = :city_id"
@@ -44,9 +48,17 @@ class Demo(object):
             print '城市没有数据: %s' % (city_name, )
             return
 
-        df = pd.DataFrame(data)
-        df.columns = data[0].keys()
+        df = pd.DataFrame(data, columns=data[0].keys())
+        df['hd_date'] = pd.to_datetime(df['hd_date'])
+        df['hd_pm25'] = df['hd_pm25'].astype(np.double)
+        df['hd_pm10'] = df['hd_pm10'].astype(np.double)
+        df['hd_so2'] = df['hd_so2'].astype(np.double)
+        df['hd_co'] = df['hd_co'].astype(np.double)
+        df['hd_no2'] = df['hd_no2'].astype(np.double)
+        df['hd_o3'] = df['hd_o3'].astype(np.double)
+
         print df
+        print df.dtypes
 
 
 if __name__ == '__main__':
