@@ -123,7 +123,7 @@ class Demo(object):
         x.head()
 
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=14)
-        clf = tree.DecisionTreeClassifier(criterion='entropy', max_depth=3, min_samples_leaf=5)
+        clf = DecisionTreeClassifier(criterion='entropy', max_depth=3, min_samples_leaf=5)
         clf = clf.fit(x_train, y_train)
         print "准确率为：{:.2f}".format(clf.score(x_test, y_test))
 
@@ -146,7 +146,7 @@ class Demo(object):
         print metrics.confusion_matrix(y, y_pred), "\n"
 
         # 交叉验证来评估模型
-        scores1 = cross_validation.cross_val_score(clf, X, y, cv=10)
+        scores1 = cross_val_score(clf, x, y, cv=10)
         print scores1
 
         '''
