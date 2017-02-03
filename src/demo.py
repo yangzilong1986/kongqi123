@@ -51,19 +51,41 @@ class Demo(object):
                   "where city_id = :city_id and hd_date >= :start_date and hd_date <= :end_date"
         row_data = {"city_id": city_id, "start_date": start_date, "end_date": end_date}
         data = self.session.execute(row_sql, row_data).fetchall()
+        if data:
+            _data = []
+            for row in data:
+                row = dict(row.items())
+                _data.append(row)
+            data = _data
         return data
 
     def test_simple_tree(self, city_name, start_date, end_date):
         city_info = self.get_city_info_by_name(city_name)
         if not city_info:
-            print '不存在的城市: %s' % (city_name, )
+            print u'不存在的城市: %s' % (city_name, )
             return
 
         city_id = city_info['city_id']
         data = self.load_daily_city_data(city_id, start_date, end_date)
         if not data:
-            print '城市没有数据: %s' % (city_name, )
+            print u'城市没有数据: %s' % (city_name, )
             return
+
+        print type(data)
+
+        for row in data:
+            if row['hd_pm25'] <= 35:
+                row['level'] = 1
+            elif 35 < row['hd_pm25'] <= 75:
+                row['level'] = 2
+            elif 75 < row['hd_pm25'] <= 115:
+                row['level'] = 3
+            elif 115 < row['hd_pm25'] <= 150:
+                row['level'] = 4
+            elif 150 < row['hd_pm25'] <= 250:
+                row['level'] = 5
+            elif row['hd_pm25'] > 250:
+                row['level'] = 6
 
         df = pd.DataFrame(data, columns=data[0].keys())
         df['hd_date'] = pd.to_datetime(df['hd_date'])
@@ -81,22 +103,25 @@ class Demo(object):
         df['level_5'] = (df['hd_pm25'] > 150) & (df['hd_pm25'] <= 250)
         df['level_6'] = df['hd_pm25'] > 250
 
+        print df
+
+        '''
         for index, row in df.iterrows():
             if row['hd_pm25'] <= 35:
                 row['level'] = 1
-            elif 35 > row['hd_pm25'] <= 75:
+            elif 35 < row['hd_pm25'] <= 75:
                 row['level'] = 2
-            elif 75 > row['hd_pm25'] <= 115:
+            elif 75 < row['hd_pm25'] <= 115:
                 row['level'] = 3
-            elif 115 > row['hd_pm25'] <= 150:
+            elif 115 < row['hd_pm25'] <= 150:
                 row['level'] = 4
-            elif 150 > row['hd_pm25'] <= 250:
+            elif 150 < row['hd_pm25'] <= 250:
                 row['level'] = 5
             elif row['hd_pm25'] > 250:
                 row['level'] = 6
 
-            # df[index]['level'] = row['level']
-
+            # print index, row['hd_pm25'], row['level']
+            df[index]['level'] = row['level']
             print "%s\t PM.5: %s,\t %s\t %s,\t %s,\t %s,\t %s,\t %s,\t %s" % (
                 index,
                 row['hd_pm25'],
@@ -109,7 +134,9 @@ class Demo(object):
                 row['level_6'],
             )
         print df.dtypes
+        '''
 
+        """
         subdf = df[['pclass', 'sex', 'age']]
         y = df.survived
 
@@ -128,11 +155,7 @@ class Demo(object):
         print "准确率为：{:.2f}".format(clf.score(x_test, y_test))
 
         # 使用更多指标来评估模型
-        """
-        def measure_performance(X, y, clf, show_accuracy=True,
-                                show_classification_report=True,
-                                show_confusion_matrix=True):
-        """
+        # def measure_performance(X, y, clf, show_accuracy=True, show_classification_report=True, show_confusion_matrix=True):
         # measure_performance(x_test, y_test, clf, show_classification_report=True, show_confusion_matrix=True)
         x = x_test
         y = y_test
@@ -148,6 +171,7 @@ class Demo(object):
         # 交叉验证来评估模型
         scores1 = cross_val_score(clf, x, y, cv=10)
         print scores1
+        """
 
         '''
         for index, row in df.iterrows():
