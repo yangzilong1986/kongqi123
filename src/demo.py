@@ -71,7 +71,7 @@ class Demo(object):
             print u'城市没有数据: %s' % (city_name, )
             return
 
-        print type(data)
+        # print type(data)
 
         for row in data:
             if row['hd_pm25'] <= 35:
@@ -103,7 +103,7 @@ class Demo(object):
         df['level_5'] = (df['hd_pm25'] > 150) & (df['hd_pm25'] <= 250)
         df['level_6'] = df['hd_pm25'] > 250
 
-        print df
+        # print df
 
         '''
         for index, row in df.iterrows():
@@ -191,11 +191,16 @@ class Demo(object):
 
         print df['hd_pm25']
         print df.dtypes
+        '''
 
         clf = DecisionTreeClassifier(random_state=14)
-        x_pm25 = df['hd_pm25'].values
-        pm25 = cross_val_score(clf, pm25, y_true)
-        '''
+        x_pm25 = df[['hd_pm25']].values
+        x_pm25 = df[['level_1', 'level_2', 'level_3', 'level_4', 'level_5', 'level_6']].values
+        print x_pm25
+        y_true = df['level'].values
+        scores = cross_val_score(clf, x_pm25, y_true, scoring='accuracy')
+        print("Accuracy: {0:.1f}%".format(np.mean(scores) * 100))
+
 
 
 if __name__ == '__main__':
