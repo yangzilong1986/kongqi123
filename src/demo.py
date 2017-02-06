@@ -191,6 +191,7 @@ class Demo(object):
 
         # print df
 
+        '''
         subdf = df[['level', 'hd_pm25', 'hd_date']]
         y = df['level'].values
 
@@ -203,6 +204,9 @@ class Demo(object):
         x = pd.concat([pclass, hd_pm25], axis=1) # hd_date
         x.head()
         print x
+        '''
+        x = df[['hd_pm25']].values
+        y = df['level'].values
 
         # 切分测试和训练数据
         x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=14) #  test_size=0.25,
