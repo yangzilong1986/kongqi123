@@ -4,6 +4,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import *
 from collections import defaultdict
+# iris 值物分类
+from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
 
 # 数据切分为train和test
@@ -60,6 +62,90 @@ class Demo(object):
         return data
 
     def test_simple_tree(self, city_name, start_date, end_date):
+        '''
+        for index, row in df.iterrows():
+            row['level'] = 1
+            if row['hd_pm25'] > 35:
+                row['level'] = 2
+            elif row['hd_pm25'] > 75:
+                row['level'] = 3
+            elif row['hd_pm25'] > 115:
+                row['level'] = 4
+            elif row['hd_pm25'] > 150:
+                row['level'] = 4
+            elif row['hd_pm25'] > 250:
+                row['level'] = 5
+            elif row['hd_pm25'] > 500:
+                row['level'] = 6
+
+        print df['hd_pm25']
+        print df.dtypes
+
+        clf = DecisionTreeClassifier(random_state=14)
+        x_pm25 = df[['hd_pm25']].values
+        # x_pm25 = df[['level_1', 'level_2', 'level_3', 'level_4', 'level_5', 'level_6']].values
+        # print x_pm25
+        y_true = df['level'].values
+        print y_true
+        scores = cross_val_score(clf, x_pm25, y_true, scoring='accuracy')
+        print("Accuracy: {0:.1f}%".format(np.mean(scores) * 100))
+
+        df1 = load_iris()
+        x = df1.data
+        y = df1.target
+
+        print x
+        print y
+
+
+        for index, row in df.iterrows():
+            if row['hd_pm25'] <= 35:
+                row['level'] = 1
+            elif 35 < row['hd_pm25'] <= 75:
+                row['level'] = 2
+            elif 75 < row['hd_pm25'] <= 115:
+                row['level'] = 3
+            elif 115 < row['hd_pm25'] <= 150:
+                row['level'] = 4
+            elif 150 < row['hd_pm25'] <= 250:
+                row['level'] = 5
+            elif row['hd_pm25'] > 250:
+                row['level'] = 6
+
+            # print index, row['hd_pm25'], row['level']
+            df[index]['level'] = row['level']
+            print "%s\t PM.5: %s,\t %s\t %s,\t %s,\t %s,\t %s,\t %s,\t %s" % (
+                index,
+                row['hd_pm25'],
+                row['level'],
+                row['level_1'],
+                row['level_2'],
+                row['level_3'],
+                row['level_4'],
+                row['level_5'],
+                row['level_6'],
+            )
+        print df.dtypes
+
+        # 使用更多指标来评估模型
+        # def measure_performance(X, y, clf, show_accuracy=True, show_classification_report=True, show_confusion_matrix=True):
+        # measure_performance(x_test, y_test, clf, show_classification_report=True, show_confusion_matrix=True)
+        # x = x_test
+        # y = y_test
+        y_pred = clf.predict(x)
+        print "Accuracy:{0:.3f}".format(metrics.accuracy_score(y, y_pred))
+
+        print "Classification report"
+        print metrics.classification_report(y, y_pred)
+
+        print "Confusion matrix"
+        print metrics.confusion_matrix(y, y_pred)
+
+        # 交叉验证来评估模型
+        scores = cross_val_score(clf, x, y, scoring='accuracy', cv=10)
+        print("Accuracy: {0:.1f}%".format(np.mean(scores) * 100))
+        '''
+
         city_info = self.get_city_info_by_name(city_name)
         if not city_info:
             print u'不存在的城市: %s' % (city_name, )
@@ -105,102 +191,36 @@ class Demo(object):
 
         # print df
 
-        '''
-        for index, row in df.iterrows():
-            if row['hd_pm25'] <= 35:
-                row['level'] = 1
-            elif 35 < row['hd_pm25'] <= 75:
-                row['level'] = 2
-            elif 75 < row['hd_pm25'] <= 115:
-                row['level'] = 3
-            elif 115 < row['hd_pm25'] <= 150:
-                row['level'] = 4
-            elif 150 < row['hd_pm25'] <= 250:
-                row['level'] = 5
-            elif row['hd_pm25'] > 250:
-                row['level'] = 6
-
-            # print index, row['hd_pm25'], row['level']
-            df[index]['level'] = row['level']
-            print "%s\t PM.5: %s,\t %s\t %s,\t %s,\t %s,\t %s,\t %s,\t %s" % (
-                index,
-                row['hd_pm25'],
-                row['level'],
-                row['level_1'],
-                row['level_2'],
-                row['level_3'],
-                row['level_4'],
-                row['level_5'],
-                row['level_6'],
-            )
-        print df.dtypes
-        '''
-
-        """
-        subdf = df[['pclass', 'sex', 'age']]
-        y = df.survived
+        subdf = df[['level', 'hd_pm25', 'hd_date']]
+        y = df['level'].values
 
         # sklearn中的Imputer也可以
-        age = subdf['age'].fillna(value=subdf.age.mean())
+        hd_pm25 = subdf['hd_pm25'] # .fillna(value=subdf.age.mean())
+        # hd_date = subdf['hd_date'] # (subdf['sex'] == 'male').astype('int')
         # sklearn OneHotEncoder也可以
-        pclass = pd.get_dummies(subdf['pclass'], prefix='pclass')
-        sex = (subdf['sex'] == 'male').astype('int')
+        pclass = pd.get_dummies(subdf['level'], prefix='level')
 
-        x = pd.concat([pclass, age, sex], axis=1)
+        x = pd.concat([pclass, hd_pm25], axis=1) # hd_date
         x.head()
+        print x
 
-        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=14)
-        clf = DecisionTreeClassifier(criterion='entropy', max_depth=3, min_samples_leaf=5)
+        # 切分测试和训练数据
+        x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=14) #  test_size=0.25,
+
+        # 决策树
+        # clf = DecisionTreeClassifier(criterion='entropy', max_depth=3, min_samples_leaf=5)
+        clf = DecisionTreeClassifier(criterion='gini')
+
+        # 学习
         clf = clf.fit(x_train, y_train)
         print "准确率为：{:.2f}".format(clf.score(x_test, y_test))
 
-        # 使用更多指标来评估模型
-        # def measure_performance(X, y, clf, show_accuracy=True, show_classification_report=True, show_confusion_matrix=True):
-        # measure_performance(x_test, y_test, clf, show_classification_report=True, show_confusion_matrix=True)
-        x = x_test
-        y = y_test
-        y_pred = clf.predict(x)
-        print "Accuracy:{0:.3f}".format(metrics.accuracy_score(y, y_pred)), "\n"
-
-        print "Classification report"
-        print metrics.classification_report(y, y_pred), "\n"
-
-        print "Confusion matrix"
-        print metrics.confusion_matrix(y, y_pred), "\n"
-
-        # 交叉验证来评估模型
-        scores1 = cross_val_score(clf, x, y, cv=10)
-        print scores1
-        """
-
-        '''
-        for index, row in df.iterrows():
-            row['level'] = 1
-            if row['hd_pm25'] > 35:
-                row['level'] = 2
-            elif row['hd_pm25'] > 75:
-                row['level'] = 3
-            elif row['hd_pm25'] > 115:
-                row['level'] = 4
-            elif row['hd_pm25'] > 150:
-                row['level'] = 4
-            elif row['hd_pm25'] > 250:
-                row['level'] = 5
-            elif row['hd_pm25'] > 500:
-                row['level'] = 6
-
-        print df['hd_pm25']
-        print df.dtypes
-        '''
-
-        clf = DecisionTreeClassifier(random_state=14)
-        x_pm25 = df[['hd_pm25']].values
-        x_pm25 = df[['level_1', 'level_2', 'level_3', 'level_4', 'level_5', 'level_6']].values
-        print x_pm25
-        y_true = df['level'].values
-        scores = cross_val_score(clf, x_pm25, y_true, scoring='accuracy')
-        print("Accuracy: {0:.1f}%".format(np.mean(scores) * 100))
-
+        # 预测结果
+        predict_target = clf.predict(x_test)
+        # print x_test
+        print predict_target
+        # sum(predict_target == x)  # 预测成功的数量
+        # result = clf.predict(digits.data[-1])
 
 
 if __name__ == '__main__':
