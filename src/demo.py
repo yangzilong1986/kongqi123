@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from sklearn.ensemble import RandomForestClassifier
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import *
@@ -219,12 +219,32 @@ class Demo(object):
         clf = clf.fit(x_train, y_train)
         print "准确率为：{:.2f}".format(clf.score(x_test, y_test))
 
-        # 预测结果
+        # 结果
         predict_target = clf.predict(x_test)
         # print x_test
         print predict_target
         # sum(predict_target == x)  # 预测成功的数量
         # result = clf.predict(digits.data[-1])
+        print clf.predict_proba(x_test)
+
+    def test_iris_forest(self):
+        iris = load_iris()
+        df = pd.DataFrame(iris.data, columns=iris.feature_names)
+        df['is_train'] = np.random.uniform(0, 1, len(df)) <= .75
+        # df['species'] = pd.Factor(iris.target, iris.target_names)
+        df['species'] = pd.Categorical.from_codes(iris.target, iris.target_names)
+        print df.head()
+
+        train, test = df[df['is_train'] == True], df[df['is_train'] == False]
+
+        features = df.columns[:4]
+        clf = RandomForestClassifier(n_jobs=2)
+        y, _ = pd.factorize(train['species'])
+        print y
+        clf.fit(train[features], y)
+
+        preds = iris.target_names[clf.predict(test[features])]
+        print pd.crosstab(test['species'], preds, rownames=['actual'], colnames=['preds'])
 
 
 if __name__ == '__main__':
@@ -247,4 +267,5 @@ if __name__ == '__main__':
     """
 
     demo = Demo()
-    demo.test_simple_tree(u'上海', '2016-01-01', '2016-12-31')
+    # demo.test_simple_tree(u'上海', '2016-01-01', '2016-12-31')
+    demo.test_iris_forest()
