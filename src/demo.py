@@ -25,6 +25,9 @@ from sklearn.model_selection import cross_val_score
 import pandas as pd
 import numpy as np
 
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.metrics import classification_report
+
 
 class Demo(object):
     def __init__(self):
@@ -262,6 +265,35 @@ class Demo(object):
         :return:
         """
 
+    def test_iris_tree2(self):
+        iris = load_iris()
+        clf = DecisionTreeClassifier()
+        clf = clf.fit(iris.data, iris.target)
+
+        '''
+        with open("iris.dot", 'w') as f:
+            f = tree.export_graphviz(clf, out_file=f)
+        import os
+        os.unlink('iris.dot')
+
+        import pydotplus
+        dot_data = tree.export_graphviz(clf, out_file=None)
+        graph = pydotplus.graph_from_dot_data(dot_data)
+        graph.write_pdf("iris.pdf")
+
+        from IPython.display import Image
+        dot_data = tree.export_graphviz(clf, out_file=None,
+                                        feature_names = iris.feature_names,
+                                        class_names = iris.target_names,
+                                        filled = True, rounded = True,
+                                        special_characters = True)
+        graph = pydotplus.graph_from_dot_data(dot_data)
+        Image(graph.create_png())
+        '''
+
+        print clf.predict(iris.data[:1, :])
+        print clf.predict_proba(iris.data[:1, :])
+
     def test_iris_forest(self):
         iris = load_iris()
         df = pd.DataFrame(iris.data, columns=iris.feature_names)
@@ -280,6 +312,31 @@ class Demo(object):
 
         preds = iris.target_names[clf.predict(test[features])]
         print pd.crosstab(test['species'], preds, rownames=['actual'], colnames=['preds'])
+
+    def test_titanic_tree(self):
+        # from sklearn.cross_validation import train_test_split
+        # from sklearn.tree import DecisionTreeClassifier
+
+        titanic = pd.read_csv('http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.txt')
+        titanic.head()
+        titanic.info()
+
+        X = titanic[['pclass', 'age', 'sex']]
+        y = titanic['survived']
+        X['age'].fillna(X['age'].mean(), inplace=True)
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=33)
+
+        vec = DictVectorizer(sparse=False)
+        X_train = vec.fit_transform(X_train.to_dict(orient='record'))
+        print vec.feature_names_
+
+        X_test = vec.transform(X_test.to_dict(orient='record'))
+        dtc = DecisionTreeClassifier()
+        dtc.fit(X_train, y_train)
+        y_predict = dtc.predict(X_test)
+
+        print classification_report(y_predict, y_test, target_names=['died', 'survived'])
 
 
 if __name__ == '__main__':
@@ -303,4 +360,6 @@ if __name__ == '__main__':
 
     demo = Demo()
     # demo.test_simple_tree(u'上海', '2016-01-01', '2016-12-31')
-    demo.test_iris_forest()
+    # demo.test_iris_forest()
+    # demo.test_iris_tree2()
+    demo.test_titanic_tree()
