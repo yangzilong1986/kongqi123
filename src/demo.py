@@ -227,6 +227,41 @@ class Demo(object):
         # result = clf.predict(digits.data[-1])
         print clf.predict_proba(x_test)
 
+    def test_iris_tree(self):
+        iris = load_iris()
+
+        test_idx = [0, 50, 100]
+
+        # training data
+        train_target = np.delete(iris.target, test_idx)
+        train_data = np.delete(iris.data, test_idx, axis=0)
+
+        # testing data
+
+        test_target = iris.target[test_idx]
+        test_data = iris.data[test_idx]
+
+        clf = DecisionTreeClassifier()
+        clf.fit(train_data, train_target)
+
+        print test_target  # ground truth label of test data
+        print clf.predict(test_data)  # the prediction of decision tree
+
+    def test_show_iris_tree(self):
+        """
+        from sklearn.externals.six import StringIO
+        import pydot
+        dot_data = StringIO()
+        tree.export_graphviz(clf, out_file=dot_data,
+                             feature_names=iris.feature_names,
+                             class_names=iris.target_names,
+                             filled=True, rounded=True,
+                             impurity=False)
+        graph = pydot.graph_from_dot_data(dot_data.getvalue())
+        graph[0].write_pdf("iris.pdf")
+        :return:
+        """
+
     def test_iris_forest(self):
         iris = load_iris()
         df = pd.DataFrame(iris.data, columns=iris.feature_names)
