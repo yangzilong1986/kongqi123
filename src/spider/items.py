@@ -52,3 +52,18 @@ class HistoryDayItem(scrapy.Item):
 class WeatherCityItem(scrapy.Item):
     city_name = scrapy.Field()
     city_url = scrapy.Field()
+
+
+class WeatherDayItem(scrapy.Item):
+    weather_date = scrapy.Field()
+    city_id = scrapy.Field()
+    city_name = scrapy.Field()
+    weather_am = scrapy.Field()
+    weather_pm = scrapy.Field()
+    weather_top = scrapy.Field()
+    weather_down = scrapy.Field()
+    weather_am_wind_type = scrapy.Field()
+    weather_am_wind_level = scrapy.Field()
+    weather_pm_wind_type = scrapy.Field()
+    weather_pm_wind_level = scrapy.Field()
+

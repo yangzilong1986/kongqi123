@@ -6,6 +6,7 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import chardet
 
 
 class SpiderSpiderMiddleware(object):
@@ -54,3 +55,15 @@ class SpiderSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class SpiderTianQiHouBaoMiddleware(object):
+
+    def process_response(self, request, response, spider):
+        # encoding = chardet.detect(response.body)
+        # if encoding['encoding'] == 'GB2312':
+        # print response.headers.__dict__.keys()  # Content-Type
+
+        response.headers['content-type'] = 'text/html; charset=gb2312'
+        return response
+
