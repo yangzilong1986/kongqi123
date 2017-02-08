@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'spider.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'spider (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit/523.15 (KHTML, like Gecko, Safari/419.3) Arora/0.3 (Change: 287 c9dfb30)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -34,6 +34,7 @@ CONCURRENT_REQUESTS = 32
 # The download delay setting will honor only one of:
 # 默认每个域名的并发数
 CONCURRENT_REQUESTS_PER_DOMAIN = 16
+
 # 每个IP的最大并发数：0表示忽略
 #CONCURRENT_REQUESTS_PER_IP = 16
 
@@ -45,8 +46,9 @@ CONCURRENT_REQUESTS_PER_DOMAIN = 16
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
-   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-   'Accept-Language': 'en',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.6,en-US;q=0.4,en;q=0.2',
+    'Accept-Encoding': 'gzip, deflate, sdch',
 }
 
 # Enable or disable spider middlewares
@@ -89,7 +91,8 @@ ITEM_PIPELINES = {
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
 # 打开缓存
-HTTPCACHE_ENABLED = True
+# HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 # 设置缓存过期时间（单位：秒）
 #HTTPCACHE_EXPIRATION_SECS = 0
 # 缓存路径(默认为：.scrapy/httpcache)

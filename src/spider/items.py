@@ -47,3 +47,8 @@ class HistoryDayItem(scrapy.Item):
     hd_no2 = scrapy.Field()
     hd_o3 = scrapy.Field()
     hd_rank = scrapy.Field()
+
+
+class WeatherCityItem(scrapy.Item):
+    city_name = scrapy.Field()
+    city_url = scrapy.Field()

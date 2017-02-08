@@ -1,4 +1,13 @@
 from sqlalchemy import Column, Date, DateTime, Integer, String, Text, Float, text
+from sqlalchemy.ext.declarative import declarative_base
+
+
+def to_dict(self):
+    return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}
+
+Base = declarative_base()
+metadata = Base.metadata
+Base.to_dict = to_dict
 
 
 class HistoryCity(Base):
@@ -49,4 +58,12 @@ class HistoryDay(Base):
     hd_no2 = Column(Float)
     hd_o3 = Column(Float)
     hd_rank = Column(Integer)
+
+
+class WeatherCity(Base):
+    __tablename__ = 'weather_city'
+
+    city_id = Column(Integer, primary_key=True)
+    city_name = Column(String(30), server_default=text("''::character varying"))
+    city_url = Column(String(1024), server_default=text("''::character varying"))
 

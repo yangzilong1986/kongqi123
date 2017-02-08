@@ -4,22 +4,13 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import json
 
+import json
 from scrapy.exceptions import DropItem
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
 from items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
 from model import HistoryCity, HistoryDay, HistoryMonth
-
-
-def to_dict(self):
-    return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}
-
-Base = declarative_base()
-metadata = Base.metadata
-Base.to_dict = to_dict
 
 
 class CitiesPipeline(object):
