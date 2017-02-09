@@ -12,8 +12,11 @@ from sqlalchemy.orm import sessionmaker
 from items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
 from model import HistoryCity, HistoryDay, HistoryMonth
 
+from items import WeatherCityItem, WeatherDayItem
+from model import WeatherCity, WeatherDay
 
-class CitiesPipeline(object):
+
+class HistoryPipeline(object):
 
     def __init__(self, sqlalchemy_database_uri, sqlalchemy_pool_size):
         self.engine = create_engine(sqlalchemy_database_uri, pool_size=sqlalchemy_pool_size)
@@ -78,6 +81,65 @@ class CitiesPipeline(object):
                 row_data = {
                     "city_name": service_item.city_name,
                     "hd_date": service_item.hd_date,
+                }
+                row = self.session.execute(row_sql, row_data).fetchone()
+                if not row['cnt']:
+                    self.session.add(service_item)
+                    self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            raise e
+
+        return item
+
+    def close_spider(self, spider):
+        self.session.close()
+
+
+class WeatherPipeline(object):
+
+    def __init__(self, sqlalchemy_database_uri, sqlalchemy_pool_size):
+        self.engine = create_engine(sqlalchemy_database_uri, pool_size=sqlalchemy_pool_size)
+        self.db_session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+            sqlalchemy_database_uri=crawler.settings.get('SQLALCHEMY_DATABASE_URI_MYSQL'),
+            sqlalchemy_pool_size=crawler.settings.get('SQLALCHEMY_POOL_SIZE', 8),
+        )
+
+    def open_spider(self, spider):
+        self.session = self.db_session()
+
+    def process_item(self, item, spider):
+        try:
+            if isinstance(item, WeatherCityItem):
+                # 数据入库
+                service_item = WeatherCity(**item)
+
+                row_sql = "select count(*) cnt from weather_city where city_name = :city_name"
+                row_data = {"city_name": service_item.city_name}
+                row = self.session.execute(row_sql, row_data).fetchone()
+
+                if not row['cnt']:
+                    self.session.add(service_item)
+                    self.session.commit()
+            elif isinstance(item, WeatherDayItem):
+                service_item = WeatherDay(**item)
+
+                row_sql = "select * from weather_city where city_name = :city_name"
+                row_data = {"city_name": service_item.city_name}
+                row = self.session.execute(row_sql, row_data).fetchone()
+                if 'city_id' in row:
+                    service_item.city_id = row['city_id']
+                # print u"----- HistoryMonthItem:%s" % json.dumps(dict(service_item), indent=4, ensure_ascii=False)
+
+                row_sql = "select count(*) cnt from weather_day " \
+                          "where city_name = :city_name and weather_date = :weather_date"
+                row_data = {
+                    "city_name": service_item.city_name,
+                    "weather_date": service_item.weather_date,
                 }
                 row = self.session.execute(row_sql, row_data).fetchone()
                 if not row['cnt']:

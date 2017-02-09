@@ -35,7 +35,7 @@ class WeatherSpider(scrapy.Spider):
             'spider.middlewares.SpiderTianQiHouBaoMiddleware': 1000,
         },
         ITEM_PIPELINES={
-            'spider.pipelines.CitiesPipeline': 300,
+            'spider.pipelines.WeatherPipeline': 300,
         }
     )
 
@@ -99,17 +99,17 @@ class WeatherSpider(scrapy.Spider):
 
             weather_top_down = day.xpath('.//td[3]/text()').extract_first(default='')
             weather_top_down = weather_top_down.split('/')
-            weather_top = '' if not weather_top_down[0] else weather_top_down[0]
-            weather_down = '' if not weather_top_down[1] else weather_top_down[1]
+            weather_top = '' if not weather_top_down[0] else weather_top_down[0].replace(u'℃', '')
+            weather_down = '' if not weather_top_down[1] else weather_top_down[1].replace(u'℃', '')
 
             weather_wind = day.xpath('.//td[4]/text()').extract_first(default='')
             weather_wind = weather_wind.split('/')
-            print u"weather_wind: %s" % str(weather_wind)
+            # print u"weather_wind: %s" % str(weather_wind)
 
             weather_am_wind = '' if not weather_wind[0] else weather_wind[0].strip()
             weather_pm_wind = '' if not weather_wind[1] else weather_wind[1].strip()
-            print u"weather_am_wind: %s" % weather_am_wind
-            print u"weather_pm_wind: %s" % weather_pm_wind
+            # print u"weather_am_wind: %s" % weather_am_wind
+            # print u"weather_pm_wind: %s" % weather_pm_wind
 
             weather_am_wind = weather_am_wind.split(' ')
             weather_am_wind_type = '' if not weather_am_wind[0] else weather_am_wind[0]
@@ -119,19 +119,18 @@ class WeatherSpider(scrapy.Spider):
             weather_pm_wind_type = '' if not weather_pm_wind[0] else weather_pm_wind[0]
             weather_pm_wind_level = '' if not weather_pm_wind[1] else weather_pm_wind[1]
 
-            item = WeatherDayItem()
             '''
             weather_date: 2017-02-01
             city_name: 通辽
             weather_am: 晴
             weather_pm: 晴
-            weather_top: -2℃
-            weather_down: -9℃
+            weather_top: -2
+            weather_down: -9
             weather_am_wind_type: 西北风
             weather_am_wind_level: 3-4级
             weather_pm_wind_type: 西风
             weather_pm_wind_level: 3-4级
-            '''
+
             print u"weather_date: %s" % weather_date.strip()
             print u"city_name: %s" % city_name  # .decode('utf-8'), type(city_name)
             print u"weather_am: %s" % weather_am.strip()
@@ -144,19 +143,21 @@ class WeatherSpider(scrapy.Spider):
             print u"weather_pm_wind_level: %s" % weather_pm_wind_level.strip()
 
             raise CloseSpider('test')
+            '''
 
+            item = WeatherDayItem()
             item['weather_date'] = weather_date.strip()
             item['city_id'] = 0
             item['city_name'] = city_name.strip()
             item['weather_am'] = weather_am.strip()
             item['weather_pm'] = weather_pm.strip()
-            item['weather_top'] = (weather_top.strip())
-            item['weather_down'] = (weather_down.strip())
+            item['weather_top'] = int(weather_top.strip())
+            item['weather_down'] = int(weather_down.strip())
             item['weather_am_wind_type'] = weather_am_wind_type.strip()
             item['weather_am_wind_level'] = weather_am_wind_level.strip()
             item['weather_pm_wind_type'] = weather_pm_wind_type.strip()
             item['weather_pm_wind_level'] = weather_pm_wind_level.strip()
 
-            # print u'----- WeatherItem:%s' % json.dumps(dict(item), indent=4)
+            print u'----- WeatherItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
             # yield item
 

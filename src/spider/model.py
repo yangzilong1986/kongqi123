@@ -67,3 +67,16 @@ class WeatherCity(Base):
     city_name = Column(String(30), server_default=text("''::character varying"))
     city_url = Column(String(1024), server_default=text("''::character varying"))
 
+
+class WeatherDay(Base):
+    weather_date = Column(Date)
+    city_id = Column(Integer)
+    city_name = Column(String(30), server_default=text("''::character varying"))
+    weather_am = Column(String(30), server_default=text("''::character varying"))
+    weather_pm = Column(String(30), server_default=text("''::character varying"))
+    weather_top = Column(Integer)
+    weather_down = Column(Integer)
+    weather_am_wind_type = Column(String(30), server_default=text("''::character varying"))
+    weather_am_wind_level = Column(String(30), server_default=text("''::character varying"))
+    weather_pm_wind_type = Column(String(30), server_default=text("''::character varying"))
+    weather_pm_wind_level = Column(String(30), server_default=text("''::character varying"))

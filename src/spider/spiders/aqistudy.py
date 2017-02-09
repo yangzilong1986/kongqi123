@@ -15,8 +15,8 @@ class HistorySpider(scrapy.Spider):
         CONCURRENT_REQUESTS_PER_DOMAIN=8,
         CONCURRENT_REQUESTS_PER_IP=8,
         ITEM_PIPELINES={
-            'spider.pipelines.CitiesPipeline': 300,
-        }
+            'spider.pipelines.HistoryPipeline': 300,
+        },
     )
 
     def __init__(self, *args, **kwargs):
