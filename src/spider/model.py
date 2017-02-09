@@ -69,6 +69,9 @@ class WeatherCity(Base):
 
 
 class WeatherDay(Base):
+    __tablename__ = 'weather_day'
+
+    weather_id = Column(Integer, primary_key=True)
     weather_date = Column(Date)
     city_id = Column(Integer)
     city_name = Column(String(30), server_default=text("''::character varying"))

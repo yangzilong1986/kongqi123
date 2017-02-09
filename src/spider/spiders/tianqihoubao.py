@@ -59,8 +59,8 @@ class WeatherSpider(scrapy.Spider):
             item['city_name'] = city_name.strip()
             item['city_url'] = city_url.strip()
 
-            print u'----- WeatherCityItem:%s' % json.dumps(dict(item), indent=4)
-            # yield item
+            # print u'----- WeatherCityItem:%s' % json.dumps(dict(item), indent=4)
+            yield item
 
             url = response.urljoin(city_url)
             meta = {'city_name': item['city_name']}
@@ -77,7 +77,7 @@ class WeatherSpider(scrapy.Spider):
             url = response.urljoin(day_url)
             meta = {'city_name': city_name}
 
-            print u'----- WeatherCityUrl:%s' % url
+            # print u'----- WeatherCityUrl:%s' % url
             yield scrapy.Request(url=url, meta=meta, callback=self.parse_day, priority=90)
 
     def parse_day(self, response):
@@ -158,6 +158,6 @@ class WeatherSpider(scrapy.Spider):
             item['weather_pm_wind_type'] = weather_pm_wind_type.strip()
             item['weather_pm_wind_level'] = weather_pm_wind_level.strip()
 
-            print u'----- WeatherItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
-            # yield item
+            # print u'----- WeatherItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
+            yield item
 
