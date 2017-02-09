@@ -15,9 +15,9 @@ class WeatherSpider(scrapy.Spider):
         "http://www.tianqihoubao.com/lishi/"
     ]
     custom_settings = dict(
-        DOWNLOAD_DELAY=2,
-        CONCURRENT_REQUESTS_PER_DOMAIN=8,
-        CONCURRENT_REQUESTS_PER_IP=8,
+        DOWNLOAD_DELAY=0,
+        CONCURRENT_REQUESTS_PER_DOMAIN=15,
+        CONCURRENT_REQUESTS_PER_IP=15,
         DEFAULT_REQUEST_HEADERS={
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
             "Accept-Encoding": "gzip, deflate, sdch",
