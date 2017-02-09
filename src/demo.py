@@ -6,7 +6,10 @@ from config import *
 from collections import defaultdict
 # iris 值物分类
 from sklearn.datasets import load_iris
+# 分类决策树
 from sklearn.tree import DecisionTreeClassifier
+# 回归决策树
+from sklearn.tree import DecisionTreeRegressor
 
 # 数据切分为train和test
 # from sklearn.cross_validation import cross_val_score, train_test_split
@@ -338,6 +341,70 @@ class Demo(object):
 
         print classification_report(y_predict, y_test, target_names=['died', 'survived'])
 
+    def test_tree_classifier(self):
+        """
+        DecisionTreeClassifier 能够实现多类别的分类。
+        输入两个向量：向量X，大小为[n_samples,n_features]，用于记录训练样本；
+        向量Y，大小为[n_samples]，用于存储训练样本的类标签。
+        :return:
+
+        X = [[0, 0], [1, 1]]
+        Y = [0, 1]
+        clf = DecisionTreeClassifier()
+        clf = clf.fit(X, Y)
+
+        clf.predict([[2., 2.]])
+        clf.predict_proba([[2., 2.]])
+        """
+
+        iris = load_iris()
+        clf = DecisionTreeClassifier()
+        clf = clf.fit(iris.data, iris.target)
+
+        # export the tree in Graphviz format using the export_graphviz exporter
+        with open("iris.dot", 'w') as f:
+            f = tree.export_graphviz(clf, out_file=f)
+
+        # predict the class of samples
+        clf.predict(iris.data[:1, :])
+        # the probability of each class
+        clf.predict_proba(iris.data[:1, :])
+
+    def test_tree_regressor(self):
+        """
+        和分类不同的是向量y可以是浮点数。
+
+        :return:
+
+        X = [[0, 0], [2, 2]]
+        y = [0.5, 2.5]
+        clf = DecisionTreeRegressor()
+        clf = clf.fit(X, y)
+        clf.predict([[1, 1]])
+
+        predict：输出n个预测值
+        predict_proba：输出有n个输出的向量组成的列表。
+
+        apply(X[, check_input])	                    返回每个样本的叶节点的预测序号
+        decision_path(X[, check_input])	            返回决策树的决策路径 [n_samples, n_nodes]
+        fit(X, y[, sample_weight, check_input, …])	从训练数据建立决策树，返回一个对象
+        fit_transform(X[, y])	                    将数据X转换[n_samples, n_features_new]
+        get_params([deep])	                        得到估计量的参数，返回一个映射
+        predict(X[, check_input])	                预测X的分类或者回归，返回[n_samples]
+        predict_log_proba(X)	                    预测输入样本的对数概率，返回[n_samples, n_classes]
+        predict_proba(X[, check_input])	            预测输入样本的属于各个类的概率[n_samples, n_classes]
+        score(X, y[, sample_weight])	            返回对于测试数据的平均准确率
+        set_params(**params)	                    设置估计量的参数
+        transform(*args, **kwargs)	                将输入参数X减少的最重要的特征，返回[n_samples, n_selected_features]
+        """
+
+    def test_simple_tree2(self):
+        X = [[0, 0], [2, 2]]
+        y = [0.5, 2.5]
+        clf = DecisionTreeRegressor()
+        clf = clf.fit(X, y)
+        print clf.predict([[1, 1]])
+
 
 if __name__ == '__main__':
     """
@@ -362,4 +429,5 @@ if __name__ == '__main__':
     # demo.test_simple_tree(u'上海', '2016-01-01', '2016-12-31')
     # demo.test_iris_forest()
     # demo.test_iris_tree2()
-    demo.test_titanic_tree()
+    # demo.test_titanic_tree()
+    demo.test_simple_tree2()
