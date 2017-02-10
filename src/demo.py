@@ -398,12 +398,68 @@ class Demo(object):
         transform(*args, **kwargs)	                将输入参数X减少的最重要的特征，返回[n_samples, n_selected_features]
         """
 
-    def test_simple_tree2(self):
+    def test_simple_tree2(self, city_name, start_date, end_date):
+        """
         X = [[0, 0], [2, 2]]
         y = [0.5, 2.5]
         clf = DecisionTreeRegressor()
         clf = clf.fit(X, y)
         print clf.predict([[1, 1]])
+        # [ 0.5]
+        """
+
+        city_info = self.get_city_info_by_name(city_name)
+        if not city_info:
+            print u'不存在的城市: %s' % (city_name, )
+            return
+
+        city_id = city_info['city_id']
+        data = self.load_daily_city_data(city_id, start_date, end_date)
+        if not data:
+            print u'城市没有数据: %s' % (city_name, )
+            return
+
+        # print type(data)
+
+        for row in data:
+            if row['hd_pm25'] <= 35:
+                row['level'] = 1
+            elif 35 < row['hd_pm25'] <= 75:
+                row['level'] = 2
+            elif 75 < row['hd_pm25'] <= 115:
+                row['level'] = 3
+            elif 115 < row['hd_pm25'] <= 150:
+                row['level'] = 4
+            elif 150 < row['hd_pm25'] <= 250:
+                row['level'] = 5
+            elif row['hd_pm25'] > 250:
+                row['level'] = 6
+
+        df = pd.DataFrame(data, columns=data[0].keys())
+        df['hd_date'] = pd.to_datetime(df['hd_date'])
+        df['hd_pm25'] = df['hd_pm25'].astype(np.double)
+        df['hd_pm10'] = df['hd_pm10'].astype(np.double)
+        df['hd_so2'] = df['hd_so2'].astype(np.double)
+        df['hd_co'] = df['hd_co'].astype(np.double)
+        df['hd_no2'] = df['hd_no2'].astype(np.double)
+        df['hd_o3'] = df['hd_o3'].astype(np.double)
+
+        df['level_1'] = df['hd_pm25'] <= 35
+        df['level_2'] = (df['hd_pm25'] > 35) & (df['hd_pm25'] <= 75)
+        df['level_3'] = (df['hd_pm25'] > 75) & (df['hd_pm25'] <= 115)
+        df['level_4'] = (df['hd_pm25'] > 115) & (df['hd_pm25'] <= 150)
+        df['level_5'] = (df['hd_pm25'] > 150) & (df['hd_pm25'] <= 250)
+        df['level_6'] = df['hd_pm25'] > 250
+
+        # print df
+
+        x = df[['hd_pm25']].values
+        y = df['level'].values
+
+        clf = DecisionTreeRegressor()
+        clf = clf.fit(x, y)
+        print clf.predict([[35]])
+
 
 
 if __name__ == '__main__':
@@ -430,4 +486,4 @@ if __name__ == '__main__':
     # demo.test_iris_forest()
     # demo.test_iris_tree2()
     # demo.test_titanic_tree()
-    demo.test_simple_tree2()
+    demo.test_simple_tree2(u'上海', '2016-01-01', '2016-12-31')
