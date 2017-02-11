@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>品牌申请成功</title>
+    {% include "index_shared/before_header.html"  %}
+    <link rel="stylesheet" href="/static/www/pc/v1/css/brand_white.css"/>
+</head>
+<body>
+
+{% include "index_shared/header.html"  %}
+
+<!-- page-main start -->
+<div class="page-main full">
+    <div class="wrap">
+        <div class="apply-wrap">
+            <div class="brand-apply">
+                <div class="l-apply-success">
+                    <span class="l-success-bg">
+                        <i class="ico ico-success"></i>
+                    </span>
+                    <div class="l-success-txt">
+                        您的品牌商申请已经成功提交！
+                    </div>
+                    <div class="l-line"></div>
+                </div>
+                <div class="l-feedback">
+                    1个工作日内我们会与您联系，请保持联系方式通畅！<br/>
+                    跟我买品牌商交流QQ群： 564679755
+                </div>
+            </div>
+            <div class="l-scan-code">
+                <span class="l-txt">
+                    扫一扫右方二维码，可实时获取通知：
+                </span>
+                <span class="l-ewm">
+                    <img src="/static/www/pc/v1/images/basic/ewm_bg.png" alt="">
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page-main end -->
+
+{% include "index_shared/footer.html"  %}
+
+{% include "index_shared/after_footer.html"  %}
+
+</body>
+</html>

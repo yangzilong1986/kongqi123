@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>跟我买_移动社交电商平台</title>
+    <meta name="keywords" content="跟我买官网,移动电商平台,社交电商,跟我买代言报告,跟我买品牌商家登录" />
+    <meta name="description" content="这里是跟我买移动电商平台官方网站。跟我买微信服务号是：genwomai123
+跟我买充分发掘移动电商加社交传播特性，形成真实有影响力的代言报告，引爆产品销售和品牌曝光，欢迎品牌商家入驻。" />
+    {% include "index_shared/before_header.html"  %}
+    <link rel="stylesheet" href="/static/www/pc/v1/css/index.css"/>
+</head>
+<body>
+
+{% include "index_shared/header.html"  %}
+
+<!-- page-main start -->
+<div class="page-main full body_bg page-index">
+    <div class="wrap">
+        <!-- top-banner-box -->
+        <div class="top-banner-box">
+            <a href="/" class="index-banner">
+                <img src="/static/www/pc/v1/images/index/index_banner.jpg" alt="" />
+            </a>
+        </div>
+        <div class="business-title"><span class="btn btn-m2 btn-black">已入驻知名品牌</span></div>
+        <div class="business-list-wrap">
+            <ul class="business-list">
+                {% for value in shop_list %}
+                <li class="cell" shop_id="{{ value['id'] }}">
+                    <div class="cell-img">
+                        <img src="{{ value['big_image'] }}" alt="" />
+                    </div>
+                    <div class="cell-title">{{ value['name'] }}</div>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="clear"></div>
+            <div class="btn-wrap"><a class="btn btn-l3 btn-black" href="/join">我也要入驻</a></div>
+        </div>
+    </div>
+</div>
+<!-- page-main end -->
+
+{% include "index_shared/footer.html"  %}
+
+<script type="text/javascript">
+    popnormal({
+        "popconTpl": '',
+        "popTplId":"",//内容模板id
+        "eventEle":".cell",//点击事件元素（不定义：立即弹出）
+        "popId":"popnormal2",//弹出层id 默认为popnormal,（可自定义）
+        "headTitle":"品牌商家展示",//普通标题
+        "closeAuto":false,//可选项
+        "popAction":[],//按钮区 actionColse=false 取消自带点击关闭层
+        "popCallbackFun":function(args,TfThis){//popCallbackFun 可选项
+            var curpopid = "#" + args.popId;
+            var name = args.eventEle.attr('shop_id');
+            var html = '<div class="pop-single-line" style="padding:10px">' +
+                    '   <img width="761" height="225" src="/shop_qr?shop_id=' + name + '&where=home" />' +
+                    '</div>';
+            $(curpopid + ' .pops1_con').html(html);
+        }
+    });
+    function businessListShow(){
+        $('.business-list .cell').each(function(){
+            var curIndex=$(this).index();
+            switch(curIndex%7){
+                case 0 :
+                    $(this).css({'width':'50%'});
+                    break;
+                default:
+                    $(this).css({'width':'25%'});
+            }
+        });
+        var imgW=$('.business-list .cell img:eq(0)').width();
+        var imgH=427*imgW/589;
+        $('.business-list .cell img').css({'height':imgH});
+    }
+    $(function(){
+        businessListShow();
+    });
+</script>
+
+{% include "index_shared/after_footer.html"  %}
+
+</body>
+</html>

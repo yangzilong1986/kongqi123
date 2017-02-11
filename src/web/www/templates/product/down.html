@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>商品管理</title>
+    {% include "admin_shared/before_header.html"  %}
+</head>
+<body>
+
+{% include "admin_shared/header.html" %}
+
+<!-- page-main start -->
+<div class="page-main full body_bg">
+    <div class="wrap">
+        <div class="revenum-wrap clearfix">
+
+            {% include "admin_shared/left.html"  %}
+
+            <!-- main right start -->
+            <div class="main">
+                <div class="order-wrap modity-wrap">
+
+                    <!-- 订单信息 start -->
+                    <div class="l-order-data">
+                        <form id="search_form" class="form-horizontal" method="get" action="/product">
+                            <span onclick="$('#search_form').submit()" class="l-search"><i class="ico ico-search"></i></span>
+                            <ul class="form-list2 clearfix">
+                                <li class="li li-query">
+                                    <div class="ele-wrap">
+                                        <input class="form-control js_validate" placeholder="输入商品关键词搜索" id="name" name="name" type="text" value="{{ name }}" autocomplete="off" />
+                                    </div>
+                                </li>
+                                <li class="li">
+                                    <label class="lab-title">
+                                        <span class="validate-title">价格：</span>
+                                    </label>
+                                    <div class="ele-wrap" onclick="$('#price_distance').removeClass('hidden');$(this).addClass('hidden');">
+                                        <input class="form-control  js_validate " placeholder="价格范围" type="text" value="" autocomplete="off" />
+                                    </div>
+                                    <div class="ele-wrap hidden" id="price_distance">
+                                        <div class="l-confines js-pfocus">
+                                            <input class="form-control js_validate" placeholder="价格范围" id="price_start" name="price_start" type="text" value="{{ price_start }}" autocomplete="off" />
+                                            <span class="l-line"></span>
+                                            <input class="form-control js_validate" placeholder="价格范围" id="price_end" name="price_end" type="text" value="{{ price_end }}" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="li">
+                                    <label class="lab-title">
+                                        <span class="validate-title">销售：</span>
+                                    </label>
+                                    <div class="ele-wrap" onclick="$('#sales_distance').removeClass('hidden');$(this).addClass('hidden');">
+                                        <input class="form-control js_validate " placeholder="销售范围" type="text" value="" autocomplete="off" />
+                                    </div>
+                                    <div class="ele-wrap hidden" id="sales_distance">
+                                        <div class="l-confines js-pfocus">
+                                            <input class="form-control js_validate" placeholder="销售范围" id="sales_start" name="sales_start" type="text" value="{{ sales_start }}" autocomplete="off" />
+                                            <span class="l-line"></span>
+                                            <input class="form-control js_validate" placeholder="销售范围" id="sales_end" name="sales_end" type="text" value="{{ sales_end }}" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                    <!-- 订单信息 end-->
+
+                    <!-- 订单详情 start -->
+                    <div class="l-order-detail">
+                        <div class="l-detail-hd">
+                            <div class="l-wp l-wp1"><span>商品名称</span></div>
+                            <div class="l-wp l-wp2"><span>库存</span></div>
+                            <div class="l-wp l-wp3"><span>价格</span></div>
+                            <div class="l-wp l-wp4"><span>买家提成</span></div>
+                            <div class="l-wp l-wp5"><span>商品推广</span></div>
+                        </div>
+                        {% if info and info['items'] %}
+                            <ul class="l-order-list  evenParent" even_cell="li">
+                                {% for value in info['items'] %}
+                                    <li class="l-order-content">
+                                        <div class="l-order-con-top clearfix">
+                                            <label class="proxyinput proxy-checkbox">
+                                                <span class="h0hidden">
+                                                    <input type="checkbox" class="product_id" name="product_id" value="{{ value['id'] }}" />
+                                                </span>
+                                            </label>
+                                            <div class="l-order-left">
+                                                <a class="l-modity" target="_blank" href="/product/edit?pid={{ value['id'] }}">
+                                                    {% if value['img_url'] %}
+                                                        <img src="http://{{ public }}/{{ value['img_url'] }}?imageView2/1/w/168/h/98" width="168" height="98" />
+                                                    {% else %}
+                                                        <img src="/static/www/pc/v1/images/manage/commodity_img.png" />
+                                                    {% endif %}
+                                                </a>
+                                                <div class="l-modity-con">
+                                                    <div class="l-con-tet">{{ value['name'] }}</div>
+                                                </div>
+                                                <div class="l-sales">
+                                                    <span>销量： {{ value['sales'] }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="l-order-right">
+                                                <div class="l-modity-edit">
+                                                    <div class="l-stock">
+                                                        <div class="l-edit-num">
+                                                            <input class="form-control" onblur="product_value(this, 'inventory')" type="text" old="{{ value['inventory'] }}" value="{{ value['inventory'] }}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="l-price">
+                                                        <div class="l-edit-num">
+                                                            <input class="form-control" onblur="product_value(this, 'price')" type="text" old="{{ value['price'] }}" value="{{ value['price'] }}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="l-deduct">
+                                                        <div class="l-edit-num">
+                                                            <input class="form-control" onblur="product_value(this, 'commission_amount')" type="text" old="{{ value['commission_amount'] }}" value="{{ value['commission_amount'] }}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="l-modity-link">
+                                                        {% if value['is_recommend'] == 1 %}
+                                                            <div class="l-nominate">
+                                                                <i class="ico ico-nominate-bg"></i>
+                                                                <span class="l-nominate-txt">已推荐</span>
+                                                            </div>
+                                                        {% endif %}
+                                                        <div class="l-ewm-link">
+                                                            <input class="btn btn-s4 btn-black btn_qrcode" type="button" value="二维码链接" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="l-order-complete clearfix">
+                                                    <div class="l-complete-left">
+                                                        <div class="l-complete-txt">
+                                                            发布： {{ value['create_time'] }}
+                                                        </div>
+                                                        <div class="l-complete-txt">
+                                                            更新： {{ value['update_time'] }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="l-complete-right">
+                                                        <a class="btn btn-s2 btn-orange2" target="_blank" href="/product/edit?pid={{ value['id'] }}" type="button" value="编辑">编辑</a>
+                                                        <input class="btn btn-s2 btn-orange2 btn_delete" type="button" value="删除" />
+                                                        <input class="btn btn-s2 btn-green1" onclick="product_up('{{ value['id'] }}')" type="button" value="上架" />
+                                                        <input class="btn btn-s2 btn-green1 hidden" type="button" value="上架" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                            <div class="l-modity-operation">
+                                <div class="l-operation-con clearfix">
+                                    <div class="l-check-all">
+                                        <label class="proxyinput proxy-checkbox">
+                                            <span class="h0hidden"><input type="checkbox" id="checkall" /></span>全选
+                                        </label>
+                                    </div>
+                                    <div class="l-complete-right">
+                                        <input class="btn btn-s2 btn-orange2" onclick="recommend(this, 1)" type="button" value="推荐" />
+                                        <input class="btn btn-s2 btn-orange2 l-cancel" onclick="recommend(this, 0)" type="button" value="取消推荐" />
+                                        <input class="btn btn-s2 btn-orange2 btn_delete_all" type="button" value="删除" />
+                                        <input class="btn btn-s2 btn-green1 btn_up_all" type="button" value="上架" />
+                                        <input class="btn btn-s2 btn-green1 hidden" type="button" value="上架" />
+                                    </div>
+                                    <div class="l-title">
+                                        提示：被推荐的商品，在店铺中排序靠前优先展示
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <!-- 订单详情 end -->
+
+                    {% if info['pages'] > 0 %}
+                        <!-- pages_tab -->
+                        <div class="pages_tab">
+                            {% if info['has_prev'] %}
+                                <a href="/product/down?name={{ name }}&price_start={{ price_start }}&price_end={{ price_end }}&sales_start={{ sales_start }}&sales_end={{ sales_end }}&page={{ info['prev_num'] }}" class="p_prev"><span>上一页</span></a>
+                            {% endif %}
+                            <div class="pages-tab">
+                                {% for p in range(1, info['pages'] + 1) %}
+                                    {% if p == page %}
+                                        <a href="/product/down?name={{ name }}&price_start={{ price_start }}&price_end={{ price_end }}&sales_start={{ sales_start }}&sales_end={{ sales_end }}&page={{ p }}" class="cur"><span>{{ p }}</span></a>
+                                    {% else %}
+                                        <a href="/product/down?name={{ name }}&price_start={{ price_start }}&price_end={{ price_end }}&sales_start={{ sales_start }}&sales_end={{ sales_end }}&page={{ p }}"><span>{{ p }}</span></a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% if info['has_next'] %}
+                                <a href="/product/down?name={{ name }}&price_start={{ price_start }}&price_end={{ price_end }}&sales_start={{ sales_start }}&sales_end={{ sales_end }}&page={{ info['next_num'] }}" class="p_next"><span>下一页</span></a>
+                            {% endif %}
+                            <span class="page-number">共{{ info['pages'] }}页</span>
+                        </div>
+                        <!-- pages_tab end-->
+                    {% endif %}
+
+                </div>
+            </div>
+            <!-- main right end -->
+        </div>
+    </div>
+</div>
+<!-- page-main end -->
+
+{% include "admin_shared/footer.html" %}
+
+{% include "admin_shared/after_footer.html" %}
+
+<!-- 弹层 二维码-->
+<div id="pop_dity_ewm" class="hidden">
+    <div class="">
+        <div class="l-pop-ewm clearfix">
+            <div class="l-ewn-img">
+                <span class="l-sweep">
+                    <i class="ico ico-layer-sweep"></i>
+                </span>
+                <img class="product_qrcode" src="/static/www/pc/v1/images/manage/layer_dity_ewm.png" width="222" height="222" />
+            </div>
+            <div class="l-ewn-con">
+                <input class="btn btn-l2 btn-black" type="button" value="方式一：  扫码推荐">
+                <div class="l-orange">
+                    我是该商品代言人——我已购买，我已推荐，我在代言！
+                </div>
+                <div class="l-orange l-dity-con">
+                    <p class="product_name"></p>
+                    <p class="l-link product_link"></p>
+                </div>
+                <input data-clipboard-text="" class="btn btn-l2 btn-black copy_clipboard" type="button" value="方式二：  复制链接推荐">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 普通模板 end -->
+<input type="hidden" id="domain_www" value="{{ domain_www }}" />
+<input type="hidden" id="domain_wx" value="{{ domain_wx }}" />
+
+<script type="text/javascript">
+    $('.l-edit-num input').on('click', function () {
+        $(this).select();
+    }).on('keypress', function (event) {
+        if (event.keyCode == 13) {
+            $(this).trigger('blur');
+        }
+    });
+
+    function product_value(obj, field) {
+        if (parseFloat($(obj).attr('old')) == parseFloat($(obj).val())) {
+            return false;
+        }
+        var pid = $(obj).parents('li').find('.product_id').val();
+        var data = {
+            pid: pid,
+            field: field,
+            value: $(obj).val()
+        };
+        $.post('/product/value', data, function (result) {
+            if (!result) {
+                alert('远程服务器没有响应');
+                return false;
+            }
+            if (!result.status) {
+                alert(result.message);
+                return false;
+            } else {
+                $(obj).attr('old', $(obj).val());
+                return false;
+            }
+        }, 'json');
+    }
+
+    function product_up(pid) {
+        $.post('/product/up', {pid: pid}, function (result) {
+            if (!result) {
+                alert('远程服务器没有响应');
+                return false;
+            }
+            if (!result.status) {
+                alert(result.message);
+                return false;
+            } else {
+                location.reload();
+            }
+        }, 'json');
+    }
+
+    //qrcode
+    popnormal({
+        "popTplId":"#pop_dity_ewm",//内容模板id
+        "eventEle":".btn_qrcode",//点击事件元素（不定义：立即弹出）
+        "popId":"popnormal1",//弹出层id 默认为popnormal,（可自定义）
+        "headTitle":"操作提示",//普通标题
+        "popCallbackFun":function(args, TfThis){//popCallbackFun 可选项
+            var curpopid = "#" + args.popId;
+            var domain_www = $('#domain_www').val();
+            var domain_wx = $('#domain_wx').val();
+            var product_id = args.eventEle.parents('li').find('.product_id').val();
+            var product_name = args.eventEle.parents('li').find('.l-con-tet').html();
+            var product_link = 'http://' + domain_wx + '/product/info/' + product_id;
+            $(curpopid + ' .product_name').html(product_name);
+            $(curpopid + ' .product_link').html(product_link);
+            $(curpopid + ' .product_qrcode').attr('src', 'http://' + domain_www + '/qr?url=http://' + domain_wx + '/product/info/' + product_id);
+            $(curpopid + ' .copy_clipboard').attr('data-clipboard-text', product_name + ' ' + product_link);
+        }
+    });
+
+    // 删除操作
+    popnormal({
+        "popconTpl":'<div class="pop-single-line">确认要删除商品吗？</div>',
+        "popTplId":"#pop_dity_delete",//内容模板id
+        "eventEle":".btn_delete",//点击事件元素（不定义：立即弹出）
+        "popId":"popnormal2",//弹出层id 默认为popnormal,（可自定义）
+        "headTitle":"操作提示",//普通标题
+        "closeAuto":false,//可选项
+        "popAction":[{
+            "actionTxt":"确    认",
+            "actionId":"js_delOption",
+            "actionColse":false
+        },{
+            "actionTxt":"取    消"
+        }],//按钮区 actionColse=false 取消自带点击关闭层
+        "popCallbackFun":function(args,TfThis){//popCallbackFun 可选项
+            var curpopid = "#" + args.popId;
+            $(curpopid+" #js_delOption").on('click', function(event) {
+                //关闭层做的操作
+                var pid = args.eventEle.parents('li').find('.product_id').val();
+                $.post('/product/delete', {pid: pid}, function (result) {
+                    if (!result) {
+                        alert('远程服务器没有响应');
+                        return false;
+                    }
+                    if (!result.status) {
+                        alert(result.message);
+                        return false;
+                    } else {
+                        location.reload();
+                    }
+                }, 'json');
+            });
+        }
+    });
+
+    //推荐所有
+    function recommend(o, is) {
+        var obj = $(o).parents('.l-order-detail').find('.l-order-list li .checked .product_id');
+        if (obj.length < 1) {
+            alert('请先选择要推荐的商品');
+            return false;
+        }
+        var pids = [];
+        obj.each(function () {
+            pids.push($(this).val());
+        });
+        $.post('/product/recommend', {pids: pids, is: is}, function (result) {
+            if (!result) {
+                alert('远程服务器没有响应');
+                return false;
+            }
+            if (!result.status) {
+                alert(result.message);
+                return false;
+            }
+            var is_text = '操作';
+            if (is == 1) {
+                is_text = '推荐';
+            } else if (is == 0) {
+                is_text = '取消推荐';
+            }
+            //成功
+            popnormal({
+                "popconTpl":'<div class="pop-single-line">商品' + is_text + '成功！</div>',
+                "popTplId":"#pop_delete_success",//内容模板id
+                "popId":"popnormal",//弹出层id 默认为popnormal,（可自定义）
+                "headTitle":"操作提示",//普通标题
+                "popAction":[{
+                    "actionTxt":"确    认",
+                    "actionId":"js_delOption",
+                    "actionColse":false,
+                    "onclick":"location.reload();"
+                }],//按钮区 actionColse=false 取消自带点击关闭层
+                "popCallbackFun":function(args,TfThis){//popCallbackFun 可选项
+
+                }
+            });
+        }, 'json');
+    }
+
+    //上架所有
+    $('.btn_up_all').on('click', function () {
+        var obj = $(this).parents('.l-order-detail').find('.l-order-list li .checked .product_id');
+        if (obj.length < 1) {
+            alert('请先选择要上架的商品');
+            return false;
+        }
+        var pids = [];
+        obj.each(function () {
+            pids.push($(this).val());
+        });
+        $.post('/product/up', {pids: pids}, function (result) {
+            if (!result) {
+                alert('远程服务器没有响应');
+                return false;
+            }
+            if (!result.status) {
+                alert(result.message);
+                return false;
+            } else {
+                location.reload();
+            }
+        }, 'json');
+    });
+
+    // 删除所有
+    $('.btn_delete_all').on('click', function () {
+        var obj = $(this).parents('.l-order-detail').find('.l-order-list li .checked .product_id');
+        if (obj.length < 1) {
+            alert('请先选择要删除的商品');
+            return false;
+        }
+        popnormal({
+            "popconTpl":'<div class="pop-single-line">确认要删除商品吗？</div>',
+            "popTplId":"#pop_dity_delete",//内容模板id
+            "popId":"popnormal3",//弹出层id 默认为popnormal,（可自定义）
+            "headTitle":"操作提示",//普通标题
+            "closeAuto":false,//可选项
+            "popAction":[{
+                "actionTxt":"确    认",
+                "actionId":"js_delOption",
+                "actionColse":false
+            },{
+                "actionTxt":"取    消"
+            }],//按钮区 actionColse=false 取消自带点击关闭层
+            "popCallbackFun":function(args,TfThis){//popCallbackFun 可选项
+                var curpopid = "#" + args.popId;
+                var pids = [];
+                obj.each(function () {
+                    pids.push($(this).val());
+                });
+                $(curpopid+" #js_delOption").on('click', function(event) {
+                    //关闭层做的操作
+                    $.post('/product/delete', {pids: pids}, function (result) {
+                        if (!result) {
+                            alert('远程服务器没有响应');
+                            return false;
+                        }
+                        if (!result.status) {
+                            alert(result.message);
+                            return false;
+                        } else {
+                            location.reload();
+                        }
+                    }, 'json');
+                });
+            }
+        });
+    });
+
+    $(function(){
+        $('#checkall').on('click',function(){
+            $('.l-order-list .l-order-content input[type="checkbox"]').trigger('click');
+        });
+    });
+</script>
+<script src="/static/www/lib/js/clipboard.min.js"></script>
+<script>
+    var clipboard = new Clipboard('.copy_clipboard');
+    clipboard.on('success', function(e) {
+        e.clearSelection();
+        alert('复制成功');
+    });
+    clipboard.on('error', function(e) {
+        prompt('按Ctrl+C复制', $('.copy_text').text());
+    });
+</script>
+
+</body>
+</html>

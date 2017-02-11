@@ -1,0 +1,30 @@
+<!-- header stsrt -->
+<div class="header-wrap">
+    <div class="header full">
+        <div class="wrap">
+            <div class="header-left">
+                <a class="tel-wrap" href="javascript:;">
+                    <i class="ico ico-tel1"></i>
+                    400-619-3360
+                </a>
+                <a class="gwm-logo" href="/shop">
+                    <i class="ico ico-gwm-logo"></i>
+                    跟我买
+                </a>
+            </div>
+            <div class="header-right">
+                <div class="login">
+                    <span class="user-name">
+                        {% if current_user %}
+                            帐号名：{{ current_user.name }}
+                        {% endif %}
+                    </span>
+                    <input onclick="logout()" class="login-out" type="text" value="退出" />
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<!-- header end -->

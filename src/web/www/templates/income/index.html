@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>收入提现</title>
+    {% include "admin_shared/before_header.html"  %}
+    <link rel="stylesheet" href="/static/www/pc/v1/css/publish_position.css" />
+</head>
+<body>
+
+{% include "admin_shared/header.html"  %}
+
+<!-- page-main start -->
+<div class="page-main full body_bg">
+    <div class="wrap">
+        <div class="revenum-wrap clearfix">
+
+            {% include "admin_shared/left.html"  %}
+
+            <!-- main right start -->
+            <div class="main">
+                <div class="withdraw-wrap">
+                    <div class="l-withdraw">
+                        <div class="tab-title-s1">
+                            <div class="hd-con">
+                                <span>账号可提现金额</span>
+                            </div>
+                        </div>
+                        <div class="l-amount">
+                            <div class="l-amount-con">
+                                可提现金额（元）:
+                                <span class="l-red">
+                                    {% if info and info['available'] > 0 %}
+                                        {{ info['available'] }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="l-submit">
+                                <input onclick="open_cash()" class="btn btn-s5 btn-orange1" type="button" value="提  现" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="l-write-account" style="display: none">
+                        <div class="l-stop">
+                            <div class="l-click-up" onclick="close_cash()">
+                                <i class="ico ico-arrow-up"></i>
+                                <span class="stop-txt">收起</span>
+                            </div>
+                        </div>
+                        <div class="account-hd">
+                            <div class="hd-con">
+                                <span>提现请绑定银行账户</span>
+                                <span class="l-title">（申请提现后，约1个工作日到账）</span>
+                            </div>
+                        </div>
+                        <form action="/income" method="post" id="submit_form" ajaxUrl="/income">
+                            <div class="l-publish-position">
+                                <ul class="form-list2">
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">银行名称：</span>
+                                        </label>
+                                        <div class="ele-wrap hidden edit-bind">
+                                            <input class="form-control js_validate" placeholder="" id="bank_name" name="bank_name" type="text" value="" autocomplete="off" />
+                                        </div>
+                                        <div class="ele-wrap show-bind">
+                                            <span class="validate-title">{{ last_info['bank_name'] }}</span>
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">所属人姓名：</span>
+                                        </label>
+                                        <div class="ele-wrap hidden edit-bind">
+                                            <input class="form-control js_validate" placeholder="" id="name" name="name" type="text" value="" autocomplete="off" />
+                                        </div>
+                                        <div class="ele-wrap show-bind">
+                                            <span class="validate-title">{{ last_info['name'] }}</span>
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">银行卡号：</span>
+                                        </label>
+                                        <div class="ele-wrap hidden edit-bind">
+                                            <input class="form-control js_validate" placeholder="" id="account_num" name="account_num" type="text" value="" autocomplete="off" />
+                                        </div>
+                                        <div class="ele-wrap show-bind">
+                                            <span class="validate-title">{{ last_info['account_num'] }}</span>
+                                            <div class="l-modify-bind" onclick="edit_bind()">
+                                                <span class="l-modify-text">修改绑定</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">提现金额：</span>
+                                        </label>
+                                        <div class="ele-wrap">
+                                            <input class="form-control js_validate" placeholder="" id="money" name="money" type="text" value="" autocomplete="off" />
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <div class="l-apply-take">
+                                            <input type="hidden" id="action" name="action" value="" />
+                                            <input onclick="on_submit()" class="btn btn-m3 btn-black" type="button" value="申请提现" />
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="l-withdraw">
+                        <div class="tab-title-s1">
+                            <div class="hd-con">
+                                <span>提现记录</span>
+                            </div>
+                        </div>
+                        <div class="table-list">
+                            <!-- table-list1 start-->
+                            <table class="table-s1">
+                                <thead>
+                                <tr>
+                                    <th class="l-wp1"><span>申请提现时间</span></th>
+                                    <th class="l-wp2"><span>银行名称</span></th>
+                                    <th class="l-wp3"><span>所属人姓名</span></th>
+                                    <th class="l-wp4"><span>银行卡号</span></th>
+                                    <th class="l-wp5"><span>提现金额(元)</span></th>
+                                    <th class="l-wp6"><span>状态</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if wallet_log and wallet_log['items'] %}
+                                    {% for value in wallet_log['items'] %}
+                                        <tr>
+                                            <td><span>{{ value['create_time'] }}</span></td>
+                                            <td><span>{{ value['bank_name'] }}</span></td>
+                                            <td><span>{{ value['name'] }}</span></td>
+                                            <td><span>{{ value['account_num'] }}</span></td>
+                                            <td><span>{{ value['money'] }}</span></td>
+                                            <td><span>
+                                                {% if value['status'] == 0 %}
+                                                    处理中
+                                                {% elif value['status'] == 1 %}
+                                                    已成功
+                                                {% elif value['status'] == 2 %}
+                                                    失败
+                                                {% endif %}
+                                            </span></td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                </tbody>
+                            </table>
+                            <!-- table-list1 end-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- main right end -->
+        </div>
+    </div>
+</div>
+<!-- page-main end -->
+
+{% include "admin_shared/footer.html"  %}
+
+<script type="text/javascript">
+    //ajax 表单验证
+    //serviceValidateFun('#publish_form');
+
+    function open_cash() {
+        $('.l-write-account').show(500);
+    }
+
+    function close_cash() {
+        $('.l-write-account').hide(500);
+    }
+
+    function edit_bind() {
+        $('#action').val('edit');
+        $('.show-bind').addClass('hidden');
+        $('.edit-bind').removeClass('hidden');
+    }
+
+    function on_submit() {
+        $.post($('#submit_form').attr('action'), $('#submit_form').serialize(), function (result) {
+            if (!result) {
+                alert('远程服务器没有响应，请稍后再试！');
+                return false;
+            }
+
+            if (result.status) {
+                alert(result.message);
+                location.reload();
+                return false;
+            }
+
+            if (typeof result.message !="object") {
+                alert(result.message);
+            }
+
+            $('.error').remove();
+            for (var o in result.message) {
+                var msg = result.message[o];
+                var error = '<p class="error">' + msg.toString() + '</p>';
+                $('#' + o).after(error);
+            }
+        }, 'json');
+    }
+
+    {% if not last_info %}
+        edit_bind();
+    {% endif %}
+</script>
+
+{% include "admin_shared/after_footer.html"  %}
+
+</body>
+</html>

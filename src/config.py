@@ -26,3 +26,41 @@ SQLALCHEMY_DATABASE_URI_MYSQL = \
 
 # 默认 pool_size=5
 SQLALCHEMY_POOL_SIZE = 5
+
+import os
+from logging.config import dictConfig
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+WEB_WWW = {
+    'debug': True
+}
+
+LOG_CONFIG = {
+
+}
+"""
+def log_conf(name=None):
+    dictConfig(LOG_CONFIG)
+
+log_conf()
+
+"""
+
+class BaseConfig(object):
+    """
+    flask 站点 共享的配置属性
+    """
+    DEBUG = False
+    CSRF_ENABLED = True
+
+
+class MainConfig(BaseConfig):
+    """
+    主站 flask 配置
+    """
+    DEBUG = True
+    CSRF_ENABLED = True
+    SECRET_KEY = '76751a270d0785eea367301db62752f3'

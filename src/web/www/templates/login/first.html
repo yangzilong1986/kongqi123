@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>首次登录</title>
+    {% include "index_shared/before_header.html"  %}
+    <link rel="stylesheet" href="/static/www/pc/v1/css/publish_position.css"/>
+</head>
+<body>
+
+{% include "index_shared/header.html"  %}
+
+<!-- page-main start -->
+<div class="page-main full">
+    <div class="wrap">
+        <div class="publish-wrap">
+            <div class="l-login l-login-first">
+                <div class="login-guide">
+                    <div class="l-guide-txt">
+                        <div class="l-guide-con">
+                            欢迎登录
+                            <span class="l-ml">
+                                <i class="ico ico-shop-cart"></i>
+                            </span>
+                            跟我买&nbsp;&nbsp;后台！
+                            <span class="l-orange">祝您生意兴隆！</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 登录表单 start-->
+                <div class="login-list">
+                    <form action="/login/first" id="submit_form" ajaxUrl="/login/first">
+                        <div class="pulish-form">
+                            <ul class="form-list1">
+                                <li class="li">
+                                    <label class="lab-title">
+                                        <span class="validate-title">请设置您的店铺名称：</span>
+                                        <span class="title-tips">20个字</span>
+                                    </label>
+                                    <div class="ele-wrap ">
+                                        <input class="form-control js_validate" placeholder="" id="name" name="name" type="text" value="" autocomplete="off" />
+                                    </div>
+                                </li>
+
+                                <li class="li">
+                                    <label class="lab-title">
+                                        <span class="validate-title">店铺LOGO图：</span>
+                                        <span class="title-tips">
+                                        (格式GIF、JPG、JPEG、PNG，大小10K以内，尺寸为90px * 90px )
+                                    </span>
+                                    </label>
+                                    <div class="ele-wrap">
+                                        <input type="hidden" id="simple_size" value="100" />
+                                        <div class="add-imglist1">
+                                            <input class="simple_field_name" type="hidden" name="logo" value="" id="logo" />
+                                            <div class="cell" id="simple_container">
+                                                <a class="btn-ftp1" id="simple_pickfiles" href="javascript:;">
+                                                    <i class="ico ico-add"></i>
+                                                </a>
+                                            </div>
+                                            <div id="simple_result"></div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </li>
+
+                                <li class="li">
+                                    <label class="lab-title">
+                                        <span class="validate-title">店铺代言图片</span>
+                                        <span class="title-tips">
+                                            （用于买家撰写代言报告时默认展示，宽度在480-620像素之间，高度在600-960之间，1-3张）
+                                        </span>
+                                    </label>
+                                    <div class="ele-wrap">
+                                        <input type="hidden" id="multiple_size" value="100" />
+                                        <div class="add-imglist1">
+                                            <input class="multiple_field_name" type="hidden" name="ad_img" value="" id="ad_img" />
+                                            <div class="cell" id="multiple_container">
+                                                <a class="btn-ftp1" id="multiple_pickfiles" href="javascript:;">
+                                                    <i class="ico ico-add"></i>
+                                                </a>
+                                            </div>
+                                            <div id="multiple_result"></div>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="l-submit">
+                                <input onclick="on_submit()" class="btn btn-m3 btn-l4 btn-black" type="button" value="提&nbsp;&nbsp;&nbsp;&nbsp;交" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 登录表单 end-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- page-main end -->
+
+<input type="hidden" id="domain" value="{{ domain }}" />
+<input type="hidden" id="uptoken_url" value="/qiniu/token" />
+<input type="hidden" id="get_key_url" value="/qiniu/key"/>
+
+{% include "index_shared/footer.html" %}
+
+<script src='/static/www/lib/plupload/js/plupload.full.min.js'></script>
+<script src='/static/www/lib/plupload/js/moxie.min.js'></script>
+<script src='/static/www/lib/qiniu-sdk/qiniu.min.js'></script>
+<script type="text/javascript">
+    //ajax 表单验证
+    //serviceValidateFun('#publish_form');
+    function on_submit() {
+        $.post($('#submit_form').attr('action'), $('#submit_form').serialize(), function (result) {
+            if (!result) {
+                alert('远程服务器没有响应，请稍后再试！');
+                return false;
+            }
+
+            if (result.status) {
+                window.location = result.message;
+                return false;
+            }
+
+            if (typeof result.message != "object") {
+                alert(result.message);
+                return false;
+            }
+
+            $('.error').remove();
+            for (var o in result.message) {
+                var msg = result.message[o];
+                var error = '<p class="error">' + msg.toString() + '</p>';
+                $('#' + o).after(error);
+            }
+        }, 'json');
+    }
+
+    $(function() {
+        var q2_count = 0;
+        /**
+         * 删除图片按钮
+         */
+        $(document).on('click', '.q2-del-btn', function() {
+            $(this).parent().parent().remove();
+            q2_refreshKeys();
+            q2_count = q2_count - 1;
+        });
+
+        /**
+         * 刷新keys隐藏节点的值
+         */
+        var q2_refreshKeys = function() {
+            var keys = [];
+            $("#simple_result .cell-img img").each(function(){
+                var key = $(this).attr('key');
+                if (key!='') {
+                    keys.push(key)
+                }
+            });
+            $(".simple_field_name").val(keys.join(','));
+
+        };
+
+        /**
+         * 多文件上传工具
+         */
+        var Q2 = new QiniuJsSDK();
+        var uploader2 = Q2.uploader({
+            runtimes: 'html5,flash,html4',
+            browse_button: 'simple_pickfiles',
+            container: 'simple_container',
+            drop_element: 'simple_container',
+            max_file_size: '1mb',
+            flash_swf_url: '/static/www/lib/plupload/js/Moxie.swf',
+            dragdrop: true,
+            chunk_size: '1mb',
+            uptoken_url: $('#uptoken_url').val(),
+            domain: $('#domain').val(),
+            auto_start: true,
+            unique_names:false,
+            save_key:false,
+            // 设置一次只能选择一个文件
+            multi_selection: false,
+            init: {
+                'BeforeUpload': function(up, file) {
+                    if (q2_count >= 1) {
+                        alert('您只能上传一张LOGO图片');
+                        $('#loadingImgFtp').remove();
+                        location.reload();
+                        return false;
+                    } else {
+                        // 每个文件上传前,处理相关的事情
+                        /*图片上传加载中*/
+                        var loadingImgFtp = [];
+                        loadingImgFtp.push('<div class="loading-wrap">');
+                        loadingImgFtp.push('    <div class="anim-loading">');
+                        loadingImgFtp.push('        <i></i>');
+                        loadingImgFtp.push('        <i></i>');
+                        loadingImgFtp.push('        <i></i>');
+                        loadingImgFtp.push('    </div>');
+                        loadingImgFtp.push('    <div class="loading-txt">别着急，正在努力上传中……</div>');
+                        loadingImgFtp.push('</div>');
+                        if ($('#loadingImgFtp').length == 0) {
+                            popnormal({
+                                //"eventEle":".js_popnormal",//点击事件元素（不定义：立即弹出）
+                                "popconTpl": loadingImgFtp.join(''),
+                                "popId": "loadingImgFtp"
+                            });
+                        }
+                    }
+                },
+                'UploadComplete': function() {
+                    //队列文件处理完毕后,处理相关的事情
+                    $('#loadingImgFtp').remove();
+                },
+                'FileUploaded': function(up, file, info) {
+                    if (q2_count >= 1) {
+                        alert('您只能上传一张LOGO图片');
+                        $('#loadingImgFtp').remove();
+                        return false;
+                    }
+                    // 每个文件上传成功后,处理相关的事情
+                    var domain = up.getOption('domain');
+                    var res = jQuery.parseJSON(info);
+                    // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
+                    //AJAX 获取图片的URL
+                    var sourceLink = '';
+                    var thumbLink = '';
+                    var liElement = '';
+                    $.ajax({
+                        type: "GET",
+                        url: '/qiniu/url?key=' + res['key'] + '&size=' + $("#simple_size").val(),
+                        dataType:"json",
+                        async:false,
+                        success:function(result){
+                            sourceLink = result['url'];
+                            thumbLink = result['thumb_url'] + '?imageView2/1/w/140/h/140';
+                            var cellimgH = $('.cell .btn-ftp1').outerHeight();
+                            liElement = '<div class="cell">' +
+                                    '    <div class="cell-img " style="height:' + cellimgH + 'px">' +
+                                    '        <a target="_blank" href="'+ sourceLink + '" class="fancybox cell_li" rel="gallery" title="">' +
+                                    '            <img src="' + thumbLink + '" key="' + res['key'] + '">' +
+                                    '        </a>' +
+                                    '    </div>' +
+                                    '    <div class="cell-del">' +
+                                    '        <a href="javascript:;" class="q2-del-btn">' +
+                                    '            <i class="ico ico-del"></i>' +
+                                    '            <span class="txt-del">删除</span>' +
+                                    '        </a>' +
+                                    '    </div>' +
+                                    '</div>';
+                        }
+                    });
+                    $("#simple_result").append(liElement);
+
+                    if(isExitsFunction('imgShow')){
+                        imgShow();
+                    }
+                    //刷新keys input框的内容
+                    q2_refreshKeys();
+                    q2_count = q2_count + 1;
+                },
+                'Error': function(up, err, errTip) {
+                    if (err.status == 413) {
+                        poperror({
+                            "popconMsg":"文件超过1M",
+                            "popId":"poperror"
+                        });
+                    } else if (err.status == 403) {
+                        poperror({
+                            "popconMsg":"图片文件格式错误",
+                            "popId":"poperror"
+                        });
+                    }
+                },
+                'Key': function(up, file) {
+                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                    // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                    var key = "";
+                    // do something with key here
+                    //ajax 生成key
+                    $.ajax({
+                        type: "GET",
+                        url: $('#get_key_url').val(),
+                        dataType:"json",
+                        async:false,
+                        success:function(result){
+                            key = result['key'];
+                            return key;
+                        }
+                    });
+                    return key
+                }
+            }
+        });
+    });
+
+    $(function() {
+        var q3_count = 0;
+        /**
+         * 删除图片按钮
+         */
+        $(document).on('click', '.q3-del-btn', function() {
+            $(this).parent().parent().remove();
+            q3_refreshKeys();
+            q3_count = q3_count - 1;
+        });
+
+        /**
+         * 刷新keys隐藏节点的值
+         */
+        var q3_refreshKeys = function() {
+            var keys = [];
+            $("#multiple_result .cell-img img").each(function(){
+                var key = $(this).attr('key');
+                if (key!='') {
+                    keys.push(key)
+                }
+            });
+            $(".multiple_field_name").val(keys.join(','));
+
+        };
+
+        /**
+         * 多文件上传工具
+         */
+        var Q3 = new QiniuJsSDK();
+        var uploader3 = Q3.uploader({
+            runtimes: 'html5,flash,html4',
+            browse_button: 'multiple_pickfiles',
+            container: 'multiple_container',
+            drop_element: 'multiple_container',
+            max_file_size: '1mb',
+            flash_swf_url: '/static/www/lib/plupload/js/Moxie.swf',
+            dragdrop: true,
+            chunk_size: '1mb',
+            uptoken_url: $('#uptoken_url').val(),
+            domain: $('#domain').val(),
+            auto_start: true,
+            unique_names:false,
+            save_key:false,
+            // 设置一次只能选择一个文件
+            multi_selection: true,
+            init: {
+                'BeforeUpload': function(up, file) {
+                    if (q3_count >= 3) {
+                        alert('您只能上传3张店铺图片');
+                        $('#loadingImgFtp').remove();
+                        return false;
+                    }
+                    // 每个文件上传前,处理相关的事情
+                    /*图片上传加载中*/
+                    var loadingImgFtp=[];
+                    loadingImgFtp.push('<div class="loading-wrap">');
+                    loadingImgFtp.push('    <div class="anim-loading">');
+                    loadingImgFtp.push('        <i></i>');
+                    loadingImgFtp.push('        <i></i>');
+                    loadingImgFtp.push('        <i></i>');
+                    loadingImgFtp.push('    </div>');
+                    loadingImgFtp.push('    <div class="loading-txt">别着急，正在努力上传中……</div>');
+                    loadingImgFtp.push('</div>');
+                    if($('#loadingImgFtp').length==0){
+                        popnormal({
+                            //"eventEle":".js_popnormal",//点击事件元素（不定义：立即弹出）
+                            "popconTpl":loadingImgFtp.join(''),
+                            "popId":"loadingImgFtp"
+                        });
+                    }
+                },
+                'UploadComplete': function() {
+                    //队列文件处理完毕后,处理相关的事情
+                    $('#loadingImgFtp').remove();
+                },
+                'FileUploaded': function(up, file, info) {
+                    if (q3_count >= 5) {
+                        alert('您只能上传5张店铺图片');
+                        $('#loadingImgFtp').remove();
+                        return false;
+                    }
+                    // 每个文件上传成功后,处理相关的事情
+                    var domain = up.getOption('domain');
+                    var res = jQuery.parseJSON(info);
+                    // var sourceLink = domain + res.key; 获取上传成功后的文件的Url
+                    //AJAX 获取图片的URL
+                    var sourceLink = '';
+                    var thumbLink = '';
+                    var liElement = '';
+                    $.ajax({
+                        type: "GET",
+                        url: '/qiniu/url?key=' + res['key'] + '&size=' + $("#multiple_size").val(),
+                        dataType:"json",
+                        async:false,
+                        success:function(result){
+                            sourceLink = result['url'];
+                            thumbLink = result['thumb_url'] + '?imageView2/1/w/140/h/140';
+                            var cellimgH = $('.cell .btn-ftp1').outerHeight();
+                            liElement = '<div class="cell">' +
+                                    '    <div class="cell-img " style="height:' + cellimgH + 'px">' +
+                                    '        <a target="_blank" href="'+ sourceLink + '" class="fancybox cell_li" rel="gallery" title="">' +
+                                    '            <img src="' + thumbLink + '" key="' + res['key'] + '">' +
+                                    '        </a>' +
+                                    '    </div>' +
+                                    '    <div class="cell-del">' +
+                                    '        <a href="javascript:;" class="q3-del-btn">' +
+                                    '            <i class="ico ico-del"></i>' +
+                                    '            <span class="txt-del">删除</span>' +
+                                    '        </a>' +
+                                    '    </div>' +
+                                    '</div>';
+                        }
+                    });
+                    $("#multiple_result").append(liElement);
+
+                    if(isExitsFunction('imgShow')){
+                        imgShow();
+                    }
+                    //刷新keys input框的内容
+                    q3_refreshKeys();
+                    q3_count = q3_count + 1;
+                },
+                'Error': function(up, err, errTip) {
+                    if (err.status == 413) {
+                        poperror({
+                            "popconMsg":"文件超过1M",
+                            "popId":"poperror"
+                        });
+                    } else if (err.status == 403) {
+                        poperror({
+                            "popconMsg":"图片文件格式错误",
+                            "popId":"poperror"
+                        });
+                    }
+                },
+                'Key': function(up, file) {
+                    // 若想在前端对每个文件的key进行个性化处理，可以配置该函数
+                    // 该配置必须要在 unique_names: false , save_key: false 时才生效
+                    var key = "";
+                    // do something with key here
+                    //ajax 生成key
+                    $.ajax({
+                        type: "GET",
+                        url: $('#get_key_url').val(),
+                        dataType:"json",
+                        async:false,
+                        success:function(result){
+                            key = result['key'];
+                            return key;
+                        }
+                    });
+                    return key
+                }
+            }
+        });
+    });
+</script>
+
+{% include "index_shared/after_footer.html"  %}
+
+</body>
+</html>

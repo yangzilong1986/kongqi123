@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>子账号</title>
+    {% include "admin_shared/before_header.html" %}
+    <link rel="stylesheet" href="/static/www/pc/v1/css/publish_position.css" />
+</head>
+<body>
+
+{% include "admin_shared/header.html" %}
+
+<!-- page-main start -->
+<div class="page-main full body_bg">
+    <div class="wrap">
+        <div class="revenum-wrap clearfix">
+
+            {% include "admin_shared/left.html"  %}
+
+            <!-- main right start -->
+            <div class="main">
+                <div class="withdraw-wrap">
+                    <div class="l-withdraw">
+                        <div class="tab-title-s1">
+                            <div class="hd-con">
+                                <span>添加子账号</span>
+                                <span class="l-title">提示：子账号无法操作收入提现功能，且不能添加子账号</span>
+                            </div>
+                        </div>
+
+                        <!-- login-password list -->
+                        <form method="post" action="/account/sub" id="submit_form" ajaxUrl="/account/sub">
+                            <div class="login-password">
+                                <ul class="form-list2">
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">新建子账号：</span>
+                                        </label>
+                                        <div class="ele-wrap">
+                                            <input class="form-control js_validate" placeholder="请输入手机号码" id="sub_phone" name="sub_phone" type="text" value="" autocomplete="off" />
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">子账号姓名：</span>
+                                        </label>
+                                        <div class="ele-wrap">
+                                            <input class="form-control js_validate" placeholder="输入姓名，方便管理子账号" id="sub_name" name="sub_name" type="text" value="" autocomplete="off" />
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <label class="lab-title">
+                                            <span class="validate-title">初始密码：</span>
+                                        </label>
+                                        <div class="ele-wrap">
+                                            <input class="form-control js_validate" placeholder="显示密码明文" id="sub_password" name="sub_password" type="text" value="" autocomplete="off" />
+                                        </div>
+                                    </li>
+                                    <li class="li">
+                                        <div class="l-apply-take">
+                                            <input onclick="on_submit()" class="btn btn-m3 btn-black" type="button" value="提 交" />
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+
+                        <a href="javascript:;" name="list"></a>
+                        <!-- login-password list -->
+                        <div class="l-withdraw son-table">
+                            <div class="tab-title-s1">
+                                <div class="hd-con">
+                                    <span>已添加的子账号</span>
+                                </div>
+                            </div>
+                            <!-- table-list1 start-->
+                            <div class="table-list">
+                                <table class="table-s1">
+                                    <thead>
+                                    <tr>
+                                        <th class="l-wp1"><span>添加时间</span></th>
+                                        <th class="l-wp2"><span>手机号码</span></th>
+                                        <th class="l-wp4"><span>姓名</span></th>
+                                        <th class="l-wp5"><span>操作</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if info and info['items'] %}
+                                        {% for value in info['items'] %}
+                                            <tr>
+                                                <td><span>{{ value['create_time'] }}</span></td>
+                                                <td><span>{{ value['phone'] }}</span></td>
+                                                <td><span>{{ value['real_name'] }}</span></td>
+                                                <td>
+                                                    <a onclick="account_sub_delete({{ value['uid'] }})" class="btn l-delete" href="javascript:;">删除</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- table-list1 end-->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- main right end -->
+        </div>
+    </div>
+</div>
+<!-- page-main end -->
+
+{% include "admin_shared/footer.html"  %}
+
+<script type="text/javascript">
+    //ajax 表单验证
+    //serviceValidateFun('#publish_form');
+
+    function on_submit() {
+        $.post($('#submit_form').attr('action'), $('#submit_form').serialize(), function (result) {
+            if (!result) {
+                alert('远程服务器没有响应，请稍后再试！');
+                return false;
+            }
+
+            if (result.status) {
+                location.reload();
+                window.location = '/account/sub#list';
+                return false;
+            }
+
+            if (typeof result.message != "object") {
+                alert(result.message);
+                return false;
+            }
+
+            $('.error').remove();
+            for (var o in result.message) {
+                var msg = result.message[o];
+                var error = '<p class="error">' + msg.toString() + '</p>';
+                $('#' + o).after(error);
+            }
+        }, 'json');
+    }
+
+    function account_sub_delete(uid) {
+        popnormal({
+            "popconTpl":'<div class="pop-single-line">确认要删除子账号吗？</div>',
+            "popTplId":"#pop_dity_delete",//内容模板id
+            "popId":"popnormal3",//弹出层id 默认为popnormal,（可自定义）
+            "headTitle":"操作提示",//普通标题
+            "closeAuto":false,//可选项
+            "popAction":[{
+                "actionTxt":"确    认",
+                "actionId":"js_delOption",
+                "actionColse":false
+            },{
+                "actionTxt":"取    消"
+            }],//按钮区 actionColse=false 取消自带点击关闭层
+            "popCallbackFun":function(args,TfThis){//popCallbackFun 可选项
+                var curpopid = "#" + args.popId;
+                $(curpopid+" #js_delOption").on('click', function(event) {
+                    //关闭层做的操作
+                    $.post('/account/sub_delete', {uid: uid}, function (result) {
+                        if (!result) {
+                            alert('远程服务器没有响应')
+                            return false;
+                        }
+                        if (!result.status) {
+                            alert(result.message)
+                            return false;
+                        } else {
+                            location.reload();
+                        }
+                    }, 'json');
+                });
+            }
+        });
+    }
+</script>
+
+{% include "admin_shared/after_footer.html" %}
+
+</body>
+</html>

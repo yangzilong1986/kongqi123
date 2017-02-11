@@ -1,0 +1,231 @@
+/*品牌登录 start*/
+html,
+body {
+  background: #fff;
+}
+.publish-wrap {
+  padding: 55px 125px 180px;
+}
+.login-guide {
+  text-align: center;
+  margin-bottom: 65px;
+}
+.l-guide-txt {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 62px;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+}
+.l-guide-txt .l-orange,
+.l-guide-txt .l-orange:hover {
+  color: #ff6600;
+  text-decoration: none;
+}
+/*品牌登录 end*/
+/*登录表单 start*/
+.l-remember {
+  text-align: center;
+  padding: 15px 0;
+}
+.l-remember .remember-me {
+  display: inline-block;
+}
+.l-remember .remember-me .proxyinput {
+  font-size: 18px;
+}
+.l-submit {
+  margin-top: 65px;
+}
+.l-submit .btn-black {
+  font-size: 24px;
+}
+/*登录表单 end*/
+/*首次登录 start*/
+.l-login-first .l-guide-txt .l-guide-con {
+  padding: 0 50px;
+}
+.l-login-first .l-guide-txt .l-ml {
+  margin-left: 15px;
+}
+.l-login-first .ico-shop-cart {
+  width: 40px;
+  height: 40px;
+  background: url(../images/basic/ico_shop_cart_small.png) 0 0 no-repeat;
+}
+.l-login-first span.l-orange {
+  font-size: 24px;
+}
+/*首次登录 end*/
+/*申请入驻表单 start*/
+.settle-list .form-list1 .li {
+  padding: 0 0 30px 0;
+}
+.settle-list .l-remember {
+  padding: 20px 0;
+}
+.settle-list .l-remember .proxyinput {
+  color: #a0a0a0;
+}
+/*申请入驻表单 end*/
+/*新品发布 start*/
+.publish_goods_page {
+  padding-top: 0px;
+}
+.publish_goods_page .txt-s1 {
+  padding: 0 0 20px 0!important;
+}
+.publish_goods_page .txt-s1 .btn {
+  border-radius: 5px;
+}
+.publish_goods_page .lab-title .btn {
+  border-radius: 5px;
+}
+.publish_goods_page .txt-s2 {
+  padding: 40px 0 50px 0!important;
+  margin-top: -30px;
+}
+.publish_goods_page .publish-wrap {
+  padding-top: 65px;
+}
+.tab-s1 {
+  background: url(../images/basic/tab_s1_bg.jpg) repeat-x 0 0;
+  width: 100%;
+  height: 4.335600754rem;
+  text-align: center;
+  padding-top: 30px;
+}
+.tab-s1 span.btn {
+  width: 248px;
+  cursor: default;
+}
+/*新品发布 end*/
+/*收入提现 ico */
+.ico-arrow-up {
+  display: inline-block;
+  width: 12px;
+  height: 6px;
+  background: url(../images/basic/ico_arrow_up.png) 0 0 no-repeat;
+  vertical-align: middle;
+  margin-top: -4px;
+  margin-right: 6px;
+}
+/*收入提现 start*/
+.withdraw-wrap {
+  padding: 0 28px;
+}
+.l-withdraw {
+  padding-top: 37px;
+}
+.l-withdraw .l-amount {
+  margin: 14px 0;
+  padding: 57px 0 61px 28px;
+  background: #f1f2f9;
+}
+.l-withdraw .l-amount .l-amount-con {
+  display: inline-block;
+  font-size: 16px;
+  vertical-align: middle;
+}
+.l-withdraw .l-amount .l-amount-con .l-red {
+  color: #ff0000;
+  font-size: 27px;
+  margin-left: 12px;
+  vertical-align: middle;
+}
+.l-withdraw .l-amount .l-submit {
+  display: inline-block;
+  margin-left: 65px;
+  margin-top: 0;
+}
+.l-withdraw .l-amount .l-submit .btn {
+  padding: 0 28px;
+}
+/*标题*/
+.tab-title-s1 {
+  padding: 14px 0;
+  border-bottom: 1px solid #000;
+}
+/*收入提现 end*/
+/* 银行账户输入 start*/
+.l-write-account {
+  padding: 0 250px 0 58px;
+  border: 1px solid #e8e8e8;
+  position: relative;
+}
+.l-write-account .l-stop {
+  position: absolute;
+  right: 58px;
+  bottom: 36px;
+}
+.l-write-account .account-hd {
+  padding: 20px 0 40px 0;
+}
+.hd-con {
+  font-size: 18px;
+}
+.hd-con span {
+  vertical-align: middle;
+}
+.hd-con span.l-title {
+  color: #888888;
+  font-size: 12px;
+  margin-left: 12px;
+}
+.l-click-up {
+  width: 67px;
+  height: 18px;
+  line-height: 16px;
+  text-align: center;
+  border: 1px solid #ff8a00;
+  background: #fff;
+  cursor: pointer;
+}
+.l-click-up .stop-txt {
+  color: #ff8a00;
+}
+.l-modify-text {
+  font-size: 14px;
+  color: #ff8a00;
+  cursor: pointer;
+}
+/* 银行账户输入 end*/
+/*publish-position start*/
+.l-publish-position .form-list2 .li .ele-wrap .validate-title {
+  line-height: 40px;
+  font-size: 16px;
+}
+.l-publish-position .form-list2 .li .ele-wrap .l-modify-bind {
+  line-height: 40px;
+  float: right;
+}
+.l-publish-position .form-list2 .li .l-apply-take {
+  padding: 30px 0 5px 0;
+}
+/*publish-position end*/
+/*账号管理 start*/
+.login-password {
+  padding: 59px 298px 0 20px;
+}
+.login-password .li .l-apply-take {
+  padding: 18px 0 5px 0;
+}
+/*账号管理 end*/
+/*子账号table start*/
+.son-table .table-s1 thead tr th.l-wp1 {
+  width: 16.08040201%;
+}
+.son-table .table-s1 thead tr th.l-wp2 {
+  width: 31.82957393%;
+}
+.son-table .table-s1 thead tr th.l-wp3 {
+  width: 15.16290727%;
+}
+.son-table .table-s1 thead tr th.l-wp4 {
+  width: 27.56892231%;
+}
+.son-table .table-s1 thead tr th.l-wp5 {
+  width: 8.897243108%;
+}
+/*子账号table end*/
+/*# sourceMappingURL=publish_position.css.map */

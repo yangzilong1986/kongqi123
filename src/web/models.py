@@ -1,0 +1,50 @@
+# coding: utf-8
+from sqlalchemy import Column, Date, DateTime, Integer, String, Table, text
+from sqlalchemy.sql.sqltypes import NullType
+from database import db
+
+
+Base = db.Model
+metadata = Base.metadata
+
+
+def to_dict(self):
+    """
+    model 对象转 字典
+    model_obj.to_dict()
+    """
+    return {c.name: getattr(self, c.name, None) for c in self.__table__.columns}
+
+Base.to_dict = to_dict
+
+
+t_sqlite_sequence = Table(
+    'sqlite_sequence', metadata,
+    Column('name', NullType),
+    Column('seq', NullType)
+)
+
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    nickname = Column(String(20))
+    avatar_url = Column(String(80))
+    email = Column(String(20))
+    phone = Column(String(20))
+    birthday = Column(Date)
+    create_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    update_time = Column(DateTime, nullable=False, server_default=text("CURRENT_TIMESTAMP"))
+    last_ip = Column(String(15))
+
+
+class UserAuth(Base):
+    __tablename__ = 'user_auth'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, nullable=False)
+    auth_type = Column(String(20), nullable=False)
+    auth_key = Column(String(64), nullable=False)
+    auth_secret = Column(String(256), nullable=False)
+    verified = Column(Integer, server_default=text("0"))

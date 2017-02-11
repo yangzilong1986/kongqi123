@@ -1,0 +1,109 @@
+@import '../_fn';
+/*pop start*/
+#gmask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #000;
+    z-index: 9999;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+
+.popUp{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  display:none;
+}
+.popUp .pop {
+  position: fixed;
+  top:50%;
+  left:50%;
+  z-index: 10000;
+}
+.popUp .pop .pop-wrap{
+   background: #ffffff;
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+}
+.popUp .mid,
+.popUp .large{
+  width: 786px;
+}
+.popUp .popauto{
+}
+.popUp .pop_head{
+  height: 56px;
+  line-height: 56px;
+  font-size: 18px;
+  padding: 0 25px;
+  border-bottom:solid 1px #eeeeee;
+  margin: 0 10px;
+}
+.popUp .pop_head h3{
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  color: #515151;
+}
+.popUp .close,
+.popTop .close{
+  position: absolute;
+  right: 22px;
+  top: 10px;
+  background: url(../images/basic/pop_close.png) no-repeat  0 0;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  cursor: pointer;
+  z-index: 2;
+}
+.popTop .close{
+  right: 16px;
+  top: 16px;
+}
+.popUp .closehide .close{
+  background: none;
+  height: 0px;
+  width: 0px;
+}
+.popUp .pop_action{
+  text-align: center;
+  padding:0 0 80px;
+}
+.popUp .pop_action .btn-primary,
+.popUp .pop_action .btn-default{
+  width: 204px;
+  margin: 0 25px;
+  font-size: 18px;
+}
+.popUp .pops1_con{
+  min-height: 220px;
+  font-size: 16px;
+  color: #515151;
+  line-height: 25px;
+}
+
+/*单行居中*/
+.popUp .pop-single-line{
+  text-align: center;
+  line-height: 220px;
+  font-size: 24px;
+}
+/*双行居中*/
+.popUp .pop-tow-line{
+  text-align: center;
+  line-height: 35px;
+  font-size: 24px;
+  padding:75px 0;
+}
+/*pop end*/
