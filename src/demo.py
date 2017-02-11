@@ -54,9 +54,28 @@ class Demo(object):
         row = self.session.execute(row_sql, row_data).fetchone()
         return row
 
+    def get_weather_city_by_name(self, city_name):
+        row_sql = "select * from weather_city where city_name = :city_name"
+        row_data = {"city_name": city_name}
+        row = self.session.execute(row_sql, row_data).fetchone()
+        return row
+
     def load_daily_city_data(self, city_id, start_date, end_date):
         row_sql = "select * from history_day " \
                   "where city_id = :city_id and hd_date >= :start_date and hd_date <= :end_date"
+        row_data = {"city_id": city_id, "start_date": start_date, "end_date": end_date}
+        data = self.session.execute(row_sql, row_data).fetchall()
+        if data:
+            _data = []
+            for row in data:
+                row = dict(row.items())
+                _data.append(row)
+            data = _data
+        return data
+
+    def load_daily_weather_data(self, city_id, start_date, end_date):
+        row_sql = "select * from weather_day " \
+                  "where city_id = :city_id and weather_date >= :start_date and weather_date <= :end_date"
         row_data = {"city_id": city_id, "start_date": start_date, "end_date": end_date}
         data = self.session.execute(row_sql, row_data).fetchall()
         if data:
@@ -413,15 +432,28 @@ class Demo(object):
             print u'不存在的城市: %s' % (city_name, )
             return
 
+        weather_city = self.get_weather_city_by_name(city_name)
+        if not city_info:
+            print u'不存在的天气数据城市: %s' % (city_name, )
+            return
+
         city_id = city_info['city_id']
-        data = self.load_daily_city_data(city_id, start_date, end_date)
-        if not data:
+        aqi_data = self.load_daily_city_data(city_id, start_date, end_date)
+        if not aqi_data:
             print u'城市没有数据: %s' % (city_name, )
             return
 
-        # print type(data)
+        weather_city_id = weather_city['city_id']
+        weather_data = self.load_daily_weather_data(weather_city_id, start_date, end_date)
+        if not weather_data:
+            print u'城市没有数据: %s' % (city_name, )
+            return
 
-        for row in data:
+        # print type(aqi_data)
+        # print weather_data
+
+        """
+        for row in aqi_data:
             if row['hd_pm25'] <= 35:
                 row['level'] = 1
             elif 35 < row['hd_pm25'] <= 75:
@@ -434,8 +466,23 @@ class Demo(object):
                 row['level'] = 5
             elif row['hd_pm25'] > 250:
                 row['level'] = 6
+        """
 
-        df = pd.DataFrame(data, columns=data[0].keys())
+        for row in aqi_data:
+            if row['hd_quality'] == u'优':
+                row['level'] = 1
+            elif row['hd_quality'] == u'良':
+                row['level'] = 2
+            elif row['hd_quality'] == u'轻度污染':
+                row['level'] = 3
+            elif row['hd_quality'] == u'中度污染':
+                row['level'] = 4
+            elif row['hd_quality'] == u'重度污染':
+                row['level'] = 5
+            elif row['hd_quality'] == u'严重污染':
+                row['level'] = 6
+
+        df = pd.DataFrame(aqi_data, columns=aqi_data[0].keys())
         df['hd_date'] = pd.to_datetime(df['hd_date'])
         df['hd_pm25'] = df['hd_pm25'].astype(np.double)
         df['hd_pm10'] = df['hd_pm10'].astype(np.double)
@@ -444,22 +491,36 @@ class Demo(object):
         df['hd_no2'] = df['hd_no2'].astype(np.double)
         df['hd_o3'] = df['hd_o3'].astype(np.double)
 
+        """
         df['level_1'] = df['hd_pm25'] <= 35
         df['level_2'] = (df['hd_pm25'] > 35) & (df['hd_pm25'] <= 75)
         df['level_3'] = (df['hd_pm25'] > 75) & (df['hd_pm25'] <= 115)
         df['level_4'] = (df['hd_pm25'] > 115) & (df['hd_pm25'] <= 150)
         df['level_5'] = (df['hd_pm25'] > 150) & (df['hd_pm25'] <= 250)
         df['level_6'] = df['hd_pm25'] > 250
+        """
 
         # print df
 
-        x = df[['hd_pm25']].values
-        y = df['level'].values
+        x = df[['hd_pm10', 'hd_so2', 'hd_co', 'hd_no2', 'hd_o3']].values
+        y = df['hd_pm25'].values
+
+        x_test = [
+            [48.2, 19.3, 0.858, 65.8, 80],  # 33.4,
+            [72.3, 22, 1.171, 66.8, 68],  # 66.8,
+            [106.2, 17.6, 1.25, 71.5, 85],  # 96.5,
+        ]
+        # [  33.7   67.4  100.3]
+        # [ 19.2  60.1  92.9]
+        """
+        clf = DecisionTreeClassifier()
+        clf = clf.fit(x, y)
+        print clf.predict(x_test)
+        """
 
         clf = DecisionTreeRegressor()
         clf = clf.fit(x, y)
-        print clf.predict([[35]])
-
+        print clf.predict(x_test)
 
 
 if __name__ == '__main__':
@@ -479,6 +540,14 @@ if __name__ == '__main__':
     55-150  四级 中度污染
     150-250 五级 重度污染
     250-500 六级 严重污染
+
+    AQI 中国标准
+    0-50    一级 优
+    51-100  二级 良
+    101-150 三级 轻度污染
+    151-200 四级 中度污染
+    201-300 五级 重度污染
+    >300    六级 严重污染
     """
 
     demo = Demo()
