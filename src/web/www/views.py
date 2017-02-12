@@ -21,7 +21,7 @@ app.config.from_object('config.MainConfig')
 def index():
     data = dict()
     data['current_page'] = 'index'
-    data['shop_list'] = []
+    data['info'] = {"pages": 0, "items": []}
 
-    return render_template('index/index.html', **data)
+    return render_template('order/index.html', **data)
 
