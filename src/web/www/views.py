@@ -23,5 +23,5 @@ def index():
     data['current_page'] = 'index'
     data['info'] = {"pages": 0, "items": []}
 
-    return render_template('order/index.html', **data)
+    return render_template('index.html', **data)
 
