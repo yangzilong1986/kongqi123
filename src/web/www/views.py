@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-"""
-@author: zhanghe
-@software: PyCharm
-@file: views.py
-@time: 16-6-6 下午1:07
-"""
-
 from flask import Flask, render_template, request, redirect, url_for, send_file, g, session
 from os.path import dirname, abspath
 
