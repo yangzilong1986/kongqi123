@@ -6,7 +6,8 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input
 html body div.clear,
 html body span.clear{ background: none; border: 0; clear: both; margin: 0; padding: 0;}
 .clearfix:after { content: "."; display: block;height: 0; clear: both; visibility: hidden;}
-.clearfix{*+height:1%;}
+/*.clearfix{*+height:1%;}*/
+.clearfix{height:1%;}
 h1, h2, h3, h4, h5, h6, p, ul, li, dl, dt, dd {font-size:100%; font-weight: normal; margin:0px; padding:0px; list-style:none;}
 table{ border-collapse:collapse;border-spacing:0;}
 table td{ word-break:break-all;}
@@ -54,7 +55,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .hd{ background: url(../images/hd-bg.png) repeat-x; position: fixed; top: 0; left:0;height: 86px; width: 100%; overflow: hidden; z-index: 99999}
 .hd .logo{ float: left;}
 .nav { padding: 0 0 0 10px;}
-.nav li{ float: left; /*background: url(../images/line.gif)*/ right center no-repeat;height:26px; padding: 0 20px;margin: 26px 0 0;}
+.nav li{ float: left; /*background: url(../images/line.gif) right center no-repeat;*/ height:26px; padding: 0 20px;margin: 26px 0 0;}
 .nav li a{ text-align: center; font-size: 16px;}
 
 .nav .no-line{ background: none; }
@@ -227,7 +228,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .main_menu1 .content_area .main_menu1_content2 {
   overflow: hidden;
   position:absolute;
-  display:inlinte-block;
+  display:inline-block;
   width:260px;
   height:532px;
   z-index:10;
