@@ -495,7 +495,7 @@ to {left:-.5%;}
 .ly-orange .ly-nobg a{ background:none;color:#333;}
 .ly-orange .ly-zs2 a{background:#EDEDED;color:#333;}
 #ly-con4{clear:both;width:1000px;margin:0 auto;position:relative;height:auto; }
-#ly-con4 .right{background:#fff;width:96%;position:relative;float:right;border-radius:6px;padding:0 0 30px 0;}
+#ly-con4 .right{background:#fff;width:92%;min-height: 800px;position:relative;float:right;border-radius:6px;padding:0 0 30px 0;}
 #ly-con4 .right .aa{height:50px;width:100%;border-bottom:2px solid #ccc;padding-top:20px;}
 #ly-con4 .right .aa h1{font-size:24px;text-indent:20px;float:left;}
 #ly-con4 .right .aa .h2{margin-right:0px;}
@@ -601,14 +601,15 @@ to {left:-.5%;}
 .payd .mon .c2:hover{background:#ec6f49;}
 .payd .mon .c2:hover a{color:#fff;}
 .payd .mon .c1:hover a{color:#fff;}
+
 .inf{width:80px;height:488px;float:left;margin-top:100px;}
-.inf li{height:100px;width:80px;font-size:14px;margin-top:16px;text-align:center;padding-top:16px;border-top-left-radius:4px;border-bottom-left-radius:4px;}
+.inf li{width:80px;font-size:14px;margin-top:16px;text-align:center;padding-bottom:3px;padding-top:10px;border-top-left-radius:4px;border-bottom-left-radius:4px;}
 .inf .d1{background:#ec6f49;margin-top:100px;}
 .inf .d1 a{color:#fff;}
 .inf .d1 a:hover{color:#333;}
 .inf .d2,.d3,.d4{background:#fff;}
 
-.inf .d5 span,.d3 span,.d4 span{background:url(../images/171orange.png) no-repeat 7px center;width:100%;height:16px;display:block;}
+.inf .d5 span,.d3 span,.d4 span{background:url(../images/171orange.png) no-repeat center center;width:100%;height:16px;display:block;}
 .inf .d6{background:#ec6f49;}
 .inf .d6 span{background:url(../images/171fff.png) no-repeat center center;width:100%;height:16px;display:block;}
 .inf .d6{color:#fff;}
