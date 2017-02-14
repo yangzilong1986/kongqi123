@@ -44,7 +44,10 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .w1200{ width:1200px; margin: 0 auto;position: relative;}
 .w1000{ width: 1000px;margin:0 auto;position: relative;}
 .w02{ width: 1000px;margin:0 auto;position: relative;}
+.w800{ width: 800px;margin:0 auto;position: relative;}
 .mb5{margin-bottom: 5px;}
+.mt20{margin-top: 20px;}
+.mt10{margin-top: 10px;}
 .orange{ color: #e88300}
 .yd-ec6f{color:#ec6f49;}
 .col-00B24F{color:#00B24F;}/*****绿色*******/
@@ -118,7 +121,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 /**con**/
 #ly-conbg{margin:0 auto;position:relative;height:auto;margin-top:30px;}
 #ly-conbg h1{font-size:26px;margin:0 auto;height:36px;color:#333;text-align: center;}
-#ly-conbg p{font-size:12px;margin:0 auto;color:#ccc;text-align: center;}
+#ly-conbg .hp{font-size:12px;margin:0 auto;color:#ccc;text-align: center;}
 #ly-conbg .search{height:48px;width:450px;background:#4dbaf3;border-radius:6px;margin:0 auto;margin-bottom:30px;margin-top:-44px;}
 #ly-con .search .in1{height:42px;width:356px;outline:none;border:1px solid #ccc;margin:3px 0 0 2px;line-height:24px;border-radius:6px;float:left;text-indent:10px;border:none;}
 #ly-con .btn{font-size:16px;line-height:48px;}
@@ -518,7 +521,6 @@ to {left:-.5%;}
 .cen4 .ul1 .s3{color:#333;}
 .cen4 .ul1 .s4{color:#ec6f49;font-size:12px;}
 .cen4 .ul2{float:right;background:#f2f2f2;line-height:150px;width:330px;height:150px;margin-right:80px;text-align:center;font-size:30px;color:#666;border-top-right-radius:6px;border-top-left-radius:6px;margin-top:46px;}
-.cen4 div{clear:both;width:800px;margin:0 auto;}
 .cen4 th{font-size:16px;}
 .cen4 tr{height:40px;text-align:center;border-color:#ccc;}
 .cen4 .yd-td03{background:url(../images/right004.png) no-repeat center center;width:120px;}

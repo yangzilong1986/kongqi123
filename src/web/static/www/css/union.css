@@ -11,7 +11,7 @@
 .tj-head .no-right{border-right:1px solid #e5e5e5}
 .tj-head dl dt{font-size:14px;color:#333;line-height:30px;}
 .tj-head dl dd{font-size:30px;color:#333;line-height:66px;}
-.tj-select{height:56px;background:#eee;border:1px solid #DDDDDD;}
+.tj-select{height:56px;background:#eee;border:1px solid #DDDDDD;margin:20px auto;position: relative;width: 800px;}
 .tj-select .tj-time{float:left;height:30px;width:165px;border:1px solid #ccc;margin:12px 0 0 20px;background:#fff;}
 .tj-select .tj-time>li{line-height:32px;position:relative;}
 .tj-select .tj-time>li>a{color:#666;font-size:12px;text-decoration:none;}
@@ -31,7 +31,7 @@
 .tj-all a{display:block;text-indent:10px;color:#333;text-decoration: none;}
 .tj-all a:hover{background:#ec6f49;cursor:pointer;}
 .tj-all a:hover{color:#fff;}
-.tj-all .tj-date li{text-indent:20px;display: inline-block;width:140px;height:22px;background: url(../images/rili.png) no-repeat 0px 8px;}
+.tj-all .tj-date li{text-indent:20px;display: inline-block;width:140px;background: url(../images/rili.png) no-repeat 0px 8px;}
 .tj-all .tj-date:hover li{background: url(../images/white-rili.png) no-repeat 0px 8px;}
 .tj-all .tj-date li{position:relative;}
 
