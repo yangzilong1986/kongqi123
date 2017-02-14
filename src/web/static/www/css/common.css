@@ -601,8 +601,8 @@ to {left:-.5%;}
 .payd .mon .c2:hover{background:#ec6f49;}
 .payd .mon .c2:hover a{color:#fff;}
 .payd .mon .c1:hover a{color:#fff;}
-.inf{width:40px;height:488px;float:left;margin-top:100px;}
-.inf li{height:100px;width:40px;font-size:14px;margin-top:16px;text-align:center;padding-top:16px;border-top-left-radius:4px;border-bottom-left-radius:4px;}
+.inf{width:80px;height:488px;float:left;margin-top:100px;}
+.inf li{height:100px;width:80px;font-size:14px;margin-top:16px;text-align:center;padding-top:16px;border-top-left-radius:4px;border-bottom-left-radius:4px;}
 .inf .d1{background:#ec6f49;margin-top:100px;}
 .inf .d1 a{color:#fff;}
 .inf .d1 a:hover{color:#333;}
