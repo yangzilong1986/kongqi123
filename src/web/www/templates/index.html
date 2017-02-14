@@ -64,26 +64,30 @@
 
 
             <div class="w800 mt20">
-                <table border="1" align="center" style="border:none;">
+                <table border="1" align="center" style="border:none;width:100%">
                     <tr style="background:#fafafa;">
-                        <th class="yd-td01">应用名称</th>
-                        <th>会员特权</th>
-                        <th>171CMS会员</th>
+                        <th class="yd-td01">日期</th>
+                        <th>AQI</th>
+                        <th>AQI范围</th>
+                        <th>空气质量</th>
+                        <th>PM2.5</th>
+                        <th>SO2</th>
+                        <th>CO</th>
+                        <th>NO2</th>
+                        <th>O3</th>
+                        <th>排行</th>
                     </tr>
                     <tr>
-                        <td class="yd-td01">添加外链APK链接</td>
-                        <td class="yd-td02">可以添加外部的APK链接地址，减少服务器压力，减少投入成本</td>
-                        <td class="yd-td03"></td>
-                    </tr>
-                    <tr>
-                        <td class="yd-td01">添加外链APK链接</td>
-                        <td class="yd-td02">可以添加外部的APK链接地址，减少服务器压力，减少投入成本</td>
-                        <td class="yd-td03"></td>
-                    </tr>
-                    <tr>
-                        <td class="yd-td01">添加外链APK链接</td>
-                        <td class="yd-td02">可以添加外部的APK链接地址，减少服务器压力，减少投入成本</td>
-                        <td class="yd-td03"></td>
+                        <td>2017-01-01</td>
+                        <td>100</td>
+                        <td>80-110</td>
+                        <td>重度污染</td>
+                        <td>87</td>
+                        <td>1.223</td>
+                        <td>2.223</td>
+                        <td>3.223</td>
+                        <td>13.223</td>
+                        <td>123</td>
                     </tr>
                 </table>
             </div>
@@ -130,8 +134,16 @@
             $('.tj-time').css('display','block');
             $('.tj-all').css('display','none');
         });
+
+        $('.son_ul').hover(
+            function(){},
+            function(){
+                $(this).parent().find("ul.son_ul").slideUp();
+            }
+        );
     });
 </script>
+
 
 </body>
 </html>
