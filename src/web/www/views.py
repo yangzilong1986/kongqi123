@@ -3,6 +3,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, send_file, g, session
 from os.path import dirname, abspath
+from core.history import History
 
 STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
 
