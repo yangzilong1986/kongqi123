@@ -2,19 +2,17 @@
 # encoding: utf-8
 
 # db.init_app(app)
+import logging
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
+from spider.model import Base
 
-from config import SQLALCHEMY_DATABASE_URI,DB_PARAMS
-from tools.json_encoder import ok
-
-ok()
-
-engine = create_engine(SQLALCHEMY_DATABASE_URI, **DB_PARAMS)
-DB_Session = sessionmaker(bind=engine, autocommit=True)
-
-import logging
-log = logging.getLogger('api')
+log = logging.getLogger('db')
+engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+# DB_Session = sessionmaker(bind=engine, autocommit=True)
+DB_Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base.metadata.create_all(engine)
 
 
 def create_conn():
@@ -68,11 +66,6 @@ class session_context(object):
 
 def get_session():
     return session_context(DB_Session())
-
-
-from api.models import Base
-
-Base.metadata.create_all(engine)
 
 
 if __name__ == '__main__':
