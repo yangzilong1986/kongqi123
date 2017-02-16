@@ -18,15 +18,13 @@ class History(object):
         return obj
 
     @staticmethod
-    def search(filters, page, per_page, condition=None):
-        keyword = filters.get('keyword')
-        price_min = filters.get('price_min')
-        price_max = filters.get('price_max')
-        sales_min = filters.get('sales_min')
-        sales_max = filters.get('sales_max')
+    def search_day(filters, page, per_page, condition=None):
+        city_name = filters.get('city_name')
+        date_start = filters.get('date_start')
+        date_end = filters.get('date_end')
 
-        sql_select = 'SELECT * FROM  product '
-        sql_count = 'SELECT count(*) as c FROM  product '
+        sql_select = 'SELECT * FROM  history_day '
+        sql_count = 'SELECT count(*) as c FROM  history_day '
         sql = ''
         sql_val = ()
         result = {}
@@ -34,28 +32,22 @@ class History(object):
             sql_where, sql_val = make_where(condition)
             sql += ' and ' + sql_where
 
-        if keyword:
-            sql += ' and name like %s'
-            sql_val += ('%' + keyword + '%',)
-        if price_min:
-            sql += ' and price >= %s'
-            sql_val += (price_min,)
-        if price_max:
-            sql += ' and price <= %s'
-            sql_val += (price_max,)
-        if sales_min:
-            sql += ' and price >= %s'
-            sql_val += (sales_min,)
-        if sales_max:
-            sql += ' and price <= %s'
-            sql_val += (sales_max,)
+        if city_name:
+            sql += ' and city_name = %s'
+            sql_val += (city_name,)
+        if date_start:
+            sql += ' and hd_date >= %s'
+            sql_val += (date_start,)
+        if date_end:
+            sql += ' and hd_date <= %s'
+            sql_val += (date_end,)
 
         if sql.startswith(' and '):
             sql = sql[len(' and '):]
         if sql:
             sql = 'where ' + sql
 
-        sql_order = ' order by id desc limit %d,%d' % ((page - 1) * per_page, per_page)
+        sql_order = ' order by hd_date desc limit %d,%d' % ((page - 1) * per_page, per_page)
 
         sql_select += sql
         sql_count += sql
@@ -63,12 +55,9 @@ class History(object):
         # log.debug('sql:' + sql_select + ' | ' + str(sql_val))
         # log.debug('sql:' + sql_count + ' | ' + str(sql_val))
         with get_new_db() as conn:
-            rows = to_list(conn.execute(sql_select + sql_order, sql_val).fetchall())
-            total = conn.execute(sql_count, sql_val).fetchone()['c']
+            rows = conn.execute(sql_select + sql_order, sql_val).fetchall()
+            total = conn.execute(sql_count, sql_val).fetchone()
             pages = get_page_count(total, per_page)
-
-            for row in rows:
-                pass
 
             result['items'] = rows
             result['total'] = total['c']

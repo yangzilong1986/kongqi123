@@ -9,10 +9,14 @@ from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
 from spider.model import Base
 
 log = logging.getLogger('db')
-engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
-# DB_Session = sessionmaker(bind=engine, autocommit=True)
-DB_Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base.metadata.create_all(engine)
+try:
+    engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+    # DB_Session = sessionmaker(bind=engine, autocommit=True)
+    DB_Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    Base.metadata.create_all(engine)
+except Exception, e:
+    print e.message
+    exit()
 
 
 def create_conn():

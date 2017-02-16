@@ -13,8 +13,9 @@ app.config.from_object('config.MainConfig')
 
 @app.route('/')
 def index():
-    date_start = request.args.get('sales_start', default='')
-    date_end = request.args.get('sales_end', default='')
+    date_start = request.args.get('date_start', default='')
+    date_end = request.args.get('date_end', default='')
+    city_name = request.args.get('city_name', default='')
 
     condition = {
 
@@ -23,11 +24,11 @@ def index():
         'city_name': u'上海',
     }
     page = request.args.get('page', 1, type=int)
-    product_client = ProductApiClient.factory()
-    info = product_client.search(condition, page, 20, other)
+    history_client = History.factory()
+    info = history_client.search_day(condition, page, 20, other)
 
     data = dict()
-    data['info'] = {"pages": 0, "items": []}
+    data['info'] = info
 
     return render_template('index.html', **data)
 
