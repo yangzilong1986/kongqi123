@@ -28,8 +28,8 @@
     <div class="right">
 
         <div class="cen4" id="ly-conbg">
-            <h1>设计师用心制作</h1>
-            <p class="hp">THE DESIGNER MADE BY HEART</p>
+            <h1>数据查询</h1>
+            <p class="hp">DATA SEARCH</p>
 
             <div class="tj-select">
                 <ul class="tj-time" id="main_box">
@@ -75,33 +75,46 @@
                         <th>CO</th>
                         <th>NO2</th>
                         <th>O3</th>
-                        <th>排行</th>
                     </tr>
-                    <tr>
-                        <td>2017-01-01</td>
-                        <td>100</td>
-                        <td>80-110</td>
-                        <td>重度污染</td>
-                        <td>87</td>
-                        <td>1.223</td>
-                        <td>2.223</td>
-                        <td>3.223</td>
-                        <td>13.223</td>
-                        <td>123</td>
-                    </tr>
-                </table>
-            </div>
 
-            <ul class="num">
-                <li class="aa"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">2</a></li>
-            </ul>
+                    {% if info and info['items'] %}
+                        {% for value in info['items'] %}
+                            <tr>
+                                <td>{{ value['hd_date'] }}</td>
+                                <td>{{ value['hd_aqi'] }}</td>
+                                <td>{{ value['hd_aqi_min'] }} - {{ value['hd_aqi_max'] }}</td>
+                                <td>{{ value['hd_quality'] }}</td>
+                                <td>{{ value['hd_pm25'] }}</td>
+                                <td>{{ value['hd_so2'] }}</td>
+                                <td>{{ value['hd_co'] }}</td>
+                                <td>{{ value['hd_no2'] }}</td>
+                                <td>{{ value['hd_o3'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </table>
+
+                {% if info['pages'] > 0 %}
+                    <!-- pages_tab -->
+                    <div class="num">
+                        {% if info['has_prev'] %}
+                            <li><a href="?page={{ info['prev_num'] }}">上一页</a></li>
+                        {% endif %}
+                        {% for p in range(1, info['pages'] + 1) %}
+                            {% if p == page %}
+                                <li class="aa"><a href="?page={{ p }}">{{ p }}</a></li>
+                            {% else %}
+                                <li><a href="?page={{ p }}">{{ p }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if info['has_next'] %}
+                            <li><a href="?page={{ info['next_num'] }}" class="p_next">下一页</a></li>
+                        {% endif %}
+                        <span class="page-number">共{{ info['pages'] }}页</span>
+                    </div>
+                    <!-- pages_tab end-->
+                {% endif %}
+            </div>
 
         </div>
     </div>

@@ -57,7 +57,7 @@ class History(object):
         with get_new_db() as conn:
             rows = conn.execute(sql_select + sql_order, sql_val).fetchall()
             total = conn.execute(sql_count, sql_val).fetchone()
-            pages = get_page_count(total, per_page)
+            pages = get_page_count(total['c'], per_page)
 
             result['items'] = rows
             result['total'] = total['c']
