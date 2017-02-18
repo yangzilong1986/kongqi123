@@ -14,6 +14,22 @@ app.config.from_object('config.MainConfig')
 
 @app.route('/')
 def index():
+    data = dict()
+    data['req_args'] = dict(request.args.items())
+
+    return render_template('index.html', **data)
+
+
+@app.route('/city')
+def index():
+    data = dict()
+    data['req_args'] = dict(request.args.items())
+
+    return render_template('city.html', **data)
+
+
+@app.route('/data')
+def data_index():
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
     date_end = request.args.get('date_end', default='')
