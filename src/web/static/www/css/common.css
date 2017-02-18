@@ -317,7 +317,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 
 .question-page li.on .tit {   background:#bfc1c2 url(../images/ico_open.gif) 15px 0px no-repeat;  color: white;}
 
-.question-page li .tit-con{ line-height: 1.8em; color: #333; padding: 20px 35px; display: none}
+.question-page li .tit-con{ line-height: 1.8em; color: #333; padding: 20px 35px;}
 .question-page li .tit-con h2{ font-size: 18px; margin: 0 0 5px; font-weight: 700; margin: 10px 0 20px}
 .question-page li .tit-con p{ color: #666; font-size: 16px; line-height: 1.8em}
 .question-page li .tit-con img{ margin: 0 0 20px}

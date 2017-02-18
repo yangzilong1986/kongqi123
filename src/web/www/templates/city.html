@@ -26,9 +26,9 @@
                 <li>
                     <strong class="tit" style="cursor: pointer;">{{ letter }}</strong>
                     <div class="tit-con">
-                        <h2>111111111111111111111</h2>
-                        <p>22222222222222222222222222</p>
-
+                        {% for c in city %}
+                            <a href="#">{{ c }}</a>
+                        {% endfor %}
                     </div>
                 </li>
                 {% endfor %}
