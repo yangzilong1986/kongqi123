@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+import json
 from flask import Flask, render_template, request, redirect, url_for, send_file, g, session
 from os.path import dirname, abspath
 from core.history import History
@@ -27,6 +28,10 @@ def index():
     page = request.args.get('page', 1, type=int)
     history_client = History.factory()
     info = history_client.search_day(condition, page, 31, other)
+    # print json.dumps(dict(info), indent=7, ensure_ascii=False)
+    print str(info)
+
+    info['pages'] = min(7, info['pages'])
 
     data = dict()
     data['req_args'] = dict(request.args.items())
