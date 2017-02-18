@@ -5,6 +5,7 @@ import json
 from flask import Flask, render_template, request, redirect, url_for, send_file, g, session
 from os.path import dirname, abspath
 from core.history import History
+from core.weather import Weather
 
 STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
 
@@ -21,9 +22,13 @@ def index():
 
 
 @app.route('/city')
-def index():
+def city_index():
+    weather_client = Weather.factory()
+    cities = weather_client.get_group_weather_city()
+
     data = dict()
     data['req_args'] = dict(request.args.items())
+    data['cities'] = cities
 
     return render_template('city.html', **data)
 

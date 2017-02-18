@@ -22,110 +22,16 @@
         <div class="inner-title"><img src="images/t-3.gif"><span>常见问题</span></div>
         <div class="question-page">
             <ul>
+                {% for letter, city in cities.iteritems() %}
                 <li>
-                    <strong class="tit" style="cursor: pointer;">安装问题</strong>
+                    <strong class="tit" style="cursor: pointer;">{{ letter }}</strong>
                     <div class="tit-con">
                         <h2>111111111111111111111</h2>
                         <p>22222222222222222222222222</p>
-                    </div>
-                </li>
-                <li>
-                    <strong class="tit" style="cursor: pointer;">如何获取识别码</strong>
-                    <div class="tit-con">
-                        <h2>1、到<a href="http://www.171g.com" target="_blank">www.171g.com </a>注册会员</h2>
-                        <p><img src="images/question/1.gif" width="100%"></p>
-                        <h2>2、点击 开通赚钱联盟</h2>
-                        <p><img src="images/question/2.gif" width="100%"></p>
-                        <h2>3、填写 资料</h2>
-                        <p><img src="images/question/3.gif" width="100%"></p>
-                        <h2>4、开通成功获得识别码</h2>
-                        <p><img src="images/question/4.gif" width="100%"><img src="images/question/5.gif" width="100%"></p>
-                    </div>
-                </li>
-                <li>
-                    <strong class="tit" style="cursor: pointer;">什么是识别码，识别码的特权</strong>
-                    <div class="tit-con">
-                        <h2>识别码是网站唯一的标识，可以通过识别码来获取相对应的特权</h2>
-                        <h2>1、特权</h2>
-                        <p>a) 获取赚钱联盟相关产品优先推广、价高的特权<br />
-                            b) 通过识别码，申请自己网站的手机客户端（手机助手）ps:（原生客户端只针对使用了171cms程序的用户申请）<br />
-                            <strong class="db">手机客户端界面</strong>
-                            <img src="images/question/6.gif" width="50%">
-                            <img src="images/question/7.gif" width="50%">
-                        </p>
 
                     </div>
                 </li>
-                <li>
-                    <strong class="tit" style="cursor: pointer;">如何申请助手</strong>
-                    <div class="tit-con">
-                        <h2>1、点击 "申请助手"</h2>
-                        <p><img src="images/question/8.gif" width="100%"></p>
-                        <p><img src="images/question/9.gif" width="100%"></p>
-                        <h2>2、填写助手信息</h2>
-                        <p><img src="images/question/10.gif" width="100%"></p>
-                    </div>
-                </li>
-                <li>
-                    <strong class="tit" style="cursor: pointer;">如何申请拿包</strong>
-                    <div class="tit-con">
-                        <h2>如何申请拿包</h2>
-                        <p>1、到www.171g.com 注册并登录<br/>2、到会员中心开通赚钱联盟 审核通过<br/>3、申请包页面里面，点击申请收费包CPA/CPS</p>
-                    </div>
-                </li>
-                <li>
-                    <strong class="tit" style="cursor: pointer;">统计数据在哪里查询</strong>
-                    <div class="tit-con">
-                        <h2>统计数据在哪里查询</h2>
-                        <p>1、到www.171g.com 注册并登录<br/>2、到会员中心开通赚钱联盟 审核通过<br/>3、赚钱联盟-数据统计 查看数据</p>
-                    </div>
-                </li>
-                <li>
-                    <strong class="tit" style="cursor: pointer;">为什么CPA/CPS 单价有的不一样</strong>
-                    <div class="tit-con">
-                        <h2>为什么CPA/CPS 单价有的不一样</h2>
-                        <p>因为会员等级不一样，他所申请包的单价也是不一样</p>
-                        <table cellpadding="0" cellspacing="0" border="1" bordercolor="#eee" width="90%" align="center">
-
-
-
-                            <tbody><tr>
-                                <td rowspan="2" align="center">信誉等级</td>
-                                <td height="27" colspan="2" align="center">条件(必须同时满足以下2个条件)</td>
-                                <td rowspan="2" align="center">涨价特权</td>
-                            </tr>
-                            <tr>
-                                <td height="32" align="center">当月累计下载数</td><td align="center">当月日均收入</td>
-                            </tr>
-                            <tr>
-                                <td height="40" align="center">普通会员</td><td align="center">1000以下</td><td align="center">2元以下</td><td align="center">--</td>
-
-                            </tr>
-                            <tr>
-                                <td height="40" align="center">VIP1</td><td align="center">1001-2000</td><td align="center">2元—50元</td><td align="center">+0.1元</td>
-
-                            </tr>
-                            <tr>
-                                <td height="40" align="center">VIP2</td><td align="center">2001-3000</td><td align="center">50元—500元</td><td align="center">+0.2元</td>
-
-                            </tr>
-                            <tr>
-                                <td height="40" align="center">VIP3</td><td align="center">3001-5000</td><td align="center">500元—1000元</td><td align="center">+0.3元</td>
-
-                            </tr>
-                            <tr>
-                                <td height="40" align="center">VIP4</td><td align="center">5001-10000</td><td align="center">1000元—5000元</td><td align="center">+0.4元</td>
-
-                            </tr>
-                            <tr>
-                                <td height="40" align="center">VIP5</td><td align="center">10000以上</td><td align="center">5000元以上</td><td align="center">+0.5元</td>
-
-
-                            </tr>
-
-                            </tbody></table>
-                    </div>
-                </li>
+                {% endfor %}
             </ul>
         </div>
     </div>
@@ -141,7 +47,6 @@
                 $(this).children(".tit-con").slideDown().parents("li").siblings("li").children(".tit-con").slideUp()
             }else{
                 $(this).children(".tit-con").slideUp();
-
             }
         });
     });

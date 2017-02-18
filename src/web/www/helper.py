@@ -71,6 +71,11 @@ def get_table_rows(conn, table, condition):
     return [dict(row) for row in conn.execute(sql, param).fetchall()]
 
 
+def get_table_all(conn, table):
+    sql = 'select * from ' + table
+    return [dict(row) for row in conn.execute(sql).fetchall()]
+
+
 def make_where(condition):
     keys = condition.keys()
     where = ' and '.join('`%s`=%%s' % (k,) for k in keys)
