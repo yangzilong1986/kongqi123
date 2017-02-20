@@ -30,6 +30,7 @@ SQLALCHEMY_POOL_SIZE = 5
 
 # yahoo api
 YAHOO_CONFIG = {
+    'BASE_URL': 'https://query.yahooapis.com/v1/public/yql?',
     # (Consumer Key)
     'CLIENT_ID': 'dj0yJmk9SXpYbVZIa000dkpWJmQ9WVdrOWVIWjViamM0TXpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1kMA--',
     # (Consumer Secret)

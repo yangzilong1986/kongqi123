@@ -6,6 +6,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 from os.path import dirname, abspath
 from core.history import History
 from core.weather import Weather
+from core.yahoo import Yahoo
 
 STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
 
@@ -15,10 +16,23 @@ app.config.from_object('config.MainConfig')
 
 @app.route('/')
 def index():
-    data = dict()
-    data['req_args'] = dict(request.args.items())
+    """
+    http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22shanghai%22&diagnostics=true
+    :return:
+    """
+    yahoo_client = Yahoo.factory()
+    woeid = yahoo_client.get_woeid_by_name(u'上海')
+    if not woeid:
+        return u'不支持的城市名'
 
-    return render_template('index.html', **data)
+    yahoo_client.get_weather(woeid)
+
+    return ''
+
+    # data = dict()
+    # data['req_args'] = dict(request.args.items())
+
+    # return render_template('index.html', **data)
 
 
 @app.route('/city')
