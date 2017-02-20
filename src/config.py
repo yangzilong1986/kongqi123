@@ -27,6 +27,16 @@ SQLALCHEMY_DATABASE_URI_MYSQL = \
 # 默认 pool_size=5
 SQLALCHEMY_POOL_SIZE = 5
 
+
+# yahoo api
+YAHOO_CONFIG = {
+    # (Consumer Key)
+    'CLIENT_ID': 'dj0yJmk9SXpYbVZIa000dkpWJmQ9WVdrOWVIWjViamM0TXpBbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD1kMA--',
+    # (Consumer Secret)
+    'CLIENT_SECRET': 'bcc4568341c0fd845e97771c494a65675d82fc3c'
+}
+
+
 import os
 from logging.config import dictConfig
 import sys
