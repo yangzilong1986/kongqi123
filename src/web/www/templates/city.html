@@ -22,15 +22,17 @@
         <div class="inner-title"><span>城市列表</span></div>
         <div class="question-page">
             <ul>
-                {% for letter, city in cities.iteritems() %}
-                <li>
-                    <strong class="tit" style="cursor: pointer;">{{ letter }}</strong>
-                    <div class="tit-con">
-                        {% for c in city %}
-                            <a href="#">{{ c }}</a>
-                        {% endfor %}
-                    </div>
-                </li>
+                {% for city in cities %}
+                    {% if city[0] and city[1] %}
+                        <li>
+                            <strong class="tit">{{ city[0] }}</strong>
+                            <div class="tit-con">
+                                {% for c in city[1] %}
+                                    <a href="#">{{ c }}</a>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -39,18 +41,6 @@
 <!-- bd -->
 
 {% include "footer.html" %}
-
-<script type="text/javascript">
-    $(function(){
-        $(".question-page ul li").click(function(){
-            if($(this).children(".tit-con").is(':hidden')){
-                $(this).children(".tit-con").slideDown().parents("li").siblings("li").children(".tit-con").slideUp()
-            }else{
-                $(this).children(".tit-con").slideUp();
-            }
-        });
-    });
-</script>
 
 </body>
 </html>

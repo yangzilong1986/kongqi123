@@ -31,4 +31,4 @@ class Weather(object):
                     data[letter] = []
                 data[letter].append(row['city_name'])
 
-            return data
+            return sorted(data.items())
