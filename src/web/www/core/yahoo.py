@@ -2,18 +2,18 @@
 
 import urllib2
 import urllib
-import hashlib
 import json
 import redis
 import itertools
+from config import YAHOO_CONFIG, REDIS_CONFIG
 from web.www.helper import *
 from web.db import get_new_db
-from config import YAHOO_CONFIG, REDIS_CONFIG
+from web.www.core import generate_md5
 
 redis_client = redis.Redis(host=REDIS_CONFIG.get('host'), port=REDIS_CONFIG.get('port'))
 
-class Yahoo(object):
 
+class Yahoo(object):
     @staticmethod
     def factory():
         if hasattr(Yahoo, '_obj'):
@@ -26,7 +26,20 @@ class Yahoo(object):
 
     @staticmethod
     def get_woeid_by_name(name):
-        pass
+        result = Yahoo.get_geo_places_info(name)
+        if not result:
+            return False
+        if 'place' not in result:
+            return False
+        if not result['place']:
+            return False
+        if 'woeid' not in result['place'][0]:
+            return False
+        woeid = int(result['place'][0]['woeid'])
+        if not woeid:
+            return False
+
+        return woeid
 
     @staticmethod
     def get_geo_places_info(name):
@@ -167,13 +180,15 @@ class Yahoo(object):
         }
         '''
 
-        name_md5 = hashlib.md5(name).hexdigest()
+        name_md5 = generate_md5(name)
         redis_key = "yahoo_geo_place_city_%s" % name_md5
         result = redis_client.get(redis_key)
         if not result:
+            print 'load result from remote.'
             base_url = YAHOO_CONFIG.get('BASE_URL')
             yql_query = "select * from geo.places where text = '%s'" % name
-            yql_url = base_url + urllib.urlencode({'q': yql_query}) + "&format=json"
+            print yql_query, type(yql_query)
+            yql_url = base_url + urllib.urlencode({'q': yql_query.encode('utf-8')}) + "&format=json"
             result = urllib2.urlopen(yql_url).read()
             if not result:
                 return False

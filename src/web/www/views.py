@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# encoding: utf-8
+# coding:utf-8
 
 import json
 from flask import Flask, render_template, request, redirect, url_for, send_file, g, session
@@ -21,14 +20,12 @@ def index():
     :return:
     """
     yahoo_client = Yahoo.factory()
-    woeid_info = yahoo_client.get_woeid_by_name(u'上海')
-    if not woeid_info:
+    woeid = yahoo_client.get_woeid_by_name(u'上海')
+    if not woeid:
         return u'不支持的城市名'
-    # print woeid_info
-    woeid = woeid_info['place'][0]['woeid']
     print 'woeid: ', woeid
 
-    weather_info = yahoo_client.get_weather(woeid)
+    # weather_info = yahoo_client.get_weather(woeid)
 
     return ''
 
