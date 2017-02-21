@@ -21,11 +21,14 @@ def index():
     :return:
     """
     yahoo_client = Yahoo.factory()
-    woeid = yahoo_client.get_woeid_by_name(u'上海')
-    if not woeid:
+    woeid_info = yahoo_client.get_woeid_by_name(u'上海')
+    if not woeid_info:
         return u'不支持的城市名'
+    # print woeid_info
+    woeid = woeid_info['place'][0]['woeid']
+    print 'woeid: ', woeid
 
-    yahoo_client.get_weather(woeid)
+    weather_info = yahoo_client.get_weather(woeid)
 
     return ''
 
