@@ -193,6 +193,8 @@ class Yahoo(object):
             if not result:
                 return False
             redis_client.set(redis_key, result)
+        else:
+            print 'load result from cache.'
 
         data = json.loads(result)
         if 'query' not in data:
@@ -403,18 +405,28 @@ class Yahoo(object):
         :param woeid:
         :return:
         '''
-        base_url = YAHOO_CONFIG.get('BASE_URL')
+        redis_key = "yahoo_weather_forecast_woeid_%d" % woeid
+        result = redis_client.get(redis_key)
+        if not result:
+            print 'load result from remote.'
+            base_url = YAHOO_CONFIG.get('BASE_URL')
+            yql_query = "select * from weather.forecast where woeid = %d and u = 'c'" % woeid
+            yql_url = base_url + urllib.urlencode({'q': yql_query}) + "&format=json"
+            result = urllib2.urlopen(yql_url).read()
+            if not result:
+                return False
+            redis_client.set(redis_key, result, 60 * 60)
+        else:
+            print 'load result from cache.'
 
-        yql_query = "select * from weather.forecast where woeid = %d and u = 'c'" % woeid
-        yql_url = base_url + urllib.urlencode({'q': yql_query}) + "&format=json"
-        result = urllib2.urlopen(yql_url).read()
         data = json.loads(result)
-
         if 'query' not in data:
             return False
         if 'results' not in data['query']:
             return False
-        result = data['query']['results']
+        if 'channel' not in data['query']['results']:
+            return False
+        result = data['query']['results']['channel']
         if result == 'null':
             return False
 

@@ -25,7 +25,8 @@ def index():
         return u'不支持的城市名'
     print 'woeid: ', woeid
 
-    # weather_info = yahoo_client.get_weather(woeid)
+    weather_info = yahoo_client.get_weather(woeid)
+    print weather_info
 
     return ''
 
