@@ -16,6 +16,10 @@ redis_client = redis.Redis(host=REDIS_CONFIG.get('host'), port=REDIS_CONFIG.get(
 class Yahoo(object):
     @staticmethod
     def factory():
+        '''
+        http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22shanghai%22&diagnostics=true
+        :return:
+        '''
         if hasattr(Yahoo, '_obj'):
             return Yahoo._obj
 

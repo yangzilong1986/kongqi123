@@ -15,10 +15,6 @@ app.config.from_object('config.MainConfig')
 
 @app.route('/')
 def index():
-    """
-    http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22shanghai%22&diagnostics=true
-    :return:
-    """
     yahoo_client = Yahoo.factory()
     woeid = yahoo_client.get_woeid_by_name(u'上海')
     if not woeid:
@@ -28,12 +24,10 @@ def index():
     weather_info = yahoo_client.get_weather(woeid)
     print weather_info
 
-    return ''
+    data = dict()
+    data['req_args'] = dict(request.args.items())
 
-    # data = dict()
-    # data['req_args'] = dict(request.args.items())
-
-    # return render_template('index.html', **data)
+    return render_template('index.html', **data)
 
 
 @app.route('/city')
@@ -74,5 +68,5 @@ def data_index():
     data['info'] = info
     data['page'] = page
 
-    return render_template('index.html', **data)
+    return render_template('data_index.html', **data)
 
