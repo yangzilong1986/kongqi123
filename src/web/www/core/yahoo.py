@@ -2,12 +2,15 @@
 
 import urllib2
 import urllib
+import hashlib
 import json
+import redis
 import itertools
 from web.www.helper import *
 from web.db import get_new_db
-from config import YAHOO_CONFIG
+from config import YAHOO_CONFIG, REDIS_CONFIG
 
+redis_client = redis.Redis(host=REDIS_CONFIG.get('host'), port=REDIS_CONFIG.get('port'))
 
 class Yahoo(object):
 
@@ -23,6 +26,10 @@ class Yahoo(object):
 
     @staticmethod
     def get_woeid_by_name(name):
+        pass
+
+    @staticmethod
+    def get_geo_places_info(name):
         '''
         {
             "query": {
@@ -159,13 +166,20 @@ class Yahoo(object):
             }
         }
         '''
-        base_url = YAHOO_CONFIG.get('BASE_URL')
 
-        yql_query = "select * from geo.places where text = '%s'" % name
-        yql_url = base_url + urllib.urlencode({'q': yql_query}) + "&format=json"
-        result = urllib2.urlopen(yql_url).read()
+        name_md5 = hashlib.md5(name).hexdigest()
+        redis_key = "yahoo_geo_place_city_%s" % name_md5
+        result = redis_client.get(redis_key)
+        if not result:
+            base_url = YAHOO_CONFIG.get('BASE_URL')
+            yql_query = "select * from geo.places where text = '%s'" % name
+            yql_url = base_url + urllib.urlencode({'q': yql_query}) + "&format=json"
+            result = urllib2.urlopen(yql_url).read()
+            if not result:
+                return False
+            redis_client.set(redis_key, result)
+
         data = json.loads(result)
-
         if 'query' not in data:
             return False
         if 'results' not in data['query']:
