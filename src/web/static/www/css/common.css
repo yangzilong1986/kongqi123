@@ -125,6 +125,16 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .morewether .otherinfo { border-top: 1px solid rgba(255,255,255,0.3); }
 .morewether .otherinfo span { font-size: 24px; font-family: arial; margin-right: 5px; }
 
+.skin{background:url(http://p3.qhimg.com/t01a2d0bd1a198320b8.jpg) #fbfcff fixed repeat-x 0 0}
+.skin1{background:url(http://p1.qhimg.com/t01d24f69d69087f299.png) fixed repeat-x 0 0}
+.skin1,.skin2{height:100%;position:relative}
+.skin2{background:url(http://p3.qhimg.com/t01bcd07730e03dd6b7.png) fixed repeat-x 0 0}
+.skin3{background:url(http://p3.qhimg.com/t011291cdeeb4a12918.png) fixed repeat-x 0 0}
+.skin4{background:url(http://p5.qhimg.com/t011a625057969ce63a.png) #395166 fixed repeat-x 0 0}
+.skin4,.skin5{height:100%;position:relative}
+.skin5{background:url(http://p1.qhimg.com/t01adb794bb858deedf.png) fixed repeat-x 0 0}
+.skin6{background:url(http://p1.qhimg.com/t01adb794bb858deedf.png) fixed repeat-x 0 0;height:100%;position:relative}
+
 .icon-shi, .icon-feng { background: url(../images/ICON/shi_feng.png) no-repeat 0 0; display: inline-block; height: 28px; margin-right: 5px; vertical-align: middle; width: 29px; }
 .icon-tu i{background:url(../images/ICON/tq_tu.png) no-repeat 0 0;display:inline-block;height:70px;margin-bottom:10px;width:70px}
 i.icon-qing{background-position:0 0}
@@ -160,7 +170,7 @@ i.icon-kulian{background-position:-216px -216px}
 /**nav**/
 
 /**con**/
-#ly-conbg{margin:0 auto;position:relative;height:auto;margin-top:30px;}
+#ly-conbg{margin:0 auto;position:relative;height:auto;}
 #ly-conbg h1{font-size:26px;margin:0 auto;height:36px;color:#333;text-align: center;}
 #ly-conbg .hp{font-size:12px;margin:0 auto;color:#ccc;text-align: center;}
 #ly-conbg .search{height:48px;width:450px;background:#4dbaf3;border-radius:6px;margin:0 auto;margin-bottom:30px;margin-top:-44px;}
