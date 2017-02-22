@@ -17,21 +17,40 @@
 {% include "header.html" %}
 
 <!------banner-------->
-<div id="ly" >
+<div id="ly">
     <div class="ly-banner">
-        <h1 class="aa">7° 阵雨</h1>
-        <p class="bb">上海</p>
+        <div class="cityinfo">
+            <h1 class="bb">上海</h1>
+            <p class="cc">20 : 00 发布</p>
+            <span class="wethericon liang">空气良 51</span>
+        </div>
+
+        <div class="wetherdetail">
+            <p class="aa"><strong>7°</strong>阵雨</p>
+            <ul>
+                <li><i class="icon-shi"></i>湿度 <span id="humidity">83</span>%</li>
+                <li class="txt-r">
+                    <i class="icon-feng"></i>
+                    <span id="winddir">西北风</span>
+                    <span id="windpower">2级</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="morewether">
+            <ul id="foreast">
+                <li>
+                    <p class="colora">今天 2月22日</p>
+                    <p class="icon-tu"><i class="icon-xiaoyu"></i><br>小雨</p>
+                    <p class="otherinfo"><span>2~11°</span>3-4 级</p>
+                </li>
+                <li><p class="colora">周四 2月23日</p><p class="icon-tu"><i class="icon-yujiaxue"></i><br>雨夹雪</p><p class="otherinfo"><span>2~9°</span>3-4 级</p></li><li><p class="colora">周五 2月24日</p><p class="icon-tu"><i class="icon-duoyun"></i><br>多云</p><p class="otherinfo"><span>2~9°</span>微风</p></li><li><p class="colora">周六 2月25日</p><p class="icon-tu"><i class="icon-qing"></i><br>晴</p><p class="otherinfo"><span>3~11°</span>微风</p></li><li><p class="colora">周日 2月26日</p><p class="icon-tu"><i class="icon-qing"></i><br>晴</p><p class="otherinfo"><span>2~13°</span>微风</p></li>
+            </ul>
+        </div>
+
     </div>
 </div>
 <!------banner----->
-
-<!------nav-------->
-<div id="ly-nav" style="display:none;">
-    <span class="aa"> <img src="/static/www/images/171nav01.gif" /></span>
-    <span class="bb"><img src="/static/www/images/171nav02.gif" / ></span>
-</div>
-
-<!------nav--------->
 
 <!------con-------->
 <div id="ly-conbg">
