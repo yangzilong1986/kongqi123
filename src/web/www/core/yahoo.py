@@ -18,6 +18,7 @@ class Yahoo(object):
     def factory():
         '''
         http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22shanghai%22&diagnostics=true
+        https://developer.yahoo.com/weather/documentation.html
         :return:
         '''
         if hasattr(Yahoo, '_obj'):
@@ -436,4 +437,48 @@ class Yahoo(object):
 
         # print result
         return result
+
+    @staticmethod
+    def get_today_weather(woeid):
+        weather_channel = Yahoo.get_weather(woeid)
+        if not weather_channel:
+            return False
+        if 'item' not in weather_channel:
+            return False
+
+        '''
+        "wind": {
+            "chill": "37",
+            "direction": "85",
+            "speed": "35.40"
+        },
+        "atmosphere": {
+              "humidity": "66",
+              "pressure": "34845.95",
+              "rising": "0",
+              "visibility": "25.91"
+        },
+        "astronomy": {
+             "sunrise": "6:29 am",
+             "sunset": "5:46 pm"
+         },
+        "item": {
+            "title": "Conditions for Shanghai, Shanghai, CN at 10:00 AM CST",
+            "lat": "31.247709",
+            "long": "121.472618",
+            "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country/*https://weather.yahoo.com/country/state/city-2151849/",
+            "pubDate": "Tue, 21 Feb 2017 10:00 AM CST",
+            "condition": {
+                "code": "28",
+                "date": "Tue, 21 Feb 2017 10:00 AM CST",
+                "temp": "6",
+                "text": "Mostly Cloudy"
+            },
+            ...
+        }
+        '''
+
+        if 'condition' not in weather_channel['item']:
+            return False
+
 

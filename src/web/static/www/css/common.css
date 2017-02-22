@@ -476,7 +476,7 @@ to {left:-.5%;}
 .ly-cen-mt .mode  .clia:hover{background:#E85123;}
 .ly-cen-mt .mode  .clia a{color:#fff;}
 
-#ly-con{clear:both;width:1000px;margin:0 auto;position:relative;height:auto;padding:60px 0 0 0;}
+#ly-con{clear:both;width:1000px;margin:0 auto;position:relative;height:auto;padding:0 0 0 0;}
 #ly-con .right{background:#fff;min-height:710px;width:96%;position:relative;float:right;padding:0 0 30px 0;border-radius:6px;margin-bottom:60px;}
 #ly-con .right .aa{min-height:50px;width:100%;border-bottom:2px solid #ccc;padding-top:20px;}
 #ly-con .right .aa h1{font-size:24px;text-indent:20px;float:left;}
