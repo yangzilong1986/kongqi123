@@ -447,21 +447,27 @@ class Yahoo(object):
             return False
 
         '''
+        "units": {
+            "distance": "km",
+            "pressure": "mb",
+            "speed": "km/h",
+            "temperature": "C"
+        },
         "wind": {
             "chill": "37",
             "direction": "85",
             "speed": "35.40"
         },
         "atmosphere": {
-              "humidity": "66",
-              "pressure": "34845.95",
-              "rising": "0",
-              "visibility": "25.91"
+            "humidity": "66",
+            "pressure": "34845.95",
+            "rising": "0",
+            "visibility": "25.91"
         },
         "astronomy": {
-             "sunrise": "6:29 am",
-             "sunset": "5:46 pm"
-         },
+            "sunrise": "6:29 am",
+            "sunset": "5:46 pm"
+        },
         "item": {
             "title": "Conditions for Shanghai, Shanghai, CN at 10:00 AM CST",
             "lat": "31.247709",
