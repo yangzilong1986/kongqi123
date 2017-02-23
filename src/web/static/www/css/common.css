@@ -113,7 +113,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .ly-banner .qing { background-color: #db7e06; border: 1px solid #dcb37d; }
 .ly-banner .youxiu { background-color: #33c704; border: 1px solid #92d47e; }
 
-.ly-banner .wetherdetail { color: #fff; font-size: 16px; margin-top: 40px; width: 250px; }
+.ly-banner .wetherdetail { color: #fff; font-size: 16px; margin-top: 40px; width: 300px; }
 .ly-banner .wetherdetail strong { font: normal 94px/94px arial; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-variant-numeric: normal; font-weight: normal; font-stretch: normal; font-size: 94px; line-height: 94px; font-family: arial; }
 .ly-banner .wetherdetail ul { border-top: 1px solid rgba(255,255,255,0.4); padding-top: 8px; }
 .ly-banner .wetherdetail li { float: left; width: 125px; color: #fff;font-size: 16px;}
@@ -135,6 +135,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .skin5{background:url(../images/skins/skin5.png) fixed repeat-x 0 0}
 .skin6{background:url(../images/skins/skin6.png) fixed repeat-x 0 0;height:100%;position:relative}
 
+.icon-shi { background-position: 0 -28px; }
 .icon-shi, .icon-feng { background: url(../images/ICON/shi_feng.png) no-repeat 0 0; display: inline-block; height: 28px; margin-right: 5px; vertical-align: middle; width: 29px; }
 .icon-tu i{background:url(../images/ICON/tq_tu.png) no-repeat 0 0;display:inline-block;height:70px;margin-bottom:10px;width:70px}
 i.icon-qing{background-position:0 0}

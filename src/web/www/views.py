@@ -15,16 +15,23 @@ app.config.from_object('config.MainConfig')
 
 @app.route('/')
 def index():
+    city_name = u'上海'
     yahoo_client = Yahoo.factory()
-    woeid = yahoo_client.get_woeid_by_name(u'上海')
+    woeid = yahoo_client.get_woeid_by_name(city_name)
     if not woeid:
         return u'不支持的城市名'
     print 'woeid: ', woeid
 
-    weather_info = yahoo_client.get_weather(woeid)
-    print weather_info
+    today_weather = yahoo_client.get_today_weather(woeid)
+    print today_weather
+
+    forecast_weather = yahoo_client.get_forecast_weather(woeid)
+    print forecast_weather
 
     data = dict()
+    data['city_name'] = city_name
+    data['today_weather'] = today_weather
+    data['forecast_weather'] = forecast_weather
     data['req_args'] = dict(request.args.items())
 
     return render_template('index.html', **data)

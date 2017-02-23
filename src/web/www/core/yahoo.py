@@ -5,6 +5,8 @@ import urllib
 import json
 import redis
 import itertools
+import datetime
+import time
 from config import YAHOO_CONFIG, REDIS_CONFIG
 from web.www.helper import *
 from web.db import get_new_db
@@ -453,17 +455,20 @@ class Yahoo(object):
             "speed": "km/h",
             "temperature": "C"
         },
+        风：冷风级别9，风向，风速3.22
         "wind": {
             "chill": "37",
             "direction": "85",
             "speed": "35.40"
         },
+        大气情况：湿度，能见度，压强
         "atmosphere": {
             "humidity": "66",
             "pressure": "34845.95",
             "rising": "0",
             "visibility": "25.91"
         },
+        天文：日出6:49am，日落5:25pm
         "astronomy": {
             "sunrise": "6:29 am",
             "sunset": "5:46 pm"
@@ -484,7 +489,32 @@ class Yahoo(object):
         }
         '''
 
-        if 'condition' not in weather_channel['item']:
+        data = {}
+        if 'wind' in weather_channel:
+            data = dict(data.items() + weather_channel['wind'].items())
+
+        if 'atmosphere' in weather_channel:
+            data = dict(data.items() + weather_channel['atmosphere'].items())
+
+        if 'astronomy' in weather_channel:
+            data = dict(data.items() + weather_channel['astronomy'].items())
+
+        if 'condition' in weather_channel['item']:
+            data = dict(data.items() + weather_channel['item']['condition'].items())
+            t = time.strptime(data['date'], '%a, %d %b %Y %I:%M %p %Z')
+            data['date2'] = t.tm_hour
+
+        return data
+
+    @staticmethod
+    def get_forecast_weather(woeid):
+        weather_channel = Yahoo.get_weather(woeid)
+        if not weather_channel:
+            return False
+        if 'item' not in weather_channel:
             return False
 
+        if 'forecast' not in weather_channel['item']:
+            return False
 
+        return weather_channel['item']['forecast']
