@@ -11,11 +11,11 @@
                 </a>
             </h1>
             <ul class="nav fl">
-                <li class="red-current"><a href="/">首页</a></li>
-                <li class=""><a href="/">数据中心</a></li>
-                <li class=""><a href="/">分析报表</a></li>
-                <li class=""><a href="/">空气预测</a></li>
-                <li class=""><a href="/">污染地图</a></li>
+                <li class="{{ 'red-current' if current_page == 'index' }}"><a href="/">实时天气</a></li>
+                <li class="{{ 'red-current' if current_page == 'data' }}"><a href="/data">数据中心</a></li>
+                <li class="{{ 'red-current' if current_page == 'report' }}"><a href="/report">分析报表</a></li>
+                <li class="{{ 'red-current' if current_page == 'learn' }}"><a href="/learn">空气预测</a></li>
+                <li class="{{ 'red-current' if current_page == 'map' }}"><a href="/map">污染地图</a></li>
             </ul>
             <ul class="deng">
                 <li class="aa">上海</li>
