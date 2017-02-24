@@ -28,7 +28,7 @@
         <div class="wetherdetail">
             <p class="aa">
                 <strong>{{ today_weather['temp'] }}°</strong>
-                {{ today_weather['text'] }}
+                {{ today_weather['text2'] }}
             </p>
             <ul>
                 <li>
@@ -55,7 +55,7 @@
                 {% for weather in forecast_weather %}
                 <li>
                     <p class="colora">{{ weather['day'] }} {{ weather['date'] }}</p>
-                    <p class="icon-tu"><i class="icon-xiaoyu"></i><br>{{ weather['text'] }}</p>
+                    <p class="icon-tu"><i class="icon-xiaoyu"></i><br>{{ weather['text2'] }}</p>
                     <p class="otherinfo"><span>{{ weather['low'] }}~{{ weather['high'] }}°</span>风力</p>
                 </li>
                 {% endfor %}

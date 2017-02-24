@@ -7,7 +7,7 @@ import redis
 import itertools
 import datetime
 import time
-from config import YAHOO_CONFIG, REDIS_CONFIG
+from config import YAHOO_CONFIG, REDIS_CONFIG, WEATHER_TYPES_CN
 from web.www.helper import *
 from web.db import get_new_db
 from web.www.core import generate_md5
@@ -437,7 +437,7 @@ class Yahoo(object):
         if result == 'null':
             return False
 
-        # print result
+        print result
         return result
 
     @staticmethod
@@ -503,7 +503,9 @@ class Yahoo(object):
             data = dict(data.items() + weather_channel['item']['condition'].items())
             t = time.strptime(data['date'], '%a, %d %b %Y %I:%M %p %Z')
             data['date2'] = t.tm_hour
-
+            data['text2'] = WEATHER_TYPES_CN['3200']
+            if data['code'] in WEATHER_TYPES_CN:
+                data['text2'] = WEATHER_TYPES_CN[data['code']]
         return data
 
     @staticmethod
@@ -516,5 +518,10 @@ class Yahoo(object):
 
         if 'forecast' not in weather_channel['item']:
             return False
+
+        for data in weather_channel['item']['forecast']:
+            data['text2'] = WEATHER_TYPES_CN['3200']
+            if data['code'] in WEATHER_TYPES_CN:
+                data['text2'] = WEATHER_TYPES_CN[data['code']]
 
         return weather_channel['item']['forecast']
