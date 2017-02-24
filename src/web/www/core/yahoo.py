@@ -7,7 +7,7 @@ import redis
 import itertools
 import datetime
 import time
-from config import YAHOO_CONFIG, REDIS_CONFIG, WEATHER_TYPES_CN
+from config import YAHOO_CONFIG, REDIS_CONFIG, WEATHER_TYPES_CN, WEEK_TYPE
 from web.www.helper import *
 from web.db import get_new_db
 from web.www.core import generate_md5
@@ -520,6 +520,10 @@ class Yahoo(object):
             return False
 
         for data in weather_channel['item']['forecast']:
+            #  25 Feb 2017
+            t = time.strptime(data['date'], '%d %b %Y')
+            data['date2'] = time.strftime('%Y-%m-%d', t)
+            data['day2'] = WEEK_TYPE[data['day']]
             data['text2'] = WEATHER_TYPES_CN['3200']
             if data['code'] in WEATHER_TYPES_CN:
                 data['text2'] = WEATHER_TYPES_CN[data['code']]
