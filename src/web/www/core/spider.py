@@ -4,14 +4,14 @@ import requests
 from config import SCRAPYD_CONFIG
 
 
-class SpiderClient(object):
+class Spider(object):
     @staticmethod
     def factory():
-        if hasattr(SpiderClient, '_obj'):
-            return SpiderClient._obj
+        if hasattr(Spider, '_obj'):
+            return Spider._obj
 
-        obj = SpiderClient()
-        SpiderClient._obj = obj
+        obj = Spider()
+        Spider._obj = obj
 
         return obj
 
@@ -97,7 +97,7 @@ class SpiderClient(object):
         :param status:pending/running/finished
         :return:
         """
-        job_status = SpiderClient.list_job()
+        job_status = Spider.list_job()
         job_ids = set([x['id'] for x in job_status[status]])
         return job in job_ids
 
@@ -109,7 +109,7 @@ class SpiderClient(object):
         :param task_type:
         :return:
         """
-        job_status = SpiderClient.list_job()
+        job_status = Spider.list_job()
         job_ids_pending = set([x['id'] for x in job_status['pending']])
         job_ids_running = set([x['id'] for x in job_status['running']])
         job_ids = job_ids_pending | job_ids_running

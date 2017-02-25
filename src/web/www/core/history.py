@@ -19,7 +19,8 @@ class History(object):
 
     @staticmethod
     def get_history_city_all():
-        return get_table_all('history_city')
+        with get_new_db() as conn:
+            return get_table_all(conn, 'history_city')
 
     @staticmethod
     def search_day(filters, page, per_page, condition=None):

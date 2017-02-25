@@ -35,4 +35,5 @@ class Weather(object):
 
     @staticmethod
     def get_weather_city_all():
-        return get_table_all('weather_city')
+        with get_new_db() as conn:
+            return get_table_all(conn, 'weather_city')
