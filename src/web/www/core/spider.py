@@ -4,14 +4,14 @@ import requests
 from config import SCRAPYD_CONFIG
 
 
-class Spider(object):
+class SpiderClient(object):
     @staticmethod
     def factory():
-        if hasattr(Spider, '_obj'):
-            return Spider._obj
+        if hasattr(SpiderClient, '_obj'):
+            return SpiderClient._obj
 
-        obj = Spider()
-        Spider._obj = obj
+        obj = SpiderClient()
+        SpiderClient._obj = obj
 
         return obj
 
@@ -56,6 +56,23 @@ class Spider(object):
         return result
 
     @staticmethod
+    def list_spider():
+        """
+        查看spider
+        {"status": "ok", "spiders": ["aqistudy", "tianqihoubao"], "node_name": "wangruideMacBook-Air.local"}
+        :param project:
+        :return:
+        """
+        url = SCRAPYD_CONFIG['url'] + '/listspiders.json'
+        params = {
+            'project': SCRAPYD_CONFIG['project']
+        }
+        result = requests.get(url, params=params).json()
+        # print json.dumps(result, indent=4, ensure_ascii=False)
+        # {u'status': u'ok', u'running': [], u'finished': [], u'pending': [], u'node_name': u'wangruider.local'}
+        return result
+
+    @staticmethod
     def list_job():
         """
         查看任务
@@ -80,7 +97,7 @@ class Spider(object):
         :param status:pending/running/finished
         :return:
         """
-        job_status = Spider.list_job()
+        job_status = SpiderClient.list_job()
         job_ids = set([x['id'] for x in job_status[status]])
         return job in job_ids
 
@@ -92,7 +109,7 @@ class Spider(object):
         :param task_type:
         :return:
         """
-        job_status = Spider.list_job()
+        job_status = SpiderClient.list_job()
         job_ids_pending = set([x['id'] for x in job_status['pending']])
         job_ids_running = set([x['id'] for x in job_status['running']])
         job_ids = job_ids_pending | job_ids_running

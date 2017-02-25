@@ -18,6 +18,10 @@ class History(object):
         return obj
 
     @staticmethod
+    def get_history_city_all():
+        return get_table_all('history_city')
+
+    @staticmethod
     def search_day(filters, page, per_page, condition=None):
         city_name = filters.get('city_name')
         date_start = filters.get('date_start')
