@@ -24,7 +24,7 @@ class HistorySpider(scrapy.Spider):
 
     def __init__(self, city_name, month, *args, **kwargs):
         super(HistorySpider, self).__init__(*args, **kwargs)
-        self.city_name = city_name
+        self.city_name = city_name.decode('utf-8')
         self.month = month
 
     def start_requests(self):

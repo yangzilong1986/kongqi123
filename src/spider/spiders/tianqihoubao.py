@@ -9,15 +9,18 @@ from spider.items import WeatherCityItem, WeatherDayItem
 
 
 class WeatherSpider(scrapy.Spider):
+    '''
+    scrapy crawl tianqihoubao -a city_name=上海 -a month=2017-01
+    '''
     name = "tianqihoubao"
+    city_name = ''
+    month = ''
     allowed_domains = ["tianqihoubao.com"]
-    start_urls = [
-        "http://www.tianqihoubao.com/lishi/"
-    ]
+    start_urls = []
     custom_settings = dict(
-        DOWNLOAD_DELAY=0,
-        CONCURRENT_REQUESTS_PER_DOMAIN=15,
-        CONCURRENT_REQUESTS_PER_IP=15,
+        DOWNLOAD_DELAY=2,
+        CONCURRENT_REQUESTS_PER_DOMAIN=8,
+        CONCURRENT_REQUESTS_PER_IP=8,
         DEFAULT_REQUEST_HEADERS={
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
             "Accept-Encoding": "gzip, deflate, sdch",
@@ -39,8 +42,14 @@ class WeatherSpider(scrapy.Spider):
         }
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, city_name, month, *args, **kwargs):
         super(WeatherSpider, self).__init__(*args, **kwargs)
+        self.city_name = city_name.decode('utf-8')
+        self.month = month
+
+    def start_requests(self):
+        url = 'http://www.tianqihoubao.com/lishi/'
+        return [scrapy.FormRequest(url=url, callback=self.parse)]
 
     def parse(self, response):
         city_list = response.xpath('//div[@class="citychk"]//dd[1]/a')
@@ -52,19 +61,29 @@ class WeatherSpider(scrapy.Spider):
             city_name = city.xpath('text()').extract()
             city_url = city.xpath('@href').extract()
 
-            city_name = city_name[0]  # .encode('utf-8')
-            city_url = city_url[0]  # .encode('utf-8')
+            city_name = city_name[0].strip()  # .encode('utf-8')
+            city_url = city_url[0].strip()  # .encode('utf-8')
 
-            item = WeatherCityItem()
-            item['city_name'] = city_name.strip()
-            item['city_url'] = city_url.strip()
+            if self.city_name and self.month:
+                # print "'%s':'%s'" % (city_name, self.city_name, )
+                if city_name == self.city_name:
+                    city_py = city_url.replace('/lishi/', '').replace('.html', '')
+                    month2 = self.month.replace('-', '')
+                    url = 'http://www.tianqihoubao.com/lishi/%s/month/%s.html' % (city_py, month2, )
+                    # print 'city: %s, month: %s, url: %s' % (city_py, month2, url, )
+                    meta = {'city_name': self.city_name, 'month': self.month}
+                    yield scrapy.Request(url=url, meta=meta, callback=self.parse_day, priority=90)
+            else:
+                item = WeatherCityItem()
+                item['city_name'] = city_name.strip()
+                item['city_url'] = city_url.strip()
 
-            # print u'----- WeatherCityItem:%s' % json.dumps(dict(item), indent=4)
-            yield item
+                # print u'----- WeatherCityItem:%s' % json.dumps(dict(item), indent=4)
+                yield item
 
-            url = response.urljoin(city_url)
-            meta = {'city_name': item['city_name']}
-            yield scrapy.Request(url=url, meta=meta, callback=self.parse_month, priority=20)
+                url = response.urljoin(city_url)
+                meta = {'city_name': item['city_name']}
+                yield scrapy.Request(url=url, meta=meta, callback=self.parse_month, priority=20)
 
     def parse_month(self, response):
         city_name = response.meta['city_name']
