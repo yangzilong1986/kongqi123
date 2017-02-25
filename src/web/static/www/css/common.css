@@ -781,11 +781,11 @@ i.icon-kulian{background-position:-216px -216px}
 .ly-cen-hp h1{font-size:18px;color:#000;margin:32px 0 17px 0px;}
 .ly-cen-hp .ulb{width:100%;}
 .ly-cen-hp .ulb li{float:left;line-height:34px;text-align:center;font-size:16px;}
-.ly-cen-hp .ulb .li1{height:34px;width:286px;background:#ededed;border-right:1px solid #fff;border-left:1px solid #fff;}
-.ly-cen-hp .ulb .li2{height:34px;width:286px;background:#6cc6f5;border-top:none;border-bottom:none;}
-.ly-cen-hp .ulb .li9{height:34px;width:286px;background:#ededed;border-right:1px solid #fff;border-left:1px solid #fff;border-top:none;border-bottom:none;}
-.ly-cen-hp .ulb .li8{height:34px;width:286px;background:#6cc6f5;border-right:1px solid #fff;border-left:1px solid #fff;}
-.ly-cen-hp .ulb .li3{height:34px;width:286px;border-right:1px solid #fff;border-left:1px solid #fff;background:#ededed;}
+.ly-cen-hp .ulb .li1{height:34px;width:260px;background:#ededed;border-right:1px solid #fff;border-left:1px solid #fff;}
+.ly-cen-hp .ulb .li2{height:34px;width:260px;background:#6cc6f5;border-top:none;border-bottom:none;}
+.ly-cen-hp .ulb .li9{height:34px;width:260px;background:#ededed;border-right:1px solid #fff;border-left:1px solid #fff;border-top:none;border-bottom:none;}
+.ly-cen-hp .ulb .li8{height:34px;width:260px;background:#6cc6f5;border-right:1px solid #fff;border-left:1px solid #fff;}
+.ly-cen-hp .ulb .li3{height:34px;width:260px;border-right:1px solid #fff;border-left:1px solid #fff;background:#ededed;}
 .ly-cen-hp ul .f1 .tanchu1{color:#ec6f49;width:68%;text-align:left;margin:30px 0 0 80px; display: none;}
 #ly-con2 .right .cen2 .ff1 .tanchu1{color:#ec6f49;text-align:center; display: none;}
 .ly-cen-hp .ulb-content{ margin:20px 0 0;border-bottom:1px solid #ccc;}
