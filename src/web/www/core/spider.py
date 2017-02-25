@@ -68,6 +68,7 @@ class Spider(object):
         }
         result = requests.get(url, params=params).json()
         # print json.dumps(result, indent=4, ensure_ascii=False)
+        # {u'status': u'ok', u'running': [], u'finished': [], u'pending': [], u'node_name': u'wangruider.local'}
         return result
 
     @staticmethod

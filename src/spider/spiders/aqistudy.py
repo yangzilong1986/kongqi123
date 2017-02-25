@@ -5,11 +5,14 @@ from spider.items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
 
 
 class HistorySpider(scrapy.Spider):
+    '''
+    scrapy crawl aqistudy -a city_name=上海 -a month=2017-01
+    '''
     name = "aqistudy"
+    city_name = ''
+    month = ''
     allowed_domains = ["aqistudy.cn"]
-    start_urls = [
-        "https://www.aqistudy.cn/historydata/index.php"
-    ]
+    start_urls = []
     custom_settings = dict(
         DOWNLOAD_DELAY=2,
         CONCURRENT_REQUESTS_PER_DOMAIN=8,
@@ -19,11 +22,26 @@ class HistorySpider(scrapy.Spider):
         },
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, city_name, month, *args, **kwargs):
         super(HistorySpider, self).__init__(*args, **kwargs)
+        self.city_name = city_name
+        self.month = month
+
+    def start_requests(self):
+        if self.city_name and self.month:
+            url = 'https://www.aqistudy.cn/historydata/daydata.php?city=%s&month=%s' % (self.city_name, self.month, )
+            meta = {'city_name': self.city_name, 'month': self.month}
+            return [scrapy.FormRequest(url=url, meta=meta, callback=self.parse_day)]
+        else:
+            url = 'https://www.aqistudy.cn/historydata/index.php'
+            return [scrapy.FormRequest(url=url, callback=self.parse)]
 
     def parse(self, response):
-
+        '''
+        https://www.aqistudy.cn/historydata/index.php
+        :param response:
+        :return:
+        '''
         city_list = response.xpath('//div[@class="all"]//li//a')
         # print "city_list: %s" % str(city_list)
 
@@ -46,6 +64,11 @@ class HistorySpider(scrapy.Spider):
             yield scrapy.Request(url=url, meta=meta, callback=self.parse_month, priority=20)
 
     def parse_month(self, response):
+        '''
+        https://www.aqistudy.cn/historydata/monthdata.php?city=%E4%B8%8A%E6%B5%B7
+        :param response:
+        :return:
+        '''
         city_name = response.meta['city_name']
         month_list = response.xpath('//table[@class="table table-condensed table-bordered table-striped table-hover table-responsive"]//tr[position()>1]')
         if len(month_list) < 1:
@@ -104,6 +127,11 @@ class HistorySpider(scrapy.Spider):
             yield scrapy.Request(url=url, meta=meta, callback=self.parse_day, priority=90)
 
     def parse_day(self, response):
+        '''
+        https://www.aqistudy.cn/historydata/daydata.php?city=%E4%B8%8A%E6%B5%B7&month=2017-02
+        :param response:
+        :return:
+        '''
         city_name = response.meta['city_name']
         day_list = response.xpath('//table[@class="table table-condensed table-bordered table-striped table-hover table-responsive"]//tr[position()>1]')
         if len(day_list) < 1:

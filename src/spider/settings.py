@@ -92,9 +92,9 @@ DEFAULT_REQUEST_HEADERS = {
 # Enable and configure HTTP caching (disabled by default)
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
 # 打开缓存
-HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 # 设置缓存过期时间（单位：秒）
-#HTTPCACHE_EXPIRATION_SECS = 0
+HTTPCACHE_EXPIRATION_SECS = 60 * 60
 # 缓存路径(默认为：.scrapy/httpcache)
 HTTPCACHE_DIR = 'httpcache'
 # 忽略的状态码
