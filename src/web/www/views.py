@@ -13,6 +13,12 @@ app = Flask(__name__, static_folder=STATIC_PATH)
 app.config.from_object('config.MainConfig')
 
 
+@app.before_request
+def before_request():
+    if 'city_name' in session:
+        g.city_name = session['city_name']
+
+
 @app.route('/')
 def index():
     city_name = u'上海'
