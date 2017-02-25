@@ -19,6 +19,19 @@ def before_request():
         g.city_name = session['city_name']
 
 
+@app.route('/city')
+def city_index():
+    weather_client = Weather.factory()
+    cities = weather_client.get_group_weather_city()
+
+    data = dict()
+    data['current_page'] = 'city'
+    data['req_args'] = dict(request.args.items())
+    data['cities'] = cities
+
+    return render_template('city.html', **data)
+
+
 @app.route('/')
 def index():
     city_name = u'上海'
@@ -204,15 +217,34 @@ def map_index():
     return render_template('map/index.html', **data)
 
 
-@app.route('/city')
-def city_index():
-    weather_client = Weather.factory()
-    cities = weather_client.get_group_weather_city()
+@app.route('/api')
+def api_index():
+    city_name = u'上海'
+
+    page = request.args.get('page', 1, type=int)
+    date_start = request.args.get('date_start', default='')
+    date_end = request.args.get('date_end', default='')
+    city_name = request.args.get('city_name', default='')
+
+    condition = {
+
+    }
+    other = {
+        'city_name': city_name,
+    }
+    page = request.args.get('page', 1, type=int)
+    history_client = History.factory()
+    info = history_client.search_day(condition, page, 31, other)
+    # print json.dumps(dict(info), indent=7, ensure_ascii=False)
+    print str(info)
+
+    info['pages'] = min(7, info['pages'])
 
     data = dict()
-    data['current_page'] = 'city'
+    data['current_page'] = 'api'
     data['req_args'] = dict(request.args.items())
-    data['cities'] = cities
+    data['info'] = info
+    data['page'] = page
 
-    return render_template('city.html', **data)
+    return render_template('api/index.html', **data)
 

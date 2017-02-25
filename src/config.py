@@ -35,7 +35,8 @@ else:
         'port': 6379
     }
     SCRAPYD_CONFIG = {
-        'url': 'http://127.0.0.1:6800'
+        'url': 'http://127.0.0.1:6800',
+        'project': 'spider'
     }
 
 # 数据库连接字符串
