@@ -1,5 +1,7 @@
 # coding:utf-8
 
+import datetime
+import time
 import json
 from flask import Flask, render_template, request, redirect, url_for, send_file, g, session
 from os.path import dirname, abspath
@@ -7,6 +9,7 @@ from core.history import History
 from core.weather import Weather
 from core.yahoo import Yahoo
 from core.spider import Spider
+from core.crawl import Crawl
 
 STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
 
@@ -62,9 +65,11 @@ def index():
 def data_index():
     city_name = u'上海'
 
-    spider_client = Spider.factory()
-    job_list = spider_client.list_job()
-    print str(job_list)
+    current = datetime.datetime.now()
+
+    crawl_client = Crawl.factory()
+    job_list = crawl_client.get_job_list(city_name, current.year, current.month)
+    print job_list
 
     data = dict()
     data['current_page'] = 'data'

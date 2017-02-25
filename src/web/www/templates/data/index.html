@@ -38,12 +38,23 @@
                 <div class="w800 mt20">
                     <table class="mt20" border="1" align="center" style="border:none;width:100%">
                         <tr style="background:#fafafa;">
-                            <th>日期</th>
                             <th>城市</th>
+                            <th>日期</th>
                             <th>爬虫类型</th>
                             <th>爬虫状态</th>
                             <th>操作</th>
                         </tr>
+                        {% if job_list %}
+                            {% for value in job_list %}
+                                <tr>
+                                    <td>{{ value['city_name'] }}</td>
+                                    <td>{{ value['job_year'] }}-{{ value['job_month'] }}</td>
+                                    <td>{{ value['job_type'] }}</td>
+                                    <td>{{ value['job_status'] }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
                     </table>
                 </div>
 

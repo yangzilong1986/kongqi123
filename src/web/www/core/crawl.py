@@ -38,3 +38,14 @@ class Crawl(object):
     def create_crawl_job_info(data):
         with get_new_db() as conn:
             return insert_table(conn, 'crawl_job', data)
+
+    @staticmethod
+    def get_job_list(city_name, year, month):
+        with get_new_db() as conn:
+            condition = {
+                'city_name': city_name,
+                'job_year': year,
+                'job_month': month
+            }
+            data = get_table_rows(conn, 'crawl_job', condition)
+            return data
