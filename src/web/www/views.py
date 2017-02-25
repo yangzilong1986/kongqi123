@@ -74,8 +74,8 @@ def data_index():
     return render_template('data/index.html', **data)
 
 
-@app.route('/data/search')
-def data_search():
+@app.route('/data/history')
+def data_history():
     city_name = u'上海'
 
     page = request.args.get('page', 1, type=int)
@@ -103,7 +103,39 @@ def data_search():
     data['info'] = info
     data['page'] = page
 
-    return render_template('data/search.html', **data)
+    return render_template('data/history.html', **data)
+
+
+@app.route('/data/weather')
+def data_weather():
+    city_name = u'上海'
+
+    page = request.args.get('page', 1, type=int)
+    date_start = request.args.get('date_start', default='')
+    date_end = request.args.get('date_end', default='')
+    city_name = request.args.get('city_name', default='')
+
+    condition = {
+
+    }
+    other = {
+        'city_name': city_name,
+    }
+    page = request.args.get('page', 1, type=int)
+    history_client = History.factory()
+    info = history_client.search_day(condition, page, 31, other)
+    # print json.dumps(dict(info), indent=7, ensure_ascii=False)
+    print str(info)
+
+    info['pages'] = min(7, info['pages'])
+
+    data = dict()
+    data['current_page'] = 'data'
+    data['req_args'] = dict(request.args.items())
+    data['info'] = info
+    data['page'] = page
+
+    return render_template('data/weather.html', **data)
 
 
 @app.route('/report')
