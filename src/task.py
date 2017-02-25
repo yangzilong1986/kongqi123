@@ -1,6 +1,7 @@
 # coding:utf-8
 import datetime
 import time
+from apscheduler.schedulers.blocking import BlockingScheduler
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
@@ -71,6 +72,10 @@ def run_export_spider_job(current_date=''):
             print 'create job failed: city: %s, type, %d' % (name, Crawl.JOB_TYPE_WEATHER, )
         print 'create job success! city: %s, type, %d' % (name, Crawl.JOB_TYPE_WEATHER, )
 
+
+def run_crontab():
+    # schedule.every(10).minutes.do(run_export_service)
+    print 'crontab'
 
 if __name__ == '__main__':
     from web.runhelp import main
