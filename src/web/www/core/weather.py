@@ -32,3 +32,7 @@ class Weather(object):
                 data[letter].append(row['city_name'])
 
             return sorted(data.items())
+
+    @staticmethod
+    def get_weather_city_all():
+        return get_table_all('weather_city')
