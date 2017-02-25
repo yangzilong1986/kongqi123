@@ -91,7 +91,7 @@ class Spider(object):
         :param task_type:
         :return:
         """
-        job_status = Spider.list_jobs()
+        job_status = Spider.list_job()
         job_ids_pending = set([x['id'] for x in job_status['pending']])
         job_ids_running = set([x['id'] for x in job_status['running']])
         job_ids = job_ids_pending | job_ids_running
