@@ -48,10 +48,26 @@
                             {% for value in job_list %}
                                 <tr>
                                     <td>{{ value['city_name'] }}</td>
-                                    <td>{{ value['job_year'] }}-{{ value['job_month'] }}</td>
-                                    <td>{{ value['job_type'] }}</td>
-                                    <td>{{ value['job_status'] }}</td>
-                                    <td></td>
+                                    <td>{{ value['job_year'] }}年{{ value['job_month'] }}月</td>
+                                    <td>
+                                        {% if value['job_type'] == 1 %}
+                                            AQI爬虫
+                                        {% elif value['job_type'] == 2 %}
+                                            天气爬虫
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if value['job_status'] == 1 %}
+                                            就绪
+                                        {% elif value['job_status'] == 2 %}
+                                            爬取中
+                                        {% elif value['job_status'] == 2 %}
+                                            已完成
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a class="bluebg_a" href="/">启动</a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         {% endif %}

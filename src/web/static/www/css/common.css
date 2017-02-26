@@ -796,8 +796,6 @@ i.icon-kulian{background-position:-216px -216px}
 .ly-cen-hp .ulb-content .li7{height:34px;width:114px;border-left:none;}
 .ly-cen-hp .ulb-content .li8{height:34px;width:165px;border-left:none;font-size:14px;}
 .ly-cen-hp .ulb-content .li4, .li5, .li6 , .li7{color:#666;font-size:14px;}
-.ly-cen-hp .ulb-content .bluebg a{height:20px;line-height:20px;width:50px;display:inline-block;color:#6CC6F5;border-radius:16px;border:1px solid #6CC6F5}
-.ly-cen-hp .ulb-content .bluebg a:hover{background:#6CC6F5;color:#fff;}
 .ly-cen-hp .ulb .li2 a{color:#fff;}
 .ly-cen-hp .ulb .li8 {color:#fff;}
 .ly-cen-hp .ulb-content .c33 {color:#333;font-size:14px;font-weight:700}
@@ -825,6 +823,9 @@ i.icon-kulian{background-position:-216px -216px}
 #con .ly-user{width:66.6%;height:430px;float:left;}
 #con .ly-user h1{width:98%;margin:0 auto;height:72px;border-bottom:1px solid #ccc;line-height:72px;font-size:24px;text-indent:12px;}
 .aa-ts{display:inline-block;color:#ec6f49;line-height:30px;font-size:12px;height:30px;margin-left:85px;margin-bottom:-10px;padding:6px 0;}
+
+.bluebg_a{height:20px;line-height:20px;width:50px;display:inline-block;color:#6CC6F5;border-radius:16px;border:1px solid #6CC6F5}
+.bluebg_a:hover{background:#6CC6F5;color:#fff;}
 
 
 #con .ly-user .aa-ts img{margin:0 6px;}
