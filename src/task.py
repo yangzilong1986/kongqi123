@@ -2,6 +2,9 @@
 import datetime
 import time
 from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from apscheduler.jobstores.memory import MemoryJobStore
+from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
@@ -73,9 +76,35 @@ def run_export_spider_job(current_date=''):
         print 'create job success! city: %s, type, %d' % (name, Crawl.JOB_TYPE_WEATHER, )
 
 
+def my_job():
+    print time.time()
+
+
 def run_crontab():
     # schedule.every(10).minutes.do(run_export_service)
     print 'crontab'
+
+    engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+    jobstores = {
+        'sqlalchemy': SQLAlchemyJobStore(url=SQLALCHEMY_DATABASE_URI_MYSQL, engine=engine),
+        'default': MemoryJobStore()
+    }
+    executors = {
+        'default': ThreadPoolExecutor(10),
+        'processpool': ProcessPoolExecutor(3)
+    }
+    job_defaults = {
+        'coalesce': False,
+        'max_instances': 3
+    }
+    scheduler = BlockingScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
+
+    # scheduler.add_job(my_job, 'interval', seconds=5)
+    # scheduler.add_job(my_job, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
+    scheduler.add_job(run_export_spider_job, 'cron', year='*', month='*', day=1, hour=0, minute=0, second=0)
+
+    scheduler.start()
+
 
 if __name__ == '__main__':
     from web.runhelp import main
