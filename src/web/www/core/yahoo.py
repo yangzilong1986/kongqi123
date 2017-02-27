@@ -33,6 +33,9 @@ class Yahoo(object):
 
     @staticmethod
     def get_woeid_by_name(name):
+        if isinstance(name, unicode):
+            name = name.encode('utf-8')
+
         result = Yahoo.get_geo_places_info(name)
         if not result:
             return False
@@ -186,6 +189,9 @@ class Yahoo(object):
             }
         }
         '''
+
+        if isinstance(name, unicode):
+            name = name.encode('utf-8')
 
         name_md5 = generate_md5(name)
         redis_key = "yahoo_geo_place_city_%s" % name_md5
