@@ -33,7 +33,7 @@ class Yahoo(object):
 
     @staticmethod
     def get_woeid_by_name(name):
-        if isinstance(name, unicode):
+        if not isinstance(name, unicode):
             name = name.encode('utf-8')
 
         result = Yahoo.get_geo_places_info(name)
@@ -190,7 +190,7 @@ class Yahoo(object):
         }
         '''
 
-        if isinstance(name, unicode):
+        if not isinstance(name, unicode):
             name = name.encode('utf-8')
 
         name_md5 = generate_md5(name)

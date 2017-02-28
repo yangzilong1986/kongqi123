@@ -25,7 +25,7 @@ class Weather(object):
             data = {}
             for row in rows:
                 letter = row['city_url'][7].upper()
-                print row['city_url'], letter
+                # print row['city_url'], letter
 
                 if letter not in data:
                     data[letter] = []
@@ -37,3 +37,11 @@ class Weather(object):
     def get_weather_city_all():
         with get_new_db() as conn:
             return get_table_all(conn, 'weather_city')
+
+    @staticmethod
+    def get_city_by_name(name):
+        with get_new_db() as conn:
+            condition = {
+                'city_name': name
+            }
+            return get_table_one_row(conn, 'weather_city', condition)

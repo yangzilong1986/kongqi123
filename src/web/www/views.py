@@ -19,6 +19,7 @@ app.config.from_object('config.MainConfig')
 
 @app.before_request
 def before_request():
+    g.city_name = u'上海'
     if 'city_name' in session:
         g.city_name = session['city_name']
 
@@ -26,6 +27,15 @@ def before_request():
 @app.route('/city')
 def city_index():
     weather_client = Weather.factory()
+
+    name = request.args.get('name', default='')
+    if name:
+        city_info = weather_client.get_city_by_name(name)
+        # print city_info
+        if city_info:
+            session['city_name'] = city_info['city_name']
+            return redirect('/')
+
     cities = weather_client.get_group_weather_city()
 
     data = dict()
@@ -38,7 +48,8 @@ def city_index():
 
 @app.route('/')
 def index():
-    city_name = u'上海'
+    city_name = g.city_name
+
     yahoo_client = Yahoo.factory()
     woeid = yahoo_client.get_woeid_by_name(city_name)
     if not woeid:
@@ -63,7 +74,7 @@ def index():
 
 @app.route('/data')
 def data_index():
-    city_name = u'上海'
+    city_name = g.city_name
 
     current = datetime.datetime.now()
 
@@ -81,7 +92,7 @@ def data_index():
 
 @app.route('/data/history')
 def data_history():
-    city_name = u'上海'
+    city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
@@ -113,7 +124,7 @@ def data_history():
 
 @app.route('/data/weather')
 def data_weather():
-    city_name = u'上海'
+    city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
@@ -145,7 +156,7 @@ def data_weather():
 
 @app.route('/report')
 def report_index():
-    city_name = u'上海'
+    city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
@@ -177,7 +188,7 @@ def report_index():
 
 @app.route('/learn')
 def learn_index():
-    city_name = u'上海'
+    city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
@@ -209,7 +220,7 @@ def learn_index():
 
 @app.route('/map')
 def map_index():
-    city_name = u'上海'
+    city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
@@ -241,7 +252,7 @@ def map_index():
 
 @app.route('/api')
 def api_index():
-    city_name = u'上海'
+    city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')

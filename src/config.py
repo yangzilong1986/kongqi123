@@ -239,3 +239,4 @@ class MainConfig(BaseConfig):
     """
     DEBUG = True
     CSRF_ENABLED = True
+    SECRET_KEY = '2wsxcde34rfvbgt56yhnmju78iklop4'
