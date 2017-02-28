@@ -35,7 +35,7 @@
 .tj-all .tj-date:hover li{background: url(../images/white-rili.png) no-repeat 0px 8px;}
 .tj-all .tj-date li{position:relative;}
 
-.tj-sanji{display:none;position:absolute;bottom:12px;left:20px;width:400px;}
+.tj-sanji{position:absolute;bottom:12px;left:20px;width:400px;}
 .tj-sanji a{display:block;float:left;height:30px;}
 .tj-sanji .s-date,.tj-sanji .e-date{background:#fff;width:96px;border:1px solid #bbb;color:#333;text-indent:10px;text-decoration:none;line-height: 30px;}
 .tj-sanji hr{float:left;width:30px;margin:15px 10px;}

@@ -40,36 +40,18 @@
                 <p class="hp">AQI DATA</p>
 
                 <div class="tj-select">
-                    <ul class="tj-time" id="main_box">
-                        <li class="select_box">
-                            <a href="javascript:void(0);" class="tj-date"><img src="/static/www/images/rili.png" alt=""></a>
-                            <a href="javascript:void(0);" class="xianshi">全部</a>
-                            <div class="tj-all" style="display: block;">
-                                <ul class="son_ul" style="display: none;z-index: 99;position: relative;background: white;">
-                                    <a href=""><li class="c-block">全部</li></a>
-                                    <a href=""><li class="today">今日</li></a>
-                                    <a href=""><li class="today">昨日</li></a>
-                                    <a href=""><li class="c-block">最近7天</li></a>
-                                    <a href=""><li class="c-block">最近30天</li></a>
-                                    <a href="javascript:void(0);" class="tj-date c-block"><li class="">可选择范围</li></a>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
                     <div class="tj-sanji">
-                        <a href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">2017-02-01</a>
-                        <hr>
-                        <a href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">2017-02-14</a>
-                        <a href="javascript:void(0);" class="tj-btn2" onclick="getcountbydate()">确认</a><a href="javascript:void(0);" class="tj-btn3">取消</a>
-                    </div>
-                    <div class="tj-search">
-                        <p class="search-p">
-                            <input type="text" placeholder="请输入应用名称" id="name" value="">
-                            <a href="javascript:void(0);" class="tj-btn2" onclick="searchbyname()">确认</a>
-                        </p>
+                        <a href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                            {{ day7 }}
+                        </a>
+                        <hr />
+                        <a href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                            {{ today }}
+                        </a>
+                        <a href="javascript:void(0);" class="tj-btn2" onclick="history_search()">确认</a>
+                        <a href="/data/weather" class="tj-btn3">取消</a>
                     </div>
                 </div>
-
 
                 <div class="w800 mt20">
                     <table border="1" align="center" style="border:none;width:100%">
@@ -134,38 +116,9 @@
 {% include "footer.html" %}
 
 <script>
-    $(function(){
-        $('.select_box').click(function(){
-            $('.tj-all, .son_ul').css('display','block');
-        });
-
-        $('.son_ul .tj-date').click(function(){
-            $('.tj-sanji').css('display','block');
-            $('.tj-time').css('display','none');
-        });
-
-        $('.select-type').click(function(){
-            $('.select-er').css('display','block');
-        });
-
-        $('.c-block').click(function(){
-            $('.tj-btn').css('display','inline-block');
-        });
-
-        $('.tj-btn3').click(function(){
-            $('.tj-sanji').css('display','none');
-            $('.tj-time').css('display','block');
-            $('.tj-all').css('display','none');
-        });
-
-        $('.son_ul').hover(
-            function(){},
-            function(){
-                $(this).parent().find("ul.son_ul").slideUp();
-            }
-        );
-    });
+    function history_search() {
+        
+    }
 </script>
-
 </body>
 </html>

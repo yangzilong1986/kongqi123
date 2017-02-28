@@ -113,6 +113,10 @@ def data_history():
     weather_client = Weather.factory()
     weather_city = weather_client.get_city_by_name(city_name)
 
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
     date_end = request.args.get('date_end', default='')
@@ -134,6 +138,8 @@ def data_history():
 
     data = dict()
     data['current_page'] = 'data'
+    data['today'] = today
+    data['day7'] = day7
     data['history_city'] = history_city
     data['weather_city'] = weather_city
     data['req_args'] = dict(request.args.items())
@@ -155,6 +161,10 @@ def data_weather():
     if not weather_city:
         return u'暂时不支持此城市的AQI数据查询'
 
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
     date_end = request.args.get('date_end', default='')
@@ -176,6 +186,8 @@ def data_weather():
 
     data = dict()
     data['current_page'] = 'data'
+    data['today'] = today
+    data['day7'] = day7
     data['history_city'] = history_city
     data['weather_city'] = weather_city
     data['req_args'] = dict(request.args.items())
