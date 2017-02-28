@@ -25,8 +25,12 @@
     <div id="ly-con4">
         <ul class="inf">
             <a href="/data"><li class="d6">数据爬虫<span></span></li></a>
+            {% if history_city %}
             <a href="/data/history"><li class="d5">历史AQI<span></span></li></a>
+            {% endif %}
+            {% if weather_city %}
             <a href="/data/weather"><li class="d5">历史天气<span></span></li></a>
+            {% endif %}
         </ul>
 
         <div class="right">

@@ -79,6 +79,12 @@ def index():
 def data_index():
     city_name = g.city_name
 
+    history_client = History.factory()
+    history_city = history_client.get_city_by_name(city_name)
+
+    weather_client = Weather.factory()
+    weather_city = weather_client.get_city_by_name(city_name)
+
     current = datetime.datetime.now()
 
     crawl_client = Crawl.factory()
@@ -87,6 +93,8 @@ def data_index():
 
     data = dict()
     data['current_page'] = 'data'
+    data['history_city'] = history_city
+    data['weather_city'] = weather_city
     data['req_args'] = dict(request.args.items())
     data['job_list'] = job_list
 
@@ -96,6 +104,14 @@ def data_index():
 @app.route('/data/history')
 def data_history():
     city_name = g.city_name
+
+    history_client = History.factory()
+    history_city = history_client.get_city_by_name(city_name)
+    if not history_city:
+        return u'暂时不支持此城市的天气数据查询'
+
+    weather_client = Weather.factory()
+    weather_city = weather_client.get_city_by_name(city_name)
 
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
@@ -118,6 +134,8 @@ def data_history():
 
     data = dict()
     data['current_page'] = 'data'
+    data['history_city'] = history_city
+    data['weather_city'] = weather_city
     data['req_args'] = dict(request.args.items())
     data['info'] = info
     data['page'] = page
@@ -129,6 +147,14 @@ def data_history():
 def data_weather():
     city_name = g.city_name
 
+    history_client = History.factory()
+    history_city = history_client.get_city_by_name(city_name)
+
+    weather_client = Weather.factory()
+    weather_city = weather_client.get_city_by_name(city_name)
+    if not weather_city:
+        return u'暂时不支持此城市的AQI数据查询'
+
     page = request.args.get('page', 1, type=int)
     date_start = request.args.get('date_start', default='')
     date_end = request.args.get('date_end', default='')
@@ -150,6 +176,8 @@ def data_weather():
 
     data = dict()
     data['current_page'] = 'data'
+    data['history_city'] = history_city
+    data['weather_city'] = weather_city
     data['req_args'] = dict(request.args.items())
     data['info'] = info
     data['page'] = page

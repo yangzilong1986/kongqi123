@@ -18,6 +18,14 @@ class History(object):
         return obj
 
     @staticmethod
+    def get_city_by_name(name):
+        with get_new_db() as conn:
+            condition = {
+                'city_name': name
+            }
+            return get_table_one_row(conn, 'history_city', condition)
+
+    @staticmethod
     def get_history_city_all():
         with get_new_db() as conn:
             return get_table_all(conn, 'history_city')
