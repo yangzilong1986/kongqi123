@@ -43,10 +43,18 @@ class Yahoo(object):
             return False
         if not result['place']:
             return False
-        if 'woeid' not in result['place'][0]:
-            # @todo bug
+        if len(result['place']) < 1:
             return False
-        woeid = int(result['place'][0]['woeid'])
+
+        # print 'result place:', result['place']
+        if type(result['place']) == dict:
+            if 'woeid' not in result['place']:
+                return False
+            woeid = int(result['place']['woeid'])
+        else:
+            if 'woeid' not in result['place'][0]:
+                return False
+            woeid = int(result['place'][0]['woeid'])
         if not woeid:
             return False
 
