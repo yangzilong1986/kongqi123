@@ -44,6 +44,7 @@ class Yahoo(object):
         if not result['place']:
             return False
         if 'woeid' not in result['place'][0]:
+            # @todo bug
             return False
         woeid = int(result['place'][0]['woeid'])
         if not woeid:
@@ -508,6 +509,7 @@ class Yahoo(object):
         if 'condition' in weather_channel['item']:
             data = dict(data.items() + weather_channel['item']['condition'].items())
             # t = time.strptime(data['date'], '%a, %d %b %Y %I:%M %p %Z')
+            # @todo: 时区问题
             t = time.strptime(data['date'][:-4], '%a, %d %b %Y %I:%M %p')
             data['date2'] = t.tm_hour
             data['text2'] = WEATHER_TYPES_CN['3200']

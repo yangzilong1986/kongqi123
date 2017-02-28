@@ -19,6 +19,7 @@ app.config.from_object('config.MainConfig')
 
 @app.before_request
 def before_request():
+    # @todo 首页当前城市
     g.city_name = u'上海'
     if 'city_name' in session:
         g.city_name = session['city_name']
@@ -34,7 +35,7 @@ def city_index():
         # print city_info
         if city_info:
             session['city_name'] = city_info['city_name']
-            return redirect('/')
+            return redirect('/?city=%s' % city_info['city_name'])
 
     cities = weather_client.get_group_weather_city()
 
@@ -48,8 +49,10 @@ def city_index():
 
 @app.route('/')
 def index():
-    city_name = g.city_name
+    # @todo 切换城市
+    city = request.args.get('city', default='')
 
+    city_name = g.city_name
     yahoo_client = Yahoo.factory()
     woeid = yahoo_client.get_woeid_by_name(city_name)
     if not woeid:
