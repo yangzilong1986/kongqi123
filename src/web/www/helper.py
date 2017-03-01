@@ -7,7 +7,7 @@ from math import ceil
 
 
 def get_page_count(total, page_size):
-    return int(ceil(float(total) / min(1, page_size)))
+    return int(ceil(float(total) / max(1, page_size)))
 
 
 def to_dict(row):

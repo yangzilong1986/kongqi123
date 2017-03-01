@@ -84,9 +84,10 @@ class Weather(object):
         # log.debug('sql:' + sql_select + ' | ' + str(sql_val))
         # log.debug('sql:' + sql_count + ' | ' + str(sql_val))
         with get_new_db() as conn:
-            print sql_select + sql_order,  sql_count
+            # print sql_select + sql_order,  sql_count
             rows = conn.execute(sql_select + sql_order, sql_val).fetchall()
             total = conn.execute(sql_count, sql_val).fetchone()
+            # print sql_count, total
             pages = get_page_count(total['c'], per_page)
 
             result['items'] = rows
