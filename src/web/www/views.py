@@ -75,7 +75,7 @@ def index():
     return render_template('index.html', **data)
 
 
-@app.route('/data')
+@app.route('/data', methods=['GET', 'POST'])
 def data_index():
     city_name = g.city_name
 
@@ -85,11 +85,34 @@ def data_index():
     weather_client = Weather.factory()
     weather_city = weather_client.get_city_by_name(city_name)
 
-    current = datetime.datetime.now()
-
     crawl_client = Crawl.factory()
+
+    if request.method == 'POST':
+        job_id = request.form.get('job_id', default=0)
+        if not job_id:
+            return json.dumps({'status': False, 'message': u'没有任务id!'})
+
+        job_info = crawl_client.get_job_info_by_id(job_id)
+        if not job_info:
+            return json.dumps({'status': False, 'message': u'没有任务信息!'})
+        if 'city_name' not in job_info or job_info['city_name'] != city_name:
+            return json.dumps({'status': False, 'message': u'此城市没有任务信息!'})
+
+        # scrapy crawl aqistudy -a city_name=上海 -a month=2017-01
+        sp = Spider.factory()
+        m = job_info['job_month']
+        if int(m) < 10:
+            m = '0' + str(m)
+        month = str(job_info['job_year']) + '-' + str(m)
+
+        result = sp.schedule_job(spider=job_info['job_spider'], setting=[], jobid=job_id, city_name=city_name, month=month)
+        if not result:
+            return json.dumps({'status': False, 'message': u'启动任务失败!'})
+        return json.dumps({'status': False, 'message': u'启动任务成功!'})
+
+    current = datetime.datetime.now()
     job_list = crawl_client.get_job_list(city_name, current.year, current.month)
-    print job_list
+    # print job_list
 
     data = dict()
     data['current_page'] = 'data'

@@ -24,6 +24,14 @@ class Crawl(object):
         return obj
 
     @staticmethod
+    def get_job_info_by_id(job_id):
+        with get_new_db() as conn:
+            condition = {
+                'job_id': job_id,
+            }
+            return get_table_one_row(conn, 'crawl_job', condition)
+
+    @staticmethod
     def get_crawl_job_info(city_name, year, month, spider):
         with get_new_db() as conn:
             condition = {

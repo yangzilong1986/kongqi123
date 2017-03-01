@@ -30,12 +30,20 @@ class Spider(object):
         payload = {
             'project': SCRAPYD_CONFIG['project'],
             'spider': spider,
-            'setting': setting or [],
-            'jobid': jobid or uuid.uuid1().hex
+            'setting': setting,
+            'jobid': jobid
         }
         payload.update(**kwargs)
-        result = requests.post(url, data=payload).json()
-        # print json.dumps(result, indent=4, ensure_ascii=False)
+
+        result = False
+        try:
+            result = requests.post(url, data=payload).json()
+            # print json.dumps(result, indent=4, ensure_ascii=False)
+            print url, payload, result
+        except Exception, e:
+            print url, payload, result
+            print e.message
+
         return result
 
     @staticmethod
@@ -51,8 +59,14 @@ class Spider(object):
             'project': SCRAPYD_CONFIG['project'],
             'job': job
         }
-        result = requests.post(url, data=payload).json()
-        # print json.dumps(result, indent=4, ensure_ascii=False)
+
+        result = False
+        try:
+            result = requests.post(url, data=payload).json()
+            # print json.dumps(result, indent=4, ensure_ascii=False)
+        except Exception, e:
+            print e.message
+
         return result
 
     @staticmethod
@@ -67,9 +81,15 @@ class Spider(object):
         params = {
             'project': SCRAPYD_CONFIG['project']
         }
-        result = requests.get(url, params=params).json()
-        # print json.dumps(result, indent=4, ensure_ascii=False)
-        # {u'status': u'ok', u'running': [], u'finished': [], u'pending': [], u'node_name': u'wangruider.local'}
+
+        result = False
+        try:
+            result = requests.get(url, params=params).json()
+            # print json.dumps(result, indent=4, ensure_ascii=False)
+            # {u'status': u'ok', u'running': [], u'finished': [], u'pending': [], u'node_name': u'wangruider.local'}
+        except Exception, e:
+            print e.message
+
         return result
 
     @staticmethod
@@ -83,9 +103,15 @@ class Spider(object):
         params = {
             'project': SCRAPYD_CONFIG['project']
         }
-        result = requests.get(url, params=params).json()
-        # print json.dumps(result, indent=4, ensure_ascii=False)
-        # {u'status': u'ok', u'running': [], u'finished': [], u'pending': [], u'node_name': u'wangruider.local'}
+
+        result = False
+        try:
+            result = requests.get(url, params=params).json()
+            # print json.dumps(result, indent=4, ensure_ascii=False)
+            # {u'status': u'ok', u'running': [], u'finished': [], u'pending': [], u'node_name': u'wangruider.local'}
+        except Exception, e:
+            print e.message
+
         return result
 
     @staticmethod

@@ -72,7 +72,7 @@
                                     </td>
                                     <td>{{ value['update_time'] }}</td>
                                     <td>
-                                        <a class="bluebg_a" href="/">启动</a>
+                                        <a class="bluebg_a" href="javascript:;" onclick="start_job({{ value['job_id'] }})">启动</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -91,37 +91,15 @@
 {% include "footer.html" %}
 
 <script>
-    $(function(){
-        $('.select_box').click(function(){
-            $('.tj-all, .son_ul').css('display','block');
-        });
-
-        $('.son_ul .tj-date').click(function(){
-            $('.tj-sanji').css('display','block');
-            $('.tj-time').css('display','none');
-        });
-
-        $('.select-type').click(function(){
-            $('.select-er').css('display','block');
-        });
-
-        $('.c-block').click(function(){
-            $('.tj-btn').css('display','inline-block');
-        });
-
-        $('.tj-btn3').click(function(){
-            $('.tj-sanji').css('display','none');
-            $('.tj-time').css('display','block');
-            $('.tj-all').css('display','none');
-        });
-
-        $('.son_ul').hover(
-            function(){},
-            function(){
-                $(this).parent().find("ul.son_ul").slideUp();
+    function start_job(job_id) {
+        $.post('/data', {job_id: job_id}, function (result) {
+            if (!result) {
+                alert('远程服务器没响应');
+                return false;
             }
-        );
-    });
+            alert(result.message)
+        }, 'json');
+    }
 </script>
 
 </body>
