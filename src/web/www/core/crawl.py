@@ -44,8 +44,17 @@ class Crawl(object):
         with get_new_db() as conn:
             condition = {
                 'city_name': city_name,
-                'job_year': year,
-                'job_month': month
+                # 'job_year': year,
+                # 'job_month': month
             }
-            data = get_table_rows(conn, 'crawl_job', condition)
+            # data = get_table_rows(conn, 'crawl_job', condition)
+
+            table = 'crawl_job'
+            keys = condition.keys()
+            where = ' and '.join('`%s`=%%s' % (k,) for k in keys)
+            param = [condition[k] for k in keys]
+            sql = 'select * from ' + table + ' where ' + where + ' order by job_id desc limit 24'
+            # print sql
+            data = [dict(row) for row in conn.execute(sql, param).fetchall()]
+
             return data
