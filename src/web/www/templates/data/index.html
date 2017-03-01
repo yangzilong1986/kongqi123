@@ -46,6 +46,7 @@
                             <th>日期</th>
                             <th>爬虫类型</th>
                             <th>爬虫状态</th>
+                            <th>更新时间</th>
                             <th>操作</th>
                         </tr>
                         {% if job_list %}
@@ -69,6 +70,7 @@
                                             已完成
                                         {% endif %}
                                     </td>
+                                    <td>{{ value['update_time'] }}</td>
                                     <td>
                                         <a class="bluebg_a" href="/">启动</a>
                                     </td>
