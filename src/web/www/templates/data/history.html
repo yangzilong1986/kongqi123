@@ -87,17 +87,23 @@
                         <!-- pages_tab -->
                         <div class="num">
                             {% if info['has_prev'] %}
-                                <li><a href="?page={{ info['prev_num'] }}">上一页</a></li>
+                                <li><a href="?date_start={{ date_start }}&date_end={{ date_end }}&page={{ info['prev_num'] }}">上一页</a></li>
                             {% endif %}
                             {% for p in range(1, info['pages'] + 1) %}
                                 {% if p == page %}
-                                    <li class="aa"><a href="?page={{ p }}">{{ p }}</a></li>
+                                    <li class="aa">
+                                        <a href="?date_start={{ date_start }}&date_end={{ date_end }}&page={{ p }}">{{ p }}</a>
+                                    </li>
                                 {% else %}
-                                    <li><a href="?page={{ p }}">{{ p }}</a></li>
+                                    <li>
+                                        <a href="?date_start={{ date_start }}&date_end={{ date_end }}&page={{ p }}">{{ p }}</a>
+                                    </li>
                                 {% endif %}
                             {% endfor %}
                             {% if info['has_next'] %}
-                                <li><a href="?page={{ info['next_num'] }}" class="p_next">下一页</a></li>
+                                <li>
+                                    <a href="?date_start={{ date_start }}&date_end={{ date_end }}&page={{ info['next_num'] }}" class="p_next">下一页</a>
+                                </li>
                             {% endif %}
                             <span class="page-number">共{{ info['pages'] }}页</span>
                         </div>
