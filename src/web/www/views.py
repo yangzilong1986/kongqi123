@@ -177,8 +177,8 @@ def data_weather():
         'city_name': city_name,
     }
     page = request.args.get('page', 1, type=int)
-    history_client = History.factory()
-    info = history_client.search_day(condition, page, 31, other)
+    weather_client = Weather.factory()
+    info = weather_client.search_day(condition, page, 31, other)
     # print json.dumps(dict(info), indent=7, ensure_ascii=False)
     print str(info)
 

@@ -41,11 +41,11 @@
 
                 <div class="tj-select">
                     <div class="tj-sanji">
-                        <a href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                        <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
                             {{ day7 }}
                         </a>
                         <hr />
-                        <a href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                        <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
                             {{ today }}
                         </a>
                         <a href="javascript:void(0);" class="tj-btn2" onclick="weather_search()">确认</a>
@@ -57,28 +57,20 @@
                     <table border="1" align="center" style="border:none;width:100%">
                         <tr style="background:#fafafa;">
                             <th class="yd-td01">日期</th>
-                            <th>AQI</th>
-                            <th>AQI范围</th>
-                            <th>空气质量</th>
-                            <th>PM2.5</th>
-                            <th>SO2</th>
-                            <th>CO</th>
-                            <th>NO2</th>
-                            <th>O3</th>
+                            <th>天气</th>
+                            <th>温度</th>
+                            <th>风向</th>
+                            <th>风力</th>
                         </tr>
 
                         {% if info and info['items'] %}
                             {% for value in info['items'] %}
                                 <tr>
-                                    <td>{{ value['hd_date'] }}</td>
-                                    <td>{{ value['hd_aqi'] }}</td>
-                                    <td>{{ value['hd_aqi_min'] }} - {{ value['hd_aqi_max'] }}</td>
-                                    <td>{{ value['hd_quality'] }}</td>
-                                    <td>{{ value['hd_pm25'] }}</td>
-                                    <td>{{ value['hd_so2'] }}</td>
-                                    <td>{{ value['hd_co'] }}</td>
-                                    <td>{{ value['hd_no2'] }}</td>
-                                    <td>{{ value['hd_o3'] }}</td>
+                                    <td>{{ value['weather_date'] }}</td>
+                                    <td>{{ value['weather_am'] }} - {{ value['weather_pm'] }}</td>
+                                    <td>{{ value['weather_top'] }} - {{ value['weather_down'] }}</td>
+                                    <td>{{ value['weather_am_wind_type'] }} - {{ value['weather_pm_wind_type'] }}</td>
+                                    <td>{{ value['weather_am_wind_level'] }} - {{ value['weather_pm_wind_level'] }}</td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -117,7 +109,9 @@
 
 <script>
     function weather_search() {
-        
+        var search_date_start = $('#search_date_start').text();
+        var search_date_end = $('#search_date_end').text();
+        window.location = '/data/weather?date_start=' + search_date_start + '&date_end=' + search_date_end;
     }
 </script>
 
