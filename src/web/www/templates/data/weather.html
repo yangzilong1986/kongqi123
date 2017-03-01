@@ -16,7 +16,6 @@
 
 {% include "header.html" %}
 
-<!------banner--------->
 <div id="banner" class="yd-banner">
     <div class="bg">
         <span><img src="/static/www/images/yd-banner006.png" /></span>
@@ -42,11 +41,11 @@
                 <div class="tj-select">
                     <div class="tj-sanji">
                         <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
-                            {{ day7 }}
+                            {{ date_start }}
                         </a>
                         <hr />
                         <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
-                            {{ today }}
+                            {{ date_end }}
                         </a>
                         <a href="javascript:void(0);" class="tj-btn2" onclick="weather_search()">确认</a>
                         <a href="/data/weather" class="tj-btn3">取消</a>
@@ -103,14 +102,13 @@
     </div>
 
 </div>
-<!------banner--------->
 
 {% include "footer.html" %}
 
 <script>
     function weather_search() {
-        var search_date_start = $('#search_date_start').text();
-        var search_date_end = $('#search_date_end').text();
+        var search_date_start = $('#search_date_start').text().trim();
+        var search_date_end = $('#search_date_end').text().trim();
         window.location = '/data/weather?date_start=' + search_date_start + '&date_end=' + search_date_end;
     }
 </script>
