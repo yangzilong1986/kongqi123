@@ -177,3 +177,8 @@ src/spider/settings.pyc
 src/spider/spiders/__init__.pyc
 src/spider/spiders/aqistudy.pyc
 /src/.scrapy/
+index.html
+src/dbs/
+src/logs/supervisord.log.1
+src/setup.py
+src/twistd.pid
