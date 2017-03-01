@@ -108,7 +108,7 @@ def data_index():
         result = sp.schedule_job(spider=job_info['job_spider'], setting=[], jobid=job_id, city_name=city_name, month=month)
         if not result:
             return json.dumps({'status': False, 'message': u'启动任务失败!'})
-        return json.dumps({'status': False, 'message': u'启动任务成功!'})
+        return json.dumps({'status': True, 'message': u'启动任务成功!'})
 
     current = datetime.datetime.now()
     job_list = crawl_client.get_job_list(city_name, current.year, current.month)
