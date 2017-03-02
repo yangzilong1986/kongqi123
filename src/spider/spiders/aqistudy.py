@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import json
+from scrapy import log
 from spider.items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
 
 
@@ -11,6 +12,8 @@ class HistorySpider(scrapy.Spider):
     name = "aqistudy"
     city_name = ''
     month = ''
+    _job = ''
+    jobid = ''
     allowed_domains = ["aqistudy.cn"]
     start_urls = []
     custom_settings = dict(
@@ -22,11 +25,15 @@ class HistorySpider(scrapy.Spider):
         },
     )
 
-    def __init__(self, city_name, month, *args, **kwargs):
+    def __init__(self, city_name, month, _job, jobid, *args, **kwargs):
         super(HistorySpider, self).__init__(*args, **kwargs)
-        self.city_name = city_name.decode('utf-8')
+        if not isinstance(city_name, unicode):
+            city_name = city_name.decode('utf-8')
+        self.city_name = city_name
         self.month = month
 
+        print self.city_name, self.month, type(self.city_name)
+        log.msg("city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.INFO)
         # print args, kwargs
         # if self.jobid:
         #    print "jobid %s" % self.jobid

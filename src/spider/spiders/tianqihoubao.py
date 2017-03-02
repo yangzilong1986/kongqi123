@@ -15,6 +15,8 @@ class WeatherSpider(scrapy.Spider):
     name = "tianqihoubao"
     city_name = ''
     month = ''
+    _job = ''
+    jobid = ''
     allowed_domains = ["tianqihoubao.com"]
     start_urls = []
     custom_settings = dict(
@@ -42,9 +44,11 @@ class WeatherSpider(scrapy.Spider):
         }
     )
 
-    def __init__(self, city_name, month, *args, **kwargs):
+    def __init__(self, city_name, month, _job, jobid, *args, **kwargs):
         super(WeatherSpider, self).__init__(*args, **kwargs)
-        self.city_name = city_name.decode('utf-8')
+        if not isinstance(city_name, unicode):
+            city_name = city_name.decode('utf-8')
+        self.city_name = city_name
         self.month = month
 
     def start_requests(self):
