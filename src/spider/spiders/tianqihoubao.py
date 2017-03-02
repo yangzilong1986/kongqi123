@@ -44,12 +44,14 @@ class WeatherSpider(scrapy.Spider):
         }
     )
 
-    def __init__(self, city_name, month, _job, jobid, *args, **kwargs):
+    def __init__(self, city_name, month, _job='', jobid='', *args, **kwargs):
         super(WeatherSpider, self).__init__(*args, **kwargs)
         if not isinstance(city_name, unicode):
             city_name = city_name.decode('utf-8')
         self.city_name = city_name
         self.month = month
+        self._job = _job
+        self.jobid = jobid
 
     def start_requests(self):
         url = 'http://www.tianqihoubao.com/lishi/'
