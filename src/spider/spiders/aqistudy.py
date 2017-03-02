@@ -8,6 +8,7 @@ from spider.items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
 class HistorySpider(scrapy.Spider):
     '''
     scrapy crawl aqistudy -a city_name=上海 -a month=2017-01
+    python2 -m scrapyd.runner crawl aqistudy -a _job=277778acff1311e6ad02f8bc12734617 -a city_name=上海 -a month=2017-02 -a jobid=596
     '''
     name = "aqistudy"
     city_name = ''
@@ -35,7 +36,7 @@ class HistorySpider(scrapy.Spider):
         self.jobid = jobid
 
         print self.city_name, self.month, type(self.city_name)
-        log.msg("city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.INFO)
+        log.msg("__init__,city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.WARNING)
         # print args, kwargs
         # if self.jobid:
         #    print "jobid %s" % self.jobid
@@ -43,6 +44,12 @@ class HistorySpider(scrapy.Spider):
         #    print "_job %s" % self._job
 
     def start_requests(self):
+        with open('/tmp/scrapyd.log', 'a') as fp:
+            log_line = "start_requests,city_name:%s,month:%s,type:%s" % ('', self.month, type(self.city_name))
+            fp.write(log_line)
+            fp.close()
+
+        log.msg("start_requests,city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.WARNING)
         if self.city_name and self.month:
             url = 'https://www.aqistudy.cn/historydata/daydata.php?city=%s&month=%s' % (self.city_name, self.month, )
             meta = {'city_name': self.city_name, 'month': self.month}

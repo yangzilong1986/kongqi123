@@ -49,6 +49,7 @@ pyOpenSSL==16.2.0
 pyparsing==2.1.10
 pytest==3.0.5
 python-dateutil==2.6.0
+python-scrapyd-api==2.0.1
 pytz==2016.10
 queuelib==1.4.2
 redis==2.10.5
