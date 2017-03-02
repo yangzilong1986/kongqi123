@@ -72,7 +72,7 @@
                                     </td>
                                     <td>{{ value['update_time'] }}</td>
                                     <td>
-                                        <a class="bluebg_a" href="javascript:;" onclick="start_job({{ value['job_id'] }})">启动</a>
+                                        <a class="bluebg_a" href="javascript:;" onclick="start_job(this, {{ value['job_id'] }})">启动</a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -91,13 +91,43 @@
 {% include "footer.html" %}
 
 <script>
-    function start_job(job_id) {
+    function start_job(obj, job_id) {
+        var mesg = $(obj).parent().siblings().eq(0).text()
+            + ' ' + $(obj).parent().siblings().eq(1).text()
+            + ' ' + $(obj).parent().siblings().eq(2).text();
+
         $.post('/data', {job_id: job_id}, function (result) {
             if (!result) {
                 alert('远程服务器没响应');
                 return false;
             }
-            alert(result.message)
+            if (!result.status) {
+                alert_message(result.message);
+                return false;
+            }
+
+            alert_loading(mesg + ' 正在运行爬虫,请稍后... ', function () {
+                var i = setInterval(function () {
+                    $.post('/data/job', {job_id: job_id}, function (result) {
+                        if (!result) {
+                            alert('远程服务器没响应');
+                            return false;
+                        }
+                        if (!result.status) {
+                            alert_message(result.message);
+                            return false;
+                        }
+                        if (result.message == 3) {
+                            clearInterval(i);
+                            close_loading();
+                            alert_message(mesg + ' 抓取已完成！', function () {
+                                location.reload();
+                            });
+                        }
+                    }, 'json');
+                }, 1000);
+            });
+
         }, 'json');
     }
 </script>

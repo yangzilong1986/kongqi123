@@ -6,11 +6,61 @@
         </div>
     </div>
     <!-- ft -->
+
+    <!-----blackbg------>
+    <div class="ly-blabg" style="display: none" id="pop_alert">
+        <div class="blabg"></div>
+        <div class="aleart">
+            <div class="aleart-title">
+                提示<p onclick="$('.ly-blabg').hide()" class="wrong"></p>
+            </div>
+            <ul class="mar">
+                <li class="lia">
+                    <img src="/static/www/images/gt-bg.png" />
+                    <span>提示信息</span>
+                </li>
+            </ul>
+            <p><a href="javascript:void(0)">确定</a></p>
+        </div>
+    </div>
+    <div class="ly-blabg" style="display: none" id="pop_loading">
+        <div class="blabg"></div>
+        <div class="aleart" style="height: 150px">
+            <div class="aleart-title"></div>
+            <ul class="mar">
+                <li class="lia">
+                    <img src="/static/www/images/ICON/loading.gif" />
+                    <span>正在进行...</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-----blackbg------->
+
 </div>
 
 
 <script src="http://api.map.baidu.com/api?v=1.4" type="text/javascript"></script>
-<script type="text/javascript" >
+<script type="text/javascript">
+    function alert_message(message, callback) {
+        $('#pop_alert span').html(message);
+        $('#pop_alert').show();
+        if (callback != undefined) {
+            $('#pop_alert a').one('click', function () {
+                return callback();
+            });
+        }
+    }
+    function alert_loading(message, callback) {
+        $('#pop_loading span').html(message);
+        $('#pop_loading').show();
+        if (callback != undefined) {
+            callback();
+        }
+    }
+    function close_loading() {
+        $('#pop_loading').hide();
+    }
     function getLocation() {
         var options = {
             enableHighAccuracy : true,

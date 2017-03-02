@@ -124,6 +124,24 @@ def data_index():
     return render_template('data/index.html', **data)
 
 
+@app.route('/data/job', methods=['POST'])
+def data_job():
+    city_name = g.city_name
+
+    job_id = request.form.get('job_id', default=0)
+    if not job_id:
+        return json.dumps({'status': False, 'message': u'没有任务id!'})
+
+    crawl_client = Crawl.factory()
+    job_info = crawl_client.get_job_info_by_id(job_id)
+    if not job_info:
+        return json.dumps({'status': False, 'message': u'没有任务信息!'})
+    if 'city_name' not in job_info or job_info['city_name'] != city_name:
+        return json.dumps({'status': False, 'message': u'此城市没有任务信息!'})
+
+    return json.dumps({'status': True, 'message': job_info['job_status']})
+
+
 @app.route('/data/history')
 def data_history():
     city_name = g.city_name

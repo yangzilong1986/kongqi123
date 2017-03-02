@@ -47,15 +47,16 @@
                         <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
                             {{ date_end }}
                         </a>
-                        <a href="javascript:void(0);" class="tj-btn2" onclick="history_search()">确认</a>
-                        <a href="/data/history" class="tj-btn3">取消</a>
+                        <a href="javascript:void(0);" class="tj-btn2" onclick="history_search()">查询</a>
+                        <a href="/data/history" class="tj-btn3">重置</a>
                     </div>
                 </div>
 
                 <div class="w800 mt20">
                     <table border="1" align="center" style="border:none;width:100%">
                         <tr style="background:#fafafa;">
-                            <th class="yd-td01">日期</th>
+                            <th>城市</th>
+                            <th>日期</th>
                             <th>AQI</th>
                             <th>AQI范围</th>
                             <th>空气质量</th>
@@ -69,6 +70,7 @@
                         {% if info and info['items'] %}
                             {% for value in info['items'] %}
                                 <tr>
+                                    <td>{{ value['city_name'] }}</td>
                                     <td>{{ value['hd_date'] }}</td>
                                     <td>{{ value['hd_aqi'] }}</td>
                                     <td>{{ value['hd_aqi_min'] }} - {{ value['hd_aqi_max'] }}</td>

@@ -47,15 +47,16 @@
                         <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
                             {{ date_end }}
                         </a>
-                        <a href="javascript:void(0);" class="tj-btn2" onclick="weather_search()">确认</a>
-                        <a href="/data/weather" class="tj-btn3">取消</a>
+                        <a href="javascript:void(0);" class="tj-btn2" onclick="weather_search()">查询</a>
+                        <a href="/data/weather" class="tj-btn3">重置</a>
                     </div>
                 </div>
 
                 <div class="w800 mt20">
                     <table border="1" align="center" style="border:none;width:100%">
                         <tr style="background:#fafafa;">
-                            <th class="yd-td01">日期</th>
+                            <th>城市</th>
+                            <th>日期</th>
                             <th>天气</th>
                             <th>温度</th>
                             <th>风向</th>
@@ -65,6 +66,7 @@
                         {% if info and info['items'] %}
                             {% for value in info['items'] %}
                                 <tr>
+                                    <td>{{ value['city_name'] }}</td>
                                     <td>{{ value['weather_date'] }}</td>
                                     <td>{{ value['weather_am'] }} - {{ value['weather_pm'] }}</td>
                                     <td>{{ value['weather_top'] }} - {{ value['weather_down'] }}</td>
