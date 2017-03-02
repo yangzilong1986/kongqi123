@@ -48,7 +48,7 @@ class HistorySpider(scrapy.Spider):
             log_line = "start_requests,city_name:%s,month:%s,type:%s" % ('', self.month, type(self.city_name))
             fp.write(log_line)
             fp.close()
-
+        '''
         log.msg("start_requests,city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.WARNING)
         if self.city_name and self.month:
             url = 'https://www.aqistudy.cn/historydata/daydata.php?city=%s&month=%s' % (self.city_name, self.month, )
@@ -57,6 +57,7 @@ class HistorySpider(scrapy.Spider):
         else:
             url = 'https://www.aqistudy.cn/historydata/index.php'
             return [scrapy.FormRequest(url=url, callback=self.parse)]
+        '''
 
     def parse(self, response):
         '''
