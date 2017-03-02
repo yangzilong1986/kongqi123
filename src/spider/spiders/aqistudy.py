@@ -27,6 +27,12 @@ class HistorySpider(scrapy.Spider):
         self.city_name = city_name.decode('utf-8')
         self.month = month
 
+        # print args, kwargs
+        # if self.jobid:
+        #    print "jobid %s" % self.jobid
+        # if self._job:
+        #    print "_job %s" % self._job
+
     def start_requests(self):
         if self.city_name and self.month:
             url = 'https://www.aqistudy.cn/historydata/daydata.php?city=%s&month=%s' % (self.city_name, self.month, )
@@ -176,3 +182,6 @@ class HistorySpider(scrapy.Spider):
             item['hd_rank'] = int(hd_rank.strip())
             yield item
 
+    def closed(self, reason):
+        print '-------------------------spider closed.-----------------------'
+        print reason

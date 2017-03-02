@@ -180,3 +180,6 @@ class WeatherSpider(scrapy.Spider):
             # print u'----- WeatherItem:%s' % json.dumps(dict(item), indent=4, ensure_ascii=False)
             yield item
 
+    def closed(self, reason):
+        print '-------------------------spider closed.-----------------------'
+        print reason
