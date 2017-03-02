@@ -3,13 +3,16 @@ import scrapy
 import json
 from scrapy import log
 from spider.items import HistoryCityItem, HistoryMonthItem, HistoryDayItem
-
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
 
 class HistorySpider(scrapy.Spider):
     '''
     scrapy crawl aqistudy -a city_name=上海 -a month=2017-01
     python2 -m scrapyd.runner crawl aqistudy -a _job=277778acff1311e6ad02f8bc12734617 -a city_name=上海 -a month=2017-02 -a jobid=596
     '''
+
     name = "aqistudy"
     city_name = ''
     month = ''
@@ -17,6 +20,9 @@ class HistorySpider(scrapy.Spider):
     jobid = ''
     allowed_domains = ["aqistudy.cn"]
     start_urls = []
+    engine = None
+    db_session = None
+    session = None
     custom_settings = dict(
         DOWNLOAD_DELAY=2,
         CONCURRENT_REQUESTS_PER_DOMAIN=8,
@@ -35,6 +41,11 @@ class HistorySpider(scrapy.Spider):
         self._job = _job
         self.jobid = jobid
 
+        self.engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+        self.db_session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        self.session = self.db_session()
+
+        '''
         print self.city_name, self.month, type(self.city_name)
         log.msg("__init__,city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.WARNING)
         # print args, kwargs
@@ -42,14 +53,21 @@ class HistorySpider(scrapy.Spider):
         #    print "jobid %s" % self.jobid
         # if self._job:
         #    print "_job %s" % self._job
+        '''
+
+        if self.jobid:
+            sql = "update crawl_job set job_status = 2 where job_id = %s" % self.jobid
+            self.session.execute(sql)
+            self.session.commit()
 
     def start_requests(self):
+        '''
         with open('/tmp/scrapyd.log', 'a') as fp:
             log_line = "start_requests,city_name:%s,month:%s,type:%s" % ('', self.month, type(self.city_name))
             fp.write(log_line)
             fp.close()
-        '''
         log.msg("start_requests,city_name:%s,month:%s,type:%s" % (self.city_name, self.month, type(self.city_name)), level=log.WARNING)
+        '''
         if self.city_name and self.month:
             url = 'https://www.aqistudy.cn/historydata/daydata.php?city=%s&month=%s' % (self.city_name, self.month, )
             meta = {'city_name': self.city_name, 'month': self.month}
@@ -57,7 +75,6 @@ class HistorySpider(scrapy.Spider):
         else:
             url = 'https://www.aqistudy.cn/historydata/index.php'
             return [scrapy.FormRequest(url=url, callback=self.parse)]
-        '''
 
     def parse(self, response):
         '''
@@ -200,5 +217,10 @@ class HistorySpider(scrapy.Spider):
             yield item
 
     def closed(self, reason):
-        print '-------------------------spider closed.-----------------------'
-        print reason
+        # print '-------------------------spider closed.-----------------------'
+        # print reason
+
+        if self.jobid:
+            sql = "update crawl_job set job_status = 3 where job_id = %s" % self.jobid
+            self.session.execute(sql)
+            self.session.commit()

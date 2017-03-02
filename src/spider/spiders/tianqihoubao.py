@@ -4,6 +4,9 @@ import json
 import chardet
 from scrapy.exceptions import CloseSpider
 from scrapy.http import HtmlResponse
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
 
 from spider.items import WeatherCityItem, WeatherDayItem
 
@@ -12,6 +15,7 @@ class WeatherSpider(scrapy.Spider):
     '''
     scrapy crawl tianqihoubao -a city_name=上海 -a month=2017-01
     '''
+
     name = "tianqihoubao"
     city_name = ''
     month = ''
@@ -19,6 +23,9 @@ class WeatherSpider(scrapy.Spider):
     jobid = ''
     allowed_domains = ["tianqihoubao.com"]
     start_urls = []
+    engine = None
+    db_session = None
+    session = None
     custom_settings = dict(
         DOWNLOAD_DELAY=2,
         CONCURRENT_REQUESTS_PER_DOMAIN=8,
@@ -52,6 +59,15 @@ class WeatherSpider(scrapy.Spider):
         self.month = month
         self._job = _job
         self.jobid = jobid
+
+        self.engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+        self.db_session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
+        self.session = self.db_session()
+
+        if self.jobid:
+            sql = "update crawl_job set job_status = 2 where job_id = %s" % self.jobid
+            self.session.execute(sql)
+            self.session.commit()
 
     def start_requests(self):
         url = 'http://www.tianqihoubao.com/lishi/'
@@ -187,5 +203,10 @@ class WeatherSpider(scrapy.Spider):
             yield item
 
     def closed(self, reason):
-        print '-------------------------spider closed.-----------------------'
-        print reason
+        # print '-------------------------spider closed.-----------------------'
+        # print reason
+
+        if self.jobid:
+            sql = "update crawl_job set job_status = 3 where job_id = %s" % self.jobid
+            self.session.execute(sql)
+            self.session.commit()
