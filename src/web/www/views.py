@@ -236,29 +236,27 @@ def data_weather():
 def report_index():
     city_name = g.city_name
 
-    page = request.args.get('page', 1, type=int)
-    date_start = request.args.get('date_start', default='')
-    date_end = request.args.get('date_end', default='')
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
+    date_start = request.args.get('date_start', default=day7)
+    date_end = request.args.get('date_end', default=today)
 
     condition = {
         'city_name': city_name,
+        'date_start': date_start,
+        'date_end': date_end
     }
-    if date_start:
-        condition['date_start'] = date_start
-    if date_end:
-        condition['date_end'] = date_end
-
     history_client = History.factory()
-    info = history_client.search_day(condition, page, 31)
-    # print json.dumps(dict(info), indent=7, ensure_ascii=False)
-    # print str(info)
-    info['pages'] = min(7, info['pages'])
+    info = {}
 
     data = dict()
     data['current_page'] = 'report'
     data['req_args'] = dict(request.args.items())
     data['info'] = info
-    data['page'] = page
+    data['date_start'] = date_start
+    data['date_end'] = date_end
 
     return render_template('report/index.html', **data)
 

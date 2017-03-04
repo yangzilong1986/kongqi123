@@ -32,28 +32,36 @@
         </ul>
 
         <div class="right">
-
             <div class="cen4" id="ly-conbg">
-                <h1>数据爬虫</h1>
+                <h1>天气统计</h1>
                 <p class="hp">DATA SPIDER</p>
+
+                <div class="tj-select">
+                    <div class="tj-sanji">
+                        <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                            {{ date_start }}
+                        </a>
+                        <hr />
+                        <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                            {{ date_end }}
+                        </a>
+                        <a href="javascript:void(0);" class="tj-btn2" onclick="search()">查询</a>
+                        <a href="/report" class="tj-btn3">重置</a>
+                    </div>
+                </div>
 
                 <div class="w800 mt20">
                     <ul class="ulb">
-                        <a style="color:#ffffff;" href="/"><li class="li2">准备中</li></a>
-                        <a href="/"><li class="li1">进行中</li></a>
-                        <a href="/"><li class="li3">已完成</li></a>
+                        <a id="chartTab1" href="javascript:;" onclick="switch_tab(1)"><li class="li2">天气</li></a>
+                        <a id="chartTab2" href="javascript:;" onclick="switch_tab(2)"><li class="li1">风向</li></a>
+                        <a id="chartTab3" href="javascript:;" onclick="switch_tab(3)"><li class="li3">风力</li></a>
                     </ul>
                     <div class="clear"></div>
-                    <table class="mt20" border="1" align="center" style="border:none;width:100%">
-                        <tr style="background:#fafafa;">
-                            <th class="yd-td01">日期</th>
-                            <th>任务名称</th>
-                            <th>操作</th>
-                        </tr>
-                    </table>
-
-                    <div id="chartContainer" style="height: 356px; width: 100%;"></div>
-
+                    <div style="width:100%;margin: 0 auto">
+                        <div id="chartContainer1" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer2" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer3" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                    </div>
                 </div>
 
             </div>
@@ -67,13 +75,28 @@
 {% include "footer.html" %}
 
 <script>
+    function search() {
+        var search_date_start = $('#search_date_start').text().trim();
+        var search_date_end = $('#search_date_end').text().trim();
+        window.location = '/data/history?date_start=' + search_date_start + '&date_end=' + search_date_end;
+    }
+    function switch_tab(tab) {
+        for (var i = 1; i <= 3; i++) {
+            $('#chartContainer' + i).hide();
+            $('#chartTab' + i).css({'color': '#2e2e2e'});
+            $('#chartTab' + i + ' li').css({'background': '#ededed'});
+        }
+        $('#chartContainer' + tab).show();
+        $('#chartTab' + tab).css({'color': '#ffffff'});
+        $('#chartTab' + tab + ' li').css({'background': '#6cc6f5'});
+    }
     $(function () {
-        var chart = new CanvasJS.Chart("chartContainer",
+        var chart1 = new CanvasJS.Chart("chartContainer1",
             {
                 theme: "theme3",
-                //title:{
-                //    text: "收支统计"
-                //},
+                title:{
+                    text: "天气统计"
+                },
                 animationEnabled: true,
                 data: [
                     {
@@ -89,39 +112,54 @@
                     }
                 ]
             });
-        chart.render();
-    });
+        chart1.render();
 
-    $(function(){
-        $('.select_box').click(function(){
-            $('.tj-all, .son_ul').css('display','block');
-        });
+        var chart2 = new CanvasJS.Chart("chartContainer2",
+            {
+                theme: "theme3",
+                title:{
+                    text: "风向统计"
+                },
+                animationEnabled: true,
+                data: [
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        toolTipContent: "{y} - #percent %",
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                            { y: 100, indexLabel: "收入 100 元"},
+                            { y: 200, indexLabel: "支出 200 元"},
+                            { y: 100, indexLabel: "余额 100 元"}
+                        ]
+                    }
+                ]
+            });
+        chart2.render();
 
-        $('.son_ul .tj-date').click(function(){
-            $('.tj-sanji').css('display','block');
-            $('.tj-time').css('display','none');
-        });
-
-        $('.select-type').click(function(){
-            $('.select-er').css('display','block');
-        });
-
-        $('.c-block').click(function(){
-            $('.tj-btn').css('display','inline-block');
-        });
-
-        $('.tj-btn3').click(function(){
-            $('.tj-sanji').css('display','none');
-            $('.tj-time').css('display','block');
-            $('.tj-all').css('display','none');
-        });
-
-        $('.son_ul').hover(
-            function(){},
-            function(){
-                $(this).parent().find("ul.son_ul").slideUp();
-            }
-        );
+        var chart3 = new CanvasJS.Chart("chartContainer3",
+            {
+                theme: "theme3",
+                title:{
+                    text: "风力统计"
+                },
+                animationEnabled: true,
+                data: [
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        toolTipContent: "{y} - #percent %",
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                            { y: 100, indexLabel: "收入 100 元"},
+                            { y: 200, indexLabel: "支出 200 元"},
+                            { y: 100, indexLabel: "余额 100 元"}
+                        ]
+                    }
+                ]
+            });
+        chart3.render();
+        switch_tab(1);
     });
 </script>
 
