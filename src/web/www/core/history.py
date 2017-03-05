@@ -31,6 +31,41 @@ class History(object):
             return get_table_all(conn, 'history_city')
 
     @staticmethod
+    def total_history(filters, group_name):
+        city_name = filters.get('city_name')
+        date_start = filters.get('date_start')
+        date_end = filters.get('date_end')
+
+        sql_select = 'SELECT %s, count(*) cnt FROM  history_day ' % (group_name, )
+        sql = ''
+        sql_val = ()
+
+        if city_name:
+            sql += ' and city_name = %s'
+            sql_val += (city_name,)
+        if date_start:
+            sql += ' and hd_date >= %s'
+            sql_val += (date_start,)
+        if date_end:
+            sql += ' and hd_date <= %s'
+            sql_val += (date_end,)
+
+        if sql.startswith(' and '):
+            sql = sql[len(' and '):]
+        if sql:
+            sql = 'where ' + sql
+
+        sql_group = ' group by %s' % (group_name, )
+        sql_select += sql
+
+        # log.debug('sql:' + sql_select + ' | ' + str(sql_val))
+        # SELECT weather_am, count(*) FROM `weather_day` WHERE city_name = '上海' group by `weather_am`
+        with get_new_db() as conn:
+            result = conn.execute(sql_select + sql_group, sql_val).fetchall()
+
+            return result
+
+    @staticmethod
     def search_day(filters, page, per_page, condition=None):
         city_name = filters.get('city_name')
         date_start = filters.get('date_start')
