@@ -248,13 +248,18 @@ def report_index():
         'date_start': date_start,
         'date_end': date_end
     }
-    history_client = History.factory()
-    info = {}
+    weather_client = Weather.factory()
+    weather_am = weather_client.total_weather(condition, 'weather_am')
+    weather_pm = weather_client.total_weather(condition, 'weather_pm')
+    print weather_am
+    print weather_pm
 
     data = dict()
     data['current_page'] = 'report'
     data['req_args'] = dict(request.args.items())
-    data['info'] = info
+    data['weather_am'] = weather_am
+    data['weather_pm'] = weather_pm
+    data['city_name'] = city_name
     data['date_start'] = date_start
     data['date_end'] = date_end
 

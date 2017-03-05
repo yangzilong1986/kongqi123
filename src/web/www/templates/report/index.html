@@ -45,7 +45,7 @@
                         <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
                             {{ date_end }}
                         </a>
-                        <a href="javascript:void(0);" class="tj-btn2" onclick="search()">查询</a>
+                        <a href="javascript:void(0);" class="tj-btn2" onclick="report_search()">查询</a>
                         <a href="/report" class="tj-btn3">重置</a>
                     </div>
                 </div>
@@ -59,6 +59,7 @@
                     <div class="clear"></div>
                     <div style="width:100%;margin: 0 auto">
                         <div id="chartContainer1" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer12" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer2" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer3" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                     </div>
@@ -75,18 +76,20 @@
 {% include "footer.html" %}
 
 <script>
-    function search() {
+    function report_search() {
         var search_date_start = $('#search_date_start').text().trim();
         var search_date_end = $('#search_date_end').text().trim();
-        window.location = '/data/history?date_start=' + search_date_start + '&date_end=' + search_date_end;
+        window.location = '/report?date_start=' + search_date_start + '&date_end=' + search_date_end;
     }
     function switch_tab(tab) {
         for (var i = 1; i <= 3; i++) {
             $('#chartContainer' + i).hide();
+            $('#chartContainer' + i + '2').hide();
             $('#chartTab' + i).css({'color': '#2e2e2e'});
             $('#chartTab' + i + ' li').css({'background': '#ededed'});
         }
         $('#chartContainer' + tab).show();
+        $('#chartContainer' + tab + '2').show();
         $('#chartTab' + tab).css({'color': '#ffffff'});
         $('#chartTab' + tab + ' li').css({'background': '#6cc6f5'});
     }
@@ -95,7 +98,7 @@
             {
                 theme: "theme3",
                 title:{
-                    text: "天气统计"
+                    text: "{{ city_name }}天气统计(白天)"
                 },
                 animationEnabled: true,
                 data: [
@@ -105,20 +108,42 @@
                         toolTipContent: "{y} - #percent %",
                         legendText: "{indexLabel}",
                         dataPoints: [
-                            { y: 100, indexLabel: "收入 100 元"},
-                            { y: 200, indexLabel: "支出 200 元"},
-                            { y: 100, indexLabel: "余额 100 元"}
+                            {% for name, value in weather_am %}
+                            { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am|length %},{% endif %}
+                            {% endfor %}
                         ]
                     }
                 ]
             });
         chart1.render();
+        var chart12 = new CanvasJS.Chart("chartContainer12",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ city_name }}天气统计(夜晚)"
+                },
+                animationEnabled: true,
+                data: [
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        toolTipContent: "{y} - #percent %",
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                            {% for name, value in weather_pm %}
+                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am|length %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart12.render();
 
         var chart2 = new CanvasJS.Chart("chartContainer2",
             {
                 theme: "theme3",
                 title:{
-                    text: "风向统计"
+                    text: "{{ city_name }}风向统计"
                 },
                 animationEnabled: true,
                 data: [
@@ -141,7 +166,7 @@
             {
                 theme: "theme3",
                 title:{
-                    text: "风力统计"
+                    text: "{{ city_name }}风力统计"
                 },
                 animationEnabled: true,
                 data: [
