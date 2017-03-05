@@ -275,6 +275,135 @@ def report_index():
     return render_template('report/index.html', **data)
 
 
+@app.route('/report/aqi_total')
+def report_aqi_total():
+    city_name = g.city_name
+
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
+    date_start = request.args.get('date_start', default=day7)
+    date_end = request.args.get('date_end', default=today)
+
+    condition = {
+        'city_name': city_name,
+        'date_start': date_start,
+        'date_end': date_end
+    }
+    weather_client = Weather.factory()
+    weather_am = weather_client.total_weather(condition, 'weather_am')
+    weather_pm = weather_client.total_weather(condition, 'weather_pm')
+    # print weather_am
+    # print weather_pm
+    weather_am_wind_type = weather_client.total_weather(condition, 'weather_am_wind_type')
+    weather_pm_wind_type = weather_client.total_weather(condition, 'weather_pm_wind_type')
+
+    weather_am_wind_level = weather_client.total_weather(condition, 'weather_am_wind_level')
+    weather_pm_wind_level = weather_client.total_weather(condition, 'weather_pm_wind_level')
+
+    data = dict()
+    data['current_page'] = 'report'
+    data['req_args'] = dict(request.args.items())
+    data['weather_am'] = weather_am
+    data['weather_pm'] = weather_pm
+    data['weather_am_wind_type'] = weather_am_wind_type
+    data['weather_pm_wind_type'] = weather_pm_wind_type
+    data['weather_am_wind_level'] = weather_am_wind_level
+    data['weather_pm_wind_level'] = weather_pm_wind_level
+    data['city_name'] = city_name
+    data['date_start'] = date_start
+    data['date_end'] = date_end
+
+    return render_template('report/aqi_total.html', **data)
+
+
+@app.route('/report/weather_trend')
+def report_weather_trend():
+    city_name = g.city_name
+
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
+    date_start = request.args.get('date_start', default=day7)
+    date_end = request.args.get('date_end', default=today)
+
+    condition = {
+        'city_name': city_name,
+        'date_start': date_start,
+        'date_end': date_end
+    }
+    weather_client = Weather.factory()
+    weather_am = weather_client.total_weather(condition, 'weather_am')
+    weather_pm = weather_client.total_weather(condition, 'weather_pm')
+    # print weather_am
+    # print weather_pm
+    weather_am_wind_type = weather_client.total_weather(condition, 'weather_am_wind_type')
+    weather_pm_wind_type = weather_client.total_weather(condition, 'weather_pm_wind_type')
+
+    weather_am_wind_level = weather_client.total_weather(condition, 'weather_am_wind_level')
+    weather_pm_wind_level = weather_client.total_weather(condition, 'weather_pm_wind_level')
+
+    data = dict()
+    data['current_page'] = 'report'
+    data['req_args'] = dict(request.args.items())
+    data['weather_am'] = weather_am
+    data['weather_pm'] = weather_pm
+    data['weather_am_wind_type'] = weather_am_wind_type
+    data['weather_pm_wind_type'] = weather_pm_wind_type
+    data['weather_am_wind_level'] = weather_am_wind_level
+    data['weather_pm_wind_level'] = weather_pm_wind_level
+    data['city_name'] = city_name
+    data['date_start'] = date_start
+    data['date_end'] = date_end
+
+    return render_template('report/weather_trend.html', **data)
+
+
+@app.route('/report/aqi_trend')
+def report_aqi_trend():
+    city_name = g.city_name
+
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
+    date_start = request.args.get('date_start', default=day7)
+    date_end = request.args.get('date_end', default=today)
+
+    condition = {
+        'city_name': city_name,
+        'date_start': date_start,
+        'date_end': date_end
+    }
+    weather_client = Weather.factory()
+    weather_am = weather_client.total_weather(condition, 'weather_am')
+    weather_pm = weather_client.total_weather(condition, 'weather_pm')
+    # print weather_am
+    # print weather_pm
+    weather_am_wind_type = weather_client.total_weather(condition, 'weather_am_wind_type')
+    weather_pm_wind_type = weather_client.total_weather(condition, 'weather_pm_wind_type')
+
+    weather_am_wind_level = weather_client.total_weather(condition, 'weather_am_wind_level')
+    weather_pm_wind_level = weather_client.total_weather(condition, 'weather_pm_wind_level')
+
+    data = dict()
+    data['current_page'] = 'report'
+    data['req_args'] = dict(request.args.items())
+    data['weather_am'] = weather_am
+    data['weather_pm'] = weather_pm
+    data['weather_am_wind_type'] = weather_am_wind_type
+    data['weather_pm_wind_type'] = weather_pm_wind_type
+    data['weather_am_wind_level'] = weather_am_wind_level
+    data['weather_pm_wind_level'] = weather_pm_wind_level
+    data['city_name'] = city_name
+    data['date_start'] = date_start
+    data['date_end'] = date_end
+
+    return render_template('report/aqi_trend.html', **data)
+
+
 @app.route('/learn')
 def learn_index():
     city_name = g.city_name
