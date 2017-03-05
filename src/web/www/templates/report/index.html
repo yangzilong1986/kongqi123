@@ -61,7 +61,9 @@
                         <div id="chartContainer1" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer12" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer2" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer22" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer3" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer32" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                     </div>
                 </div>
 
@@ -96,9 +98,9 @@
     $(function () {
         var chart1 = new CanvasJS.Chart("chartContainer1",
             {
-                theme: "theme3",
+                theme: "theme1",
                 title:{
-                    text: "{{ city_name }}天气统计(白天)"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}天气统计(白天)"
                 },
                 animationEnabled: true,
                 data: [
@@ -109,7 +111,7 @@
                         legendText: "{indexLabel}",
                         dataPoints: [
                             {% for name, value in weather_am %}
-                            { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am|length %},{% endif %}
+                            { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am|count %},{% endif %}
                             {% endfor %}
                         ]
                     }
@@ -118,9 +120,9 @@
         chart1.render();
         var chart12 = new CanvasJS.Chart("chartContainer12",
             {
-                theme: "theme3",
+                theme: "theme1",
                 title:{
-                    text: "{{ city_name }}天气统计(夜晚)"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}天气统计(夜晚)"
                 },
                 animationEnabled: true,
                 data: [
@@ -131,7 +133,7 @@
                         legendText: "{indexLabel}",
                         dataPoints: [
                             {% for name, value in weather_pm %}
-                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am|length %},{% endif %}
+                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_pm|count %},{% endif %}
                             {% endfor %}
                         ]
                     }
@@ -141,9 +143,9 @@
 
         var chart2 = new CanvasJS.Chart("chartContainer2",
             {
-                theme: "theme3",
+                theme: "theme2",
                 title:{
-                    text: "{{ city_name }}风向统计"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风向统计(白天)"
                 },
                 animationEnabled: true,
                 data: [
@@ -153,20 +155,19 @@
                         toolTipContent: "{y} - #percent %",
                         legendText: "{indexLabel}",
                         dataPoints: [
-                            { y: 100, indexLabel: "收入 100 元"},
-                            { y: 200, indexLabel: "支出 200 元"},
-                            { y: 100, indexLabel: "余额 100 元"}
+                            {% for name, value in weather_am_wind_type %}
+                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am_wind_type|count %},{% endif %}
+                            {% endfor %}
                         ]
                     }
                 ]
             });
         chart2.render();
-
-        var chart3 = new CanvasJS.Chart("chartContainer3",
+        var chart22 = new CanvasJS.Chart("chartContainer22",
             {
-                theme: "theme3",
+                theme: "theme2",
                 title:{
-                    text: "{{ city_name }}风力统计"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风向统计(夜晚)"
                 },
                 animationEnabled: true,
                 data: [
@@ -176,14 +177,60 @@
                         toolTipContent: "{y} - #percent %",
                         legendText: "{indexLabel}",
                         dataPoints: [
-                            { y: 100, indexLabel: "收入 100 元"},
-                            { y: 200, indexLabel: "支出 200 元"},
-                            { y: 100, indexLabel: "余额 100 元"}
+                            {% for name, value in weather_pm_wind_type %}
+                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_pm_wind_type|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart22.render();
+
+        var chart3 = new CanvasJS.Chart("chartContainer3",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风力统计(白天)"
+                },
+                animationEnabled: true,
+                data: [
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        toolTipContent: "{y} - #percent %",
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                            {% for name, value in weather_am_wind_level %}
+                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am_wind_level|count %},{% endif %}
+                            {% endfor %}
                         ]
                     }
                 ]
             });
         chart3.render();
+        var chart32 = new CanvasJS.Chart("chartContainer32",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风力统计(夜晚)"
+                },
+                animationEnabled: true,
+                data: [
+                    {
+                        type: "pie",
+                        showInLegend: true,
+                        toolTipContent: "{y} - #percent %",
+                        legendText: "{indexLabel}",
+                        dataPoints: [
+                            {% for name, value in weather_pm_wind_level %}
+                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_pm_wind_level|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart32.render();
+
         switch_tab(1);
     });
 </script>

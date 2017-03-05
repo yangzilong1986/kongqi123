@@ -251,14 +251,23 @@ def report_index():
     weather_client = Weather.factory()
     weather_am = weather_client.total_weather(condition, 'weather_am')
     weather_pm = weather_client.total_weather(condition, 'weather_pm')
-    print weather_am
-    print weather_pm
+    # print weather_am
+    # print weather_pm
+    weather_am_wind_type = weather_client.total_weather(condition, 'weather_am_wind_type')
+    weather_pm_wind_type = weather_client.total_weather(condition, 'weather_pm_wind_type')
+
+    weather_am_wind_level = weather_client.total_weather(condition, 'weather_am_wind_level')
+    weather_pm_wind_level = weather_client.total_weather(condition, 'weather_pm_wind_level')
 
     data = dict()
     data['current_page'] = 'report'
     data['req_args'] = dict(request.args.items())
     data['weather_am'] = weather_am
     data['weather_pm'] = weather_pm
+    data['weather_am_wind_type'] = weather_am_wind_type
+    data['weather_pm_wind_type'] = weather_pm_wind_type
+    data['weather_am_wind_level'] = weather_am_wind_level
+    data['weather_pm_wind_level'] = weather_pm_wind_level
     data['city_name'] = city_name
     data['date_start'] = date_start
     data['date_end'] = date_end
