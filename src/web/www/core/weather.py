@@ -134,3 +134,42 @@ class Weather(object):
             result['prev_num'] = page - 1
 
             return result
+
+    @staticmethod
+    def all_day(filters, condition=None):
+        city_name = filters.get('city_name')
+        date_start = filters.get('date_start')
+        date_end = filters.get('date_end')
+
+        sql_select = 'SELECT * FROM  weather_day '
+        sql = ''
+        sql_val = ()
+
+        if condition:
+            sql_where, sql_val = make_where(condition)
+            sql += ' and ' + sql_where
+
+        if city_name:
+            sql += ' and city_name = %s'
+            sql_val += (city_name,)
+        if date_start:
+            sql += ' and weather_date >= %s'
+            sql_val += (date_start,)
+        if date_end:
+            sql += ' and weather_date <= %s'
+            sql_val += (date_end,)
+
+        if sql.startswith(' and '):
+            sql = sql[len(' and '):]
+        if sql:
+            sql = 'where ' + sql
+
+        sql_order = ' order by weather_date asc'
+
+        sql_select += sql
+
+        # log.debug('sql:' + sql_select + ' | ' + str(sql_val))
+        with get_new_db() as conn:
+            result = conn.execute(sql_select + sql_order, sql_val).fetchall()
+
+            return result
