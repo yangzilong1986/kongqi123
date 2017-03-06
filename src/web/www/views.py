@@ -324,6 +324,11 @@ def report_weather_trend():
     weather_client = Weather.factory()
     weather_all = weather_client.all_day(condition)
 
+    weather_am = weather_client.total_weather(condition, 'weather_am')
+    weather_pm = weather_client.total_weather(condition, 'weather_pm')
+
+    print weather_am
+
     data = dict()
     data['current_page'] = 'report'
     data['req_args'] = dict(request.args.items())

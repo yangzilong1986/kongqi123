@@ -60,11 +60,9 @@
                     <div class="clear"></div>
                     <div style="width:100%;margin: 0 auto">
                         <div id="chartContainer1" style="margin-top: 40px;height: 356px; width: 100%;"></div>
-                        <div id="chartContainer12" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer2" style="margin-top: 40px;height: 356px; width: 100%;"></div>
-                        <div id="chartContainer22" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer3" style="margin-top: 40px;height: 356px; width: 100%;"></div>
-                        <div id="chartContainer32" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer4" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                     </div>
                 </div>
 
@@ -85,14 +83,12 @@
         window.location = '/report/weather_trend?date_start=' + search_date_start + '&date_end=' + search_date_end;
     }
     function switch_tab(tab) {
-        for (var i = 1; i <= 3; i++) {
+        for (var i = 1; i <= 4; i++) {
             $('#chartContainer' + i).hide();
-            $('#chartContainer' + i + '2').hide();
             $('#chartTab' + i).css({'color': '#2e2e2e'});
             $('#chartTab' + i + ' li').css({'background': '#ededed'});
         }
         $('#chartContainer' + tab).show();
-        $('#chartContainer' + tab + '2').show();
         $('#chartTab' + tab).css({'color': '#ffffff'});
         $('#chartTab' + tab + ' li').css({'background': '#6cc6f5'});
     }
@@ -159,6 +155,195 @@
                 ]
             });
         chart1.render();
+
+        var chart2 = new CanvasJS.Chart("chartContainer2",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}天气走势"
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最高温度",
+                        dataPoints: [
+                            {% for row in weather_all %}
+                                {
+                                    label: "{{ row['weather_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['weather_date'] }}"),
+                                    y: "{{ row['weather_am'] }}"
+                                }{% if loop.index < weather_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        type: "line",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最低温度",
+                        dataPoints: [
+                            {% for row in weather_all %}
+                                {
+                                    label: "{{ row['weather_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['weather_date'] }}"),
+                                    y: "{{ row['weather_pm'] }}"
+                                }{% if loop.index < weather_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart2.render();
+
+        var chart3 = new CanvasJS.Chart("chartContainer3",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}气温走势"
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最高温度",
+                        dataPoints: [
+                            {% for row in weather_all %}
+                                {
+                                    label: "{{ row['weather_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['weather_date'] }}"),
+                                    y: {{ row['weather_top'] }}
+                                }{% if loop.index < weather_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        type: "line",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最低温度",
+                        dataPoints: [
+                            {% for row in weather_all %}
+                                {
+                                    label: "{{ row['weather_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['weather_date'] }}"),
+                                    y: {{ row['weather_down'] }}
+                                }{% if loop.index < weather_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart3.render();
+
+        var chart4 = new CanvasJS.Chart("chartContainer4",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}气温走势"
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最高温度",
+                        dataPoints: [
+                            {% for row in weather_all %}
+                                {
+                                    label: "{{ row['weather_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['weather_date'] }}"),
+                                    y: {{ row['weather_top'] }}
+                                }{% if loop.index < weather_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        type: "line",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最低温度",
+                        dataPoints: [
+                            {% for row in weather_all %}
+                                {
+                                    label: "{{ row['weather_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['weather_date'] }}"),
+                                    y: {{ row['weather_down'] }}
+                                }{% if loop.index < weather_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart4.render();
 
         switch_tab(1);
     });
