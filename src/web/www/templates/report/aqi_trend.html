@@ -33,8 +33,8 @@
 
         <div class="right">
             <div class="cen4" id="ly-conbg">
-                <h1>天气统计</h1>
-                <p class="hp">DATA SPIDER</p>
+                <h1>AQI走势</h1>
+                <p class="hp">AQI TREND</p>
 
                 <div class="tj-select">
                     <div class="tj-sanji">
@@ -52,18 +52,25 @@
 
                 <div class="w800 mt20">
                     <ul class="ulb">
-                        <a id="chartTab1" href="javascript:;" onclick="switch_tab(1)"><li class="li2">天气</li></a>
-                        <a id="chartTab2" href="javascript:;" onclick="switch_tab(2)"><li class="li1">风向</li></a>
-                        <a id="chartTab3" href="javascript:;" onclick="switch_tab(3)"><li class="li3">风力</li></a>
+                        <a id="chartTab1" href="javascript:;" onclick="switch_tab(1)"><li class="li22">AQI</li></a>
+                        <a id="chartTab2" href="javascript:;" onclick="switch_tab(2)"><li class="li12">空气质量</li></a>
+                        <a id="chartTab3" href="javascript:;" onclick="switch_tab(3)"><li class="li12">PM2.5</li></a>
+                        <a id="chartTab4" href="javascript:;" onclick="switch_tab(4)"><li class="li12">PM10</li></a>
+                        <a id="chartTab5" href="javascript:;" onclick="switch_tab(5)"><li class="li12">SO2</li></a>
+                        <a id="chartTab6" href="javascript:;" onclick="switch_tab(6)"><li class="li12">CO</li></a>
+                        <a id="chartTab7" href="javascript:;" onclick="switch_tab(7)"><li class="li12">NO2</li></a>
+                        <a id="chartTab8" href="javascript:;" onclick="switch_tab(8)"><li class="li12">O3</li></a>
                     </ul>
                     <div class="clear"></div>
                     <div style="width:100%;margin: 0 auto">
                         <div id="chartContainer1" style="margin-top: 40px;height: 356px; width: 100%;"></div>
-                        <div id="chartContainer12" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer2" style="margin-top: 40px;height: 356px; width: 100%;"></div>
-                        <div id="chartContainer22" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                         <div id="chartContainer3" style="margin-top: 40px;height: 356px; width: 100%;"></div>
-                        <div id="chartContainer32" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer4" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer5" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer6" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer7" style="margin-top: 40px;height: 356px; width: 100%;"></div>
+                        <div id="chartContainer8" style="margin-top: 40px;height: 356px; width: 100%;"></div>
                     </div>
                 </div>
 
@@ -81,155 +88,105 @@
     function report_search() {
         var search_date_start = $('#search_date_start').text().trim();
         var search_date_end = $('#search_date_end').text().trim();
-        window.location = '/report?date_start=' + search_date_start + '&date_end=' + search_date_end;
+        window.location = '/report/aqi_trend?date_start=' + search_date_start + '&date_end=' + search_date_end;
     }
     function switch_tab(tab) {
-        for (var i = 1; i <= 3; i++) {
+        for (var i = 1; i <= 4; i++) {
             $('#chartContainer' + i).hide();
-            $('#chartContainer' + i + '2').hide();
             $('#chartTab' + i).css({'color': '#2e2e2e'});
             $('#chartTab' + i + ' li').css({'background': '#ededed'});
         }
         $('#chartContainer' + tab).show();
-        $('#chartContainer' + tab + '2').show();
         $('#chartTab' + tab).css({'color': '#ffffff'});
         $('#chartTab' + tab + ' li').css({'background': '#6cc6f5'});
     }
     $(function () {
-        var chart1 = new CanvasJS.Chart("chartContainer1",
+       var chart1 = new CanvasJS.Chart("chartContainer1",
             {
-                theme: "theme1",
+                theme: "theme3",
                 title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}天气统计(白天)"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}AQI走势"
                 },
+                toolTip:{
+                    shared:true
+                },
+            	zoomEnabled: true,
                 animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
                 data: [
                     {
-                        type: "pie",
+                        type: "line",
+                        toolTipContent: "{label} 平均AQI {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
                         showInLegend: true,
-                        toolTipContent: "{y} - #percent %",
-                        legendText: "{indexLabel}",
+                        name: "平均AQI",
                         dataPoints: [
-                            {% for name, value in weather_am %}
-                            { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am|count %},{% endif %}
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_aqi'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        type: "line",
+                        toolTipContent: "{label} 最高AQI {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最高AQI",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_aqi_max'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    },
+                    {
+                        type: "line",
+                        toolTipContent: "{label} 最低AQI {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "最低AQI",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_aqi_min'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
                             {% endfor %}
                         ]
                     }
                 ]
             });
         chart1.render();
-        var chart12 = new CanvasJS.Chart("chartContainer12",
-            {
-                theme: "theme1",
-                title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}天气统计(夜晚)"
-                },
-                animationEnabled: true,
-                data: [
-                    {
-                        type: "pie",
-                        showInLegend: true,
-                        toolTipContent: "{y} - #percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                            {% for name, value in weather_pm %}
-                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_pm|count %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            });
-        chart12.render();
-
-        var chart2 = new CanvasJS.Chart("chartContainer2",
-            {
-                theme: "theme2",
-                title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风向统计(白天)"
-                },
-                animationEnabled: true,
-                data: [
-                    {
-                        type: "pie",
-                        showInLegend: true,
-                        toolTipContent: "{y} - #percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                            {% for name, value in weather_am_wind_type %}
-                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am_wind_type|count %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            });
-        chart2.render();
-        var chart22 = new CanvasJS.Chart("chartContainer22",
-            {
-                theme: "theme2",
-                title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风向统计(夜晚)"
-                },
-                animationEnabled: true,
-                data: [
-                    {
-                        type: "pie",
-                        showInLegend: true,
-                        toolTipContent: "{y} - #percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                            {% for name, value in weather_pm_wind_type %}
-                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_pm_wind_type|count %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            });
-        chart22.render();
-
-        var chart3 = new CanvasJS.Chart("chartContainer3",
-            {
-                theme: "theme3",
-                title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风力统计(白天)"
-                },
-                animationEnabled: true,
-                data: [
-                    {
-                        type: "pie",
-                        showInLegend: true,
-                        toolTipContent: "{y} - #percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                            {% for name, value in weather_am_wind_level %}
-                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_am_wind_level|count %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            });
-        chart3.render();
-        var chart32 = new CanvasJS.Chart("chartContainer32",
-            {
-                theme: "theme3",
-                title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风力统计(夜晚)"
-                },
-                animationEnabled: true,
-                data: [
-                    {
-                        type: "pie",
-                        showInLegend: true,
-                        toolTipContent: "{y} - #percent %",
-                        legendText: "{indexLabel}",
-                        dataPoints: [
-                            {% for name, value in weather_pm_wind_level %}
-                                { y: {{ value }}, indexLabel: "{{ name }}"}{% if loop.index < weather_pm_wind_level|count %},{% endif %}
-                            {% endfor %}
-                        ]
-                    }
-                ]
-            });
-        chart32.render();
 
         switch_tab(1);
     });
