@@ -323,11 +323,13 @@ def report_weather_trend():
     }
     weather_client = Weather.factory()
     weather_all = weather_client.all_day(condition)
+    weather_am_types = weather_client.total_types(condition, 'weather_am')
+    weather_pm_types = weather_client.total_types(condition, 'weather_pm')
+    print weather_am_types, type(weather_am_types), type(weather_all)
 
-    weather_am = weather_client.total_weather(condition, 'weather_am')
-    weather_pm = weather_client.total_weather(condition, 'weather_pm')
-
-    print weather_am
+    for weather in weather_all:
+        weather['weather_am_index'] = weather_am_types.index(weather['weather_am'])
+        weather['weather_pm_index'] = weather_pm_types.index(weather['weather_pm'])
 
     data = dict()
     data['current_page'] = 'report'

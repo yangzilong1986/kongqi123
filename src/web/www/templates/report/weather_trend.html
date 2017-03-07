@@ -184,15 +184,15 @@
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "最高温度",
+                        name: "白天天气",
                         dataPoints: [
                             {% for row in weather_all %}
                                 {
                                     label: "{{ row['weather_date'] }}",
-                                    indexLabel: '',
+                                    indexLabel: "",
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: "{{ row['weather_am'] }}"
+                                    y: {{ row['weather_am_index'] }}
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
@@ -202,15 +202,15 @@
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "最低温度",
+                        name: "夜晚天气",
                         dataPoints: [
                             {% for row in weather_all %}
                                 {
                                     label: "{{ row['weather_date'] }}",
-                                    indexLabel: '',
+                                    indexLabel: "",
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: "{{ row['weather_pm'] }}"
+                                    y: {{ row['weather_pm_index'] }}
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]

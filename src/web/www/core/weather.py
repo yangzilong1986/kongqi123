@@ -78,8 +78,44 @@ class Weather(object):
         # SELECT weather_am, count(*) FROM `weather_day` WHERE city_name = '上海' group by `weather_am`
         with get_new_db() as conn:
             result = conn.execute(sql_select + sql_group, sql_val).fetchall()
-
             return result
+
+    @staticmethod
+    def total_types(filters, group_name):
+        city_name = filters.get('city_name')
+        date_start = filters.get('date_start')
+        date_end = filters.get('date_end')
+
+        sql_select = 'SELECT %s FROM  weather_day ' % (group_name, )
+        sql = ''
+        sql_val = ()
+
+        if city_name:
+            sql += ' and city_name = %s'
+            sql_val += (city_name,)
+        if date_start:
+            sql += ' and weather_date >= %s'
+            sql_val += (date_start,)
+        if date_end:
+            sql += ' and weather_date <= %s'
+            sql_val += (date_end,)
+
+        if sql.startswith(' and '):
+            sql = sql[len(' and '):]
+        if sql:
+            sql = 'where ' + sql
+
+        sql_group = ' group by %s' % (group_name, )
+        sql_select += sql
+
+        types = []
+        with get_new_db() as conn:
+            result = conn.execute(sql_select + sql_group, sql_val).fetchall()
+            for row in result:
+                if len(row) > 0:
+                    types.append(row[0])
+
+            return types
 
     @staticmethod
     def search_day(filters, page, per_page, condition=None):
@@ -171,5 +207,4 @@ class Weather(object):
         # log.debug('sql:' + sql_select + ' | ' + str(sql_val))
         with get_new_db() as conn:
             result = conn.execute(sql_select + sql_order, sql_val).fetchall()
-
-            return result
+            return [dict(row.items()) for row in result]
