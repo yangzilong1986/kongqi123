@@ -367,6 +367,16 @@ def report_aqi_trend():
     }
     history_client = History.factory()
     history_all = history_client.all_day(condition)
+    history_types = [
+        u'优',
+        u'良',
+        u'轻度污染',
+        u'中度污染',
+        u'重度污染',
+        u'严重污染'
+    ]
+    for history in history_all:
+        history['hd_quality_index'] = history_types.index(history['hd_quality'])
 
     data = dict()
     data['current_page'] = 'report'

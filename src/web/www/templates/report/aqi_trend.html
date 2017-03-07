@@ -101,7 +101,7 @@
         $('#chartTab' + tab + ' li').css({'background': '#6cc6f5'});
     }
     $(function () {
-       var chart1 = new CanvasJS.Chart("chartContainer1",
+        var chart1 = new CanvasJS.Chart("chartContainer1",
             {
                 theme: "theme3",
                 title:{
@@ -110,7 +110,7 @@
                 toolTip:{
                     shared:true
                 },
-            	zoomEnabled: true,
+                zoomEnabled: true,
                 animationEnabled: true,
                 axisX: {
                     valueFormatString: "YY-MM-DD",
@@ -187,6 +187,56 @@
                 ]
             });
         chart1.render();
+
+        var chart2 = new CanvasJS.Chart("chartContainer2",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}空气走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} 空气质量 {name}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "平均AQI",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_quality_index'] }},
+                                    name: "{{ row['hd_quality'] }}"
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart2.render();
 
         switch_tab(1);
     });
