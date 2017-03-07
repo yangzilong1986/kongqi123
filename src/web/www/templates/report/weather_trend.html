@@ -99,6 +99,9 @@
                 title:{
                     text: "{{ date_start }}至{{ date_end }} {{ city_name }}气温走势"
                 },
+                toolTip:{
+                    shared:true
+                },
             	zoomEnabled: true,
                 animationEnabled: true,
                 axisX: {
@@ -118,6 +121,7 @@
                 data: [
                     {
                         type: "line",
+                        toolTipContent: "{label} 最高 {y}度",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
@@ -136,6 +140,7 @@
                     },
                     {
                         type: "line",
+                        toolTipContent: "{label} 最低 {y}度",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
@@ -162,6 +167,9 @@
                 title:{
                     text: "{{ date_start }}至{{ date_end }} {{ city_name }}天气走势"
                 },
+                toolTip:{
+                    shared:true
+                },
                 zoomEnabled: true,
                 animationEnabled: true,
                 axisX: {
@@ -181,6 +189,7 @@
                 data: [
                     {
                         type: "line",
+                        toolTipContent: "{label} 白天 {name}",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
@@ -192,13 +201,15 @@
                                     indexLabel: "",
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: {{ row['weather_am_index'] }}
+                                    y: {{ row['weather_am_index'] }},
+                                    name: "{{ row['weather_am'] }}"
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
                     },
                     {
                         type: "line",
+                        toolTipContent: "{label} 夜晚 {name} ",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
@@ -210,7 +221,8 @@
                                     indexLabel: "",
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: {{ row['weather_pm_index'] }}
+                                    y: {{ row['weather_pm_index'] }},
+                                    name: "{{ row['weather_pm'] }}"
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
@@ -223,7 +235,10 @@
             {
                 theme: "theme3",
                 title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}气温走势"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风向走势"
+                },
+                toolTip:{
+                    shared:true
                 },
                 zoomEnabled: true,
                 animationEnabled: true,
@@ -244,10 +259,11 @@
                 data: [
                     {
                         type: "line",
+                        toolTipContent: "{label} 白天 {name}",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "最高温度",
+                        name: "白天风向",
                         dataPoints: [
                             {% for row in weather_all %}
                                 {
@@ -255,17 +271,19 @@
                                     indexLabel: '',
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: {{ row['weather_top'] }}
+                                    y: {{ row['weather_am_wind_index'] }},
+                                    name: "{{ row['weather_am_wind_type'] }}"
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
                     },
                     {
                         type: "line",
+                        toolTipContent: "{label} 夜晚 {name}",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "最低温度",
+                        name: "夜晚风向",
                         dataPoints: [
                             {% for row in weather_all %}
                                 {
@@ -273,7 +291,8 @@
                                     indexLabel: '',
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: {{ row['weather_down'] }}
+                                    y: {{ row['weather_pm_wind_index'] }},
+                                    name: "{{ row['weather_pm_wind_type'] }}"
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
@@ -286,7 +305,10 @@
             {
                 theme: "theme3",
                 title:{
-                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}气温走势"
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}风力走势"
+                },
+                toolTip:{
+                    shared:true
                 },
                 zoomEnabled: true,
                 animationEnabled: true,
@@ -307,10 +329,11 @@
                 data: [
                     {
                         type: "line",
+                        toolTipContent: "{label} 白天 {name}",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "最高温度",
+                        name: "白天风力",
                         dataPoints: [
                             {% for row in weather_all %}
                                 {
@@ -318,17 +341,19 @@
                                     indexLabel: '',
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: {{ row['weather_top'] }}
+                                    y: {{ row['weather_am_level_index'] }},
+                                    name: "{{ row['weather_am_wind_level'] }}"
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
                     },
                     {
                         type: "line",
+                        toolTipContent: "{label} 夜晚 {name}",
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "最低温度",
+                        name: "夜晚风力",
                         dataPoints: [
                             {% for row in weather_all %}
                                 {
@@ -336,7 +361,8 @@
                                     indexLabel: '',
                                     indexLabelFontSize: 8,
                                     x: new Date("{{ row['weather_date'] }}"),
-                                    y: {{ row['weather_down'] }}
+                                    y: {{ row['weather_pm_level_index'] }},
+                                    name: "{{ row['weather_pm_wind_level'] }}"
                                 }{% if loop.index < weather_all|count %},{% endif %}
                             {% endfor %}
                         ]
