@@ -91,7 +91,7 @@
         window.location = '/report/aqi_trend?date_start=' + search_date_start + '&date_end=' + search_date_end;
     }
     function switch_tab(tab) {
-        for (var i = 1; i <= 4; i++) {
+        for (var i = 1; i <= 8; i++) {
             $('#chartContainer' + i).hide();
             $('#chartTab' + i).css({'color': '#2e2e2e'});
             $('#chartTab' + i + ' li').css({'background': '#ededed'});
@@ -220,7 +220,7 @@
                         lineThickness:3,
                         axisYType:"secondary",
                         showInLegend: true,
-                        name: "平均AQI",
+                        name: "空气质量",
                         dataPoints: [
                             {% for row in history_all %}
                                 {
@@ -237,6 +237,300 @@
                 ]
             });
         chart2.render();
+
+        var chart3 = new CanvasJS.Chart("chartContainer3",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}PM2.5走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} PM2.5 {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "Pm2.5",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_pm25'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart3.render();
+
+        var chart4 = new CanvasJS.Chart("chartContainer4",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}PM20走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} PM10 {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "PM10",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_pm10'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart4.render();
+
+        var chart5 = new CanvasJS.Chart("chartContainer5",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}SO2走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} SO2 {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "SO2",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_so2'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart5.render();
+
+        var chart6 = new CanvasJS.Chart("chartContainer6",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}CO走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} CO {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "CO",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_co'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart6.render();
+
+        var chart7 = new CanvasJS.Chart("chartContainer7",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}NO2走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} NO2 {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "NO2",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_no2'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart7.render();
+
+        var chart8 = new CanvasJS.Chart("chartContainer8",
+            {
+                theme: "theme3",
+                title:{
+                    text: "{{ date_start }}至{{ date_end }} {{ city_name }}O3走势"
+                },
+                toolTip:{
+                    shared:true
+                },
+                zoomEnabled: true,
+                animationEnabled: true,
+                axisX: {
+                    valueFormatString: "YY-MM-DD",
+                    gridColor: "Silver",
+                    tickColor: "silver",
+                    labelFontSize: 12
+                },
+                axisY:{
+                    includeZero: true,
+                    tickThickness: 0,
+                    lineThickness: 0,
+                    valueFormatString: " ",
+                    gridThickness: 0,
+                    labelFontSize: 12
+                },
+                data: [
+                    {
+                        type: "line",
+                        toolTipContent: "{label} O3 {y}",
+                        lineThickness:3,
+                        axisYType:"secondary",
+                        showInLegend: true,
+                        name: "O3",
+                        dataPoints: [
+                            {% for row in history_all %}
+                                {
+                                    label: "{{ row['hd_date'] }}",
+                                    indexLabel: '',
+                                    indexLabelFontSize: 8,
+                                    x: new Date("{{ row['hd_date'] }}"),
+                                    y: {{ row['hd_o3'] }}
+                                }{% if loop.index < history_all|count %},{% endif %}
+                            {% endfor %}
+                        ]
+                    }
+                ]
+            });
+        chart8.render();
 
         switch_tab(1);
     });
