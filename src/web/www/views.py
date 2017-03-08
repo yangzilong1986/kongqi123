@@ -27,6 +27,7 @@ def before_request():
 
 @app.route('/city')
 def city_index():
+    city_name = g.city_name
     weather_client = Weather.factory()
 
     name = request.args.get('name', default='')
@@ -41,6 +42,7 @@ def city_index():
 
     data = dict()
     data['current_page'] = 'city'
+    data['city_name'] = city_name
     data['req_args'] = dict(request.args.items())
     data['cities'] = cities
 
@@ -454,6 +456,8 @@ def map_index():
 
 @app.route('/api')
 def api_index():
+    return
+
     city_name = g.city_name
 
     page = request.args.get('page', 1, type=int)
