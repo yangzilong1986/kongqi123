@@ -104,6 +104,36 @@ class History(object):
             return [dict(row.items()) for row in result]
 
     @staticmethod
+    def all_city(filters, condition=None):
+        hd_date = filters.get('date')
+
+        sql_select = 'SELECT * FROM  history_day '
+        sql = ''
+        sql_val = ()
+
+        if condition:
+            sql_where, sql_val = make_where(condition)
+            sql += ' and ' + sql_where
+
+        if hd_date:
+            sql += ' and hd_date >= %s'
+            sql_val += (hd_date,)
+
+        if sql.startswith(' and '):
+            sql = sql[len(' and '):]
+        if sql:
+            sql = 'where ' + sql
+
+        sql_order = ' order by hd_date asc'
+
+        sql_select += sql
+
+        # log.debug('sql:' + sql_select + ' | ' + str(sql_val))
+        with get_new_db() as conn:
+            result = conn.execute(sql_select + sql_order, sql_val).fetchall()
+            return [dict(row.items()) for row in result]
+
+    @staticmethod
     def search_day(filters, page, per_page, condition=None):
         city_name = filters.get('city_name')
         date_start = filters.get('date_start')

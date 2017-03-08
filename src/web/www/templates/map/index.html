@@ -66,7 +66,7 @@
 <script type="text/javascript">
 	// 百度地图API功能
 	var map = new BMap.Map("baidu_map");  // 创建Map实例
-	map.centerAndZoom("{{ city_name }}", 8);      // 初始化地图,用城市名设置地图中心点
+	map.centerAndZoom("{{ city_name }}", 6);      // 初始化地图,用城市名设置地图中心点
 	map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
     map.addControl(new BMap.NavigationControl());
     map.addControl(new BMap.ScaleControl());
@@ -87,8 +87,8 @@
                 };
                 var label_tip = new BMap.Label(text, opts_tip);  // 创建文本标注对象
                 label_tip.setStyle({
-                    color : "black",
-                    background: 'rgba(255,255,255,0.8)',
+                    color : "#fff",
+                    background: 'red',
                     fontSize : "12px",
                     border:'1px solid #999',
                     width: "auto",
@@ -103,9 +103,9 @@
 
     var myGeo = new BMap.Geocoder();
     {% for city in city_all %}
-        geocodeSearch("{{ city['city_name'] }}", "{{ city['city_name'] }}");
+        geocodeSearch("{{ city['city_name'] }}", "{{ city['city_name'] }}:{{ city['hd_aqi'] }}");
     {% endfor %}
-    map.centerAndZoom("{{ city_name }}", 8);
+    map.centerAndZoom("{{ city_name }}", 6);
 </script>
 
 

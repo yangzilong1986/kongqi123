@@ -433,13 +433,11 @@ def map_index():
     date_end = request.args.get('date_end', default=today)
 
     condition = {
-        'city_name': city_name,
-        'date_start': date_start,
-        'date_end': date_end
+        'date': date_start,
     }
 
     history_client = History.factory()
-    city_all = history_client.get_history_city_all()
+    city_all = history_client.all_city(condition)
 
     data = dict()
     data['current_page'] = 'map'
