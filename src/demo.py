@@ -505,6 +505,9 @@ class Demo(object):
         x = df[['hd_pm10', 'hd_so2', 'hd_co', 'hd_no2', 'hd_o3']].values
         y = df['hd_pm25'].values
 
+        print x
+        print y
+
         x_test = [
             [48.2, 19.3, 0.858, 65.8, 80],  # 33.4,
             [72.3, 22, 1.171, 66.8, 68],  # 66.8,
@@ -520,7 +523,19 @@ class Demo(object):
 
         clf = DecisionTreeRegressor()
         clf = clf.fit(x, y)
-        print clf.predict(x_test)
+        y_1 = clf.predict(x_test)
+
+        import matplotlib.pyplot as plt
+        # Plot the results
+        plt.figure()
+        plt.scatter(x, y, c="darkorange", label="data")
+        plt.plot(x_test, y_1, color="cornflowerblue", label="max_depth=2", linewidth=2)
+        # plt.plot(x_test, y_2, color="yellowgreen", label="max_depth=5", linewidth=2)
+        plt.xlabel("data")
+        plt.ylabel("target")
+        plt.title("Decision Tree Regression")
+        plt.legend()
+        plt.show()
 
 
 if __name__ == '__main__':
