@@ -116,7 +116,7 @@ class History(object):
             sql += ' and ' + sql_where
 
         if hd_date:
-            sql += ' and hd_date >= %s'
+            sql += ' and hd_date = %s'
             sql_val += (hd_date,)
 
         if sql.startswith(' and '):
@@ -124,7 +124,7 @@ class History(object):
         if sql:
             sql = 'where ' + sql
 
-        sql_order = ' order by hd_date asc'
+        sql_order = ' order by hd_id asc'
 
         sql_select += sql
 

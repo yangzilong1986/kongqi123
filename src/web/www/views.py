@@ -426,16 +426,17 @@ def map_index():
     city_name = g.city_name
 
     today = time.strftime("%Y-%m-%d", time.localtime())
-    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
-    day7 = day7_dt.strftime("%Y-%m-%d")
-
-    date_start = request.args.get('date_start', default=day7)
     date_end = request.args.get('date_end', default=today)
+    hd_type = request.args.get('type', default='aqi')
 
     condition = {
-        'date': date_start,
+        'date': date_end,
     }
+    hd_types = ['aqi', 'quality', 'pm25', 'pm10', 'so2', 'co', 'no2', 'o3']
+    if hd_type not in hd_types:
+        hd_type = 'aqi'
 
+    field = 'hd_' + hd_type
     history_client = History.factory()
     city_all = history_client.all_city(condition)
 
@@ -444,8 +445,9 @@ def map_index():
     data['city_name'] = city_name
     data['city_all'] = city_all
     data['req_args'] = dict(request.args.items())
-    data['date_start'] = date_start
     data['date_end'] = date_end
+    data['type'] = hd_type
+    data['field'] = field
 
     return render_template('map/index.html', **data)
 
