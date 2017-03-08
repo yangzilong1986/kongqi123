@@ -425,30 +425,25 @@ def learn_index():
 def map_index():
     city_name = g.city_name
 
-    page = request.args.get('page', 1, type=int)
-    date_start = request.args.get('date_start', default='')
-    date_end = request.args.get('date_end', default='')
-    city_name = request.args.get('city_name', default='')
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
+    date_start = request.args.get('date_start', default=day7)
+    date_end = request.args.get('date_end', default=today)
 
     condition = {
-
-    }
-    other = {
         'city_name': city_name,
+        'date_start': date_start,
+        'date_end': date_end
     }
-    page = request.args.get('page', 1, type=int)
-    history_client = History.factory()
-    info = history_client.search_day(condition, page, 31, other)
-    # print json.dumps(dict(info), indent=7, ensure_ascii=False)
-    print str(info)
-
-    info['pages'] = min(7, info['pages'])
 
     data = dict()
     data['current_page'] = 'map'
+    data['city_name'] = city_name
     data['req_args'] = dict(request.args.items())
-    data['info'] = info
-    data['page'] = page
+    data['date_start'] = date_start
+    data['date_end'] = date_end
 
     return render_template('map/index.html', **data)
 

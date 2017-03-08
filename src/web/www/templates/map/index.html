@@ -10,6 +10,9 @@
     <script type="text/javascript" src="/static/www/js/jquery.easing.1.3.js"></script>
     <script type="text/javascript" src="/static/www/js/main.js"></script>
     <script type="text/javascript" src="/static/www/js/laydate/laydate.js"></script>
+    <link rel="stylesheet" href="https://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=90njCvBxUel6rnaBDtsArATHSrtvj5j4"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
 </head>
 
 <body style="overflow:scroll;overflow-x:hidden">
@@ -24,101 +27,31 @@
 
     <div id="ly-con4">
         <ul class="inf">
-            <a href="javascript:void(0)"><li class="d6">数据查询<span></span></li></a>
-            <a href="javascript:void(0)"><li class="d5">数据分析<span></span></li></a>
-            <a href="javascript:void(0)"><li class="d5">当前天气<span></span></li></a>
-            <a href="javascript:void(0)"><li class="d5">天气预测<span></span></li></a>
+            <a href="javascript:void(0)"><li class="d6">全国地图<span></span></li></a>
         </ul>
 
         <div class="right">
 
             <div class="cen4" id="ly-conbg">
-                <h1>数据查询</h1>
-                <p class="hp">DATA SEARCH</p>
+                <h1>污染地图</h1>
+                <p class="hp">DATA MAP</p>
 
                 <div class="tj-select">
-                    <ul class="tj-time" id="main_box">
-                        <li class="select_box">
-                            <a href="javascript:void(0);" class="tj-date"><img src="/static/www/images/rili.png" alt=""></a>
-                            <a href="javascript:void(0);" class="xianshi">全部</a>
-                            <div class="tj-all" style="display: block;">
-                                <ul class="son_ul" style="display: none;z-index: 99;position: relative;background: white;">
-                                    <a href=""><li class="c-block">全部</li></a>
-                                    <a href=""><li class="today">今日</li></a>
-                                    <a href=""><li class="today">昨日</li></a>
-                                    <a href=""><li class="c-block">最近7天</li></a>
-                                    <a href=""><li class="c-block">最近30天</li></a>
-                                    <a href="javascript:void(0);" class="tj-date c-block"><li class="">可选择范围</li></a>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
                     <div class="tj-sanji">
-                        <a href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">2017-02-01</a>
-                        <hr>
-                        <a href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">2017-02-14</a>
-                        <a href="javascript:void(0);" class="tj-btn2" onclick="getcountbydate()">确认</a><a href="javascript:void(0);" class="tj-btn3">取消</a>
-                    </div>
-                    <div class="tj-search">
-                        <p class="search-p">
-                            <input type="text" placeholder="请输入应用名称" id="name" value="">
-                            <a href="javascript:void(0);" class="tj-btn2" onclick="searchbyname()">确认</a>
-                        </p>
+                        <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                            {{ date_start }}
+                        </a>
+                        <hr />
+                        <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                            {{ date_end }}
+                        </a>
+                        <a href="javascript:void(0);" class="tj-btn2" onclick="history_search()">查询</a>
+                        <a href="/data/history" class="tj-btn3">重置</a>
                     </div>
                 </div>
 
-
                 <div class="w800 mt20">
-                    <table border="1" align="center" style="border:none;width:100%">
-                        <tr style="background:#fafafa;">
-                            <th class="yd-td01">日期</th>
-                            <th>AQI</th>
-                            <th>AQI范围</th>
-                            <th>空气质量</th>
-                            <th>PM2.5</th>
-                            <th>SO2</th>
-                            <th>CO</th>
-                            <th>NO2</th>
-                            <th>O3</th>
-                        </tr>
-
-                        {% if info and info['items'] %}
-                            {% for value in info['items'] %}
-                                <tr>
-                                    <td>{{ value['hd_date'] }}</td>
-                                    <td>{{ value['hd_aqi'] }}</td>
-                                    <td>{{ value['hd_aqi_min'] }} - {{ value['hd_aqi_max'] }}</td>
-                                    <td>{{ value['hd_quality'] }}</td>
-                                    <td>{{ value['hd_pm25'] }}</td>
-                                    <td>{{ value['hd_so2'] }}</td>
-                                    <td>{{ value['hd_co'] }}</td>
-                                    <td>{{ value['hd_no2'] }}</td>
-                                    <td>{{ value['hd_o3'] }}</td>
-                                </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </table>
-
-                    {% if info['pages'] > 0 %}
-                        <!-- pages_tab -->
-                        <div class="num">
-                            {% if info['has_prev'] %}
-                                <li><a href="?page={{ info['prev_num'] }}">上一页</a></li>
-                            {% endif %}
-                            {% for p in range(1, info['pages'] + 1) %}
-                                {% if p == page %}
-                                    <li class="aa"><a href="?page={{ p }}">{{ p }}</a></li>
-                                {% else %}
-                                    <li><a href="?page={{ p }}">{{ p }}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                            {% if info['has_next'] %}
-                                <li><a href="?page={{ info['next_num'] }}" class="p_next">下一页</a></li>
-                            {% endif %}
-                            <span class="page-number">共{{ info['pages'] }}页</span>
-                        </div>
-                        <!-- pages_tab end-->
-                    {% endif %}
+                    <div id="baidu_map" style="width: 100%;height: 700px;"></div>
                 </div>
 
             </div>
@@ -130,39 +63,85 @@
 
 {% include "footer.html" %}
 
-<script>
-    $(function(){
-        $('.select_box').click(function(){
-            $('.tj-all, .son_ul').css('display','block');
-        });
+<script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("baidu_map");  // 创建Map实例
+	//map.centerAndZoom("{{ city_name }}", 15);      // 初始化地图,用城市名设置地图中心点
+    //map.centerAndZoom('中国', 5);
 
-        $('.son_ul .tj-date').click(function(){
-            $('.tj-sanji').css('display','block');
-            $('.tj-time').css('display','none');
-        });
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+	map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+	map.setCurrentCity("北京");
 
-        $('.select-type').click(function(){
-            $('.select-er').css('display','block');
-        });
+    map.addControl(new BMap.NavigationControl());
+    map.addControl(new BMap.ScaleControl());
+    map.addControl(new BMap.OverviewMapControl());
+    map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+    map.enableScrollWheelZoom(true);             //开启鼠标滚轮缩放
 
-        $('.c-block').click(function(){
-            $('.tj-btn').css('display','inline-block');
-        });
+    var point = new BMap.Point(116.404, 39.915);
+    offseth = 12;
+    nametip = '测试';
 
-        $('.tj-btn3').click(function(){
-            $('.tj-sanji').css('display','none');
-            $('.tj-time').css('display','block');
-            $('.tj-all').css('display','none');
-        });
-
-        $('.son_ul').hover(
-            function(){},
-            function(){
-                $(this).parent().find("ul.son_ul").slideUp();
-            }
-        );
+    var len = nametip.length;
+    var opts_tip = {
+        position : point,    // 指定文本标注所在的地理位置
+        offset   : new BMap.Size(-len*6, offseth)    //设置文本偏移量
+    };
+    var label_tip = new BMap.Label(nametip, opts_tip);  // 创建文本标注对象
+    label_tip.setStyle({
+        color : "black",
+        background: 'rgba(255,255,255,0.8)',
+        fontSize : "12px",
+        border:'1px solid #999',
+        width: "auto",
+        textAlign:"center",
+        height : "18px",
+        lineHeight : "18px"
     });
+    //map.addOverlay(label_tip);
+
+	function geocodeSearch(add, text){
+		myGeo.getPoint(add, function(point){
+			if (point) {
+                //console.info(index + "、" + add + ":" + point.lng + "," + point.lat);
+				var address = new BMap.Point(point.lng, point.lat);
+				//addMarker(address,new BMap.Label(index+":"+add,{offset:new BMap.Size(20,-10)}));
+
+                var label_tip = new BMap.Label(text, {offset:new BMap.Size(20,-10)});  // 创建文本标注对象
+                label_tip.setStyle({
+                    color : "black",
+                    background: 'rgba(255,255,255,0.8)',
+                    fontSize : "12px",
+                    border:'1px solid #999',
+                    width: "auto",
+                    textAlign:"center",
+                    height : "18px",
+                    lineHeight : "18px"
+                });
+                addMarker(address, label_tip);
+			}
+		}, "上海");
+	}
+	// 编写自定义函数,创建标注
+	function addMarker(point,label){
+		var marker = new BMap.Marker(point);
+		map.addOverlay(marker);
+		marker.setLabel(label);
+	}
+
+    var myGeo = new BMap.Geocoder();
+    var adds = [
+        "北京",
+        "上海",
+        "开封"
+    ];
+	for (var i in adds) {
+        geocodeSearch(adds[i]);
+    }
+    map.centerAndZoom('中国', 5);
 </script>
+
 
 </body>
 </html>
