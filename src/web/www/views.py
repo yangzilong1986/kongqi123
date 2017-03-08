@@ -438,9 +438,13 @@ def map_index():
         'date_end': date_end
     }
 
+    history_client = History.factory()
+    city_all = history_client.get_history_city_all()
+
     data = dict()
     data['current_page'] = 'map'
     data['city_name'] = city_name
+    data['city_all'] = city_all
     data['req_args'] = dict(request.args.items())
     data['date_start'] = date_start
     data['date_end'] = date_end
