@@ -168,8 +168,25 @@ class Weather(object):
             result['has_prev'] = page > 1
             result['next_num'] = page + 1
             result['prev_num'] = page - 1
-
             return result
+
+    @staticmethod
+    def load_daily_weather_data(city_id, start_date, end_date):
+        # row_sql = "select * from weather_day " \
+        #           "where city_id = :city_id and weather_date >= :start_date and weather_date <= :end_date"
+        # row_data = {"city_id": city_id, "start_date": start_date, "end_date": end_date}
+        row_sql = "select * from weather_day where city_id = %s and weather_date >= %s and weather_date <= %s"
+        row_data = (city_id, start_date, end_date)
+
+        with get_new_db() as conn:
+            data = conn.execute(row_sql, row_data).fetchall()
+            if data:
+                _data = []
+                for row in data:
+                    row = dict(row.items())
+                    _data.append(row)
+                data = _data
+            return data
 
     @staticmethod
     def all_day(filters, condition=None):

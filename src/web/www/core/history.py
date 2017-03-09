@@ -104,6 +104,25 @@ class History(object):
             return [dict(row.items()) for row in result]
 
     @staticmethod
+    def load_daily_city_data(city_id, start_date, end_date):
+        # row_sql = "select * from history_day " \
+        #           "where city_id = :city_id and hd_date >= :start_date and hd_date <= :end_date"
+        # row_data = {"city_id": city_id, "start_date": start_date, "end_date": end_date}
+
+        row_sql = "select * from history_day where city_id = %s and hd_date >= %s and hd_date <= %s"
+        row_data = (city_id, start_date, end_date)
+
+        with get_new_db() as conn:
+            data = conn.execute(row_sql, row_data).fetchall()
+            if data:
+                _data = []
+                for row in data:
+                    row = dict(row.items())
+                    _data.append(row)
+                data = _data
+            return data
+
+    @staticmethod
     def all_city(filters, condition=None):
         hd_date = filters.get('date')
 

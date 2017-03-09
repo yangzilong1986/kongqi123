@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import export_graphviz
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import *
@@ -524,7 +525,7 @@ class Demo(object):
         clf = DecisionTreeRegressor()
         clf = clf.fit(x, y)
         y_1 = clf.predict(x_test)
-
+        '''
         import matplotlib.pyplot as plt
         # Plot the results
         plt.figure()
@@ -536,6 +537,25 @@ class Demo(object):
         plt.title("Decision Tree Regression")
         plt.legend()
         plt.show()
+        '''
+
+        import pydotplus
+        # iris = load_iris()
+        # print iris.feature_names 特征名
+        # print iris.target_names 分类名
+        # brew install graphviz
+        '''
+        ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
+        ['setosa' 'versicolor' 'virginica']
+        '''
+
+        feature_names = ['hd_pm10', 'hd_so2', 'hd_co', 'hd_no2', 'hd_o3']
+        target_names = ['hd_pm25']
+
+        dot_data = export_graphviz(clf, out_file=None, feature_names=feature_names, class_names=target_names,
+                                   filled=True, rounded=True, special_characters=True)
+        graph = pydotplus.graph_from_dot_data(dot_data)
+        graph.create_png()
 
 
 if __name__ == '__main__':
