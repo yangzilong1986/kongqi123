@@ -25,43 +25,33 @@
         <span><img src="/static/www/images/yd-banner006.png" /></span>
     </div>
 
-    <div id="ly-con4">
-        <ul class="inf">
-            <a href="javascript:void(0)"><li class="d6">全国地图<span></span></li></a>
-        </ul>
+    <div id="fd-con">
+        <h1>污染地图</h1>
 
-        <div class="right">
-
-            <div class="cen4" id="ly-conbg">
-                <h1>污染地图</h1>
-                <p class="hp">DATA MAP</p>
-
-                <div class="tj-select">
-                    <div class="tj-sanji">
-                        <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
-                            {{ date_end }}
-                        </a>
-                        <a href="javascript:void(0);" class="tj-btn2" onclick="map_search()">查询</a>
-                        <a href="/map" class="tj-btn3">重置</a>
-                    </div>
-                </div>
-
-                <div class="w800 mt20">
-                    <ul class="ulb">
-                        <a href="/map?date_end={{ date_end }}&type=aqi"><li class="{{ 'li22' if type == 'aqi' else 'li12' }}">AQI</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=quality"><li class="{{ 'li22' if type == 'quality' else 'li12' }}">空气质量</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=pm25"><li class="{{ 'li22' if type == 'pm25' else 'li12' }}">PM2.5</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=pm10"><li class="{{ 'li22' if type == 'pm10' else 'li12' }}">PM10</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=so2"><li class="{{ 'li22' if type == 'so2' else 'li12' }}">SO2</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=co"><li class="{{ 'li22' if type == 'co' else 'li12' }}">CO</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=no2"><li class="{{ 'li22' if type == 'no2' else 'li12' }}">NO2</li></a>
-                        <a href="/map?date_end={{ date_end }}&type=o3"><li class="{{ 'li22' if type == 'o3' else 'li12' }}">O3</li></a>
-                    </ul>
-                    <div id="baidu_map" style="width: 100%;height: 700px;border: 1px solid #ddd;"></div>
-                </div>
-
+        <div class="tj-select">
+            <div class="tj-sanji">
+                <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                    {{ date_end }}
+                </a>
+                <a href="javascript:void(0);" class="tj-btn2" onclick="map_search()">查询</a>
+                <a href="/map" class="tj-btn3">重置</a>
             </div>
         </div>
+
+        <div class="w800 mt20">
+            <ul class="ulb">
+                <a href="/map?date_end={{ date_end }}&type=aqi"><li class="{{ 'li22' if type == 'aqi' else 'li12' }}">AQI</li></a>
+                <a href="/map?date_end={{ date_end }}&type=quality"><li class="{{ 'li22' if type == 'quality' else 'li12' }}">空气质量</li></a>
+                <a href="/map?date_end={{ date_end }}&type=pm25"><li class="{{ 'li22' if type == 'pm25' else 'li12' }}">PM2.5</li></a>
+                <a href="/map?date_end={{ date_end }}&type=pm10"><li class="{{ 'li22' if type == 'pm10' else 'li12' }}">PM10</li></a>
+                <a href="/map?date_end={{ date_end }}&type=so2"><li class="{{ 'li22' if type == 'so2' else 'li12' }}">SO2</li></a>
+                <a href="/map?date_end={{ date_end }}&type=co"><li class="{{ 'li22' if type == 'co' else 'li12' }}">CO</li></a>
+                <a href="/map?date_end={{ date_end }}&type=no2"><li class="{{ 'li22' if type == 'no2' else 'li12' }}">NO2</li></a>
+                <a href="/map?date_end={{ date_end }}&type=o3"><li class="{{ 'li22' if type == 'o3' else 'li12' }}">O3</li></a>
+            </ul>
+            <div id="baidu_map" style="width: 100%;height: 700px;border: 1px solid #ddd;padding-bottom: 20px;"></div>
+        </div>
+
     </div>
 
 </div>
@@ -75,20 +65,20 @@
         window.location = '/map?type={{ type }}&date_end=' + search_date_end;
     }
 
-	// 百度地图API功能
-	var map = new BMap.Map("baidu_map");  // 创建Map实例
-	map.centerAndZoom("{{ city_name }}", 7);      // 初始化地图,用城市名设置地图中心点
+    // 百度地图API功能
+    var map = new BMap.Map("baidu_map");  // 创建Map实例
+    map.centerAndZoom("{{ city_name }}", 7);      // 初始化地图,用城市名设置地图中心点
     map.addControl(new BMap.NavigationControl());
     map.addControl(new BMap.ScaleControl());
     map.addControl(new BMap.OverviewMapControl());
     map.enableScrollWheelZoom(true);             //开启鼠标滚轮缩放
 
-	function geocodeSearch(add, text, level){
-		myGeo.getPoint(add, function(point){
-			if (point) {
+    function geocodeSearch(add, text, level){
+        myGeo.getPoint(add, function(point){
+            if (point) {
                 //console.info(index + "、" + add + ":" + point.lng + "," + point.lat);
-				var address = new BMap.Point(point.lng, point.lat);
-				//addMarker(address,new BMap.Label(index+":"+add,{offset:new BMap.Size(20,-10)}));
+                var address = new BMap.Point(point.lng, point.lat);
+                //addMarker(address,new BMap.Label(index+":"+add,{offset:new BMap.Size(20,-10)}));
 
                 var opts_tip = {
                     position : address,
@@ -106,12 +96,12 @@
                     lineHeight : "18px"
                 });
                 map.addOverlay(label_tip);
-			}
-		}, "{{ city_name }}");
-	}
+            }
+        }, "{{ city_name }}");
+    }
 
     var history_types = ['优', '良', '轻度污染', '中度污染', '重度污染', '严重污染'];
-	var history_colors = ['#000', '#000', '#fff', '#fff', '#fff', '#fff'];
+    var history_colors = ['#000', '#000', '#fff', '#fff', '#fff', '#fff'];
     var history_background = ['#43ce17', '#efdc31', '#fa0', '#ff401a', '#d20040', '#9c0a4e'];
 
     var myGeo = new BMap.Geocoder();

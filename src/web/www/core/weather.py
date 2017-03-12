@@ -81,6 +81,36 @@ class Weather(object):
             return result
 
     @staticmethod
+    def count_weather(filters):
+        city_name = filters.get('city_name')
+        date_start = filters.get('date_start')
+        date_end = filters.get('date_end')
+
+        sql_select = 'SELECT count(*) cnt FROM  weather_day '
+        sql = ''
+        sql_val = ()
+
+        if city_name:
+            sql += ' and city_name = %s'
+            sql_val += (city_name,)
+        if date_start:
+            sql += ' and weather_date >= %s'
+            sql_val += (date_start,)
+        if date_end:
+            sql += ' and weather_date <= %s'
+            sql_val += (date_end,)
+
+        if sql.startswith(' and '):
+            sql = sql[len(' and '):]
+        if sql:
+            sql = 'where ' + sql
+
+        sql_select += sql
+        with get_new_db() as conn:
+            result = conn.execute(sql_select, sql_val).fetchone()
+            return result['cnt'] if 'cnt' in result else 0;
+
+    @staticmethod
     def total_types(filters, group_name):
         city_name = filters.get('city_name')
         date_start = filters.get('date_start')
