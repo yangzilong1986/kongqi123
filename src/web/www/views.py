@@ -401,8 +401,8 @@ def learn_index():
 
     date_start = request.args.get('date_start', default=day7)
     date_end = request.args.get('date_end', default=today)
-    history = request.args.get('history', default=1)
-    weather = request.args.get('weather', default=1)
+    history = request.args.get('history', default=1, type=int)
+    weather = request.args.get('weather', default=1, type=int)
 
     condition = {
         'city_name': city_name,
@@ -412,8 +412,12 @@ def learn_index():
 
     history_client = History.factory()
     weather_client = Weather.factory()
-    history_client.count_history(condition)
-    weather_client.count_weather(condition)
+    history_count = 0
+    weather_count = 0
+    if history == 1:
+        history_count = history_client.count_history(condition)
+    if weather == 1:
+        weather_count = weather_client.count_weather(condition)
 
     data = dict()
     data['current_page'] = 'learn'
@@ -423,6 +427,8 @@ def learn_index():
     data['date_end'] = date_end
     data['history'] = history
     data['weather'] = weather
+    data['history_count'] = history_count
+    data['weather_count'] = weather_count
 
     return render_template('learn/index.html', **data)
 

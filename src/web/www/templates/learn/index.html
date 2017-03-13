@@ -63,6 +63,21 @@
                 </div>
             </div>
 
+            <ul>
+                {% if history == 1 %}
+                <li>
+                    {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ history_count }} 条空气数据
+                    <a class="bluebg_a" href="/data/history?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
+                </li>
+                {% endif %}
+                {% if weather == 1 %}
+                <li>
+                    {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ weather_count }} 条天气数据
+                    <a class="bluebg_a" href="/data/weather?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
+                </li>
+                {% endif %}
+            </dt>
+
             <input type="button" value="下一步" class="kk" />
         </form>
     </div>

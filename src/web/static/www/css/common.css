@@ -828,8 +828,8 @@ i.icon-kulian{background-position:-216px -216px}
 #con .ly-user h1{width:98%;margin:0 auto;height:72px;border-bottom:1px solid #ccc;line-height:72px;font-size:24px;text-indent:12px;}
 .aa-ts{display:inline-block;color:#ec6f49;line-height:30px;font-size:12px;height:30px;margin-left:85px;margin-bottom:-10px;padding:6px 0;}
 
-.bluebg_a{height:20px;line-height:20px;width:50px;display:inline-block;color:#6CC6F5;border-radius:16px;border:1px solid #6CC6F5}
-.bluebg_a:hover{background:#6CC6F5;color:#fff;}
+.bluebg_a{text-align:center; height:20px;line-height:20px;width:50px;display:inline-block;color:#6CC6F5;border-radius:16px;border:1px solid #6CC6F5}
+.bluebg_a:hover{text-align: center; background:#6CC6F5;color:#fff;}
 
 
 #con .ly-user .aa-ts img{margin:0 6px;}
