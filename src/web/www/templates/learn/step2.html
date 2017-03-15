@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>好空气网</title>
+    <link href="/static/www/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="/static/www/css/union.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/static/www/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/static/www/js/jquery.DB_tabMotionBanner.min.js"></script>
+    <script type="text/javascript" src="/static/www/js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="/static/www/js/main.js"></script>
+    <script type="text/javascript" src="/static/www/js/laydate/laydate.js"></script>
+</head>
+
+<body style="overflow:scroll;overflow-x:hidden">
+
+{% include "header.html" %}
+
+<!------banner--------->
+<div id="banner" class="yd-banner">
+    <div class="bg">
+        <span><img src="/static/www/images/yd-banner006.png" /></span>
+    </div>
+
+    <div id="fd-con4">
+        <h1>空气预测</h1>
+        <dl class="dl1">
+            <dt>1</dt>
+            <dd>输入数据</dd>
+        </dl>
+        <dl class="dl2">
+            <dt>2</dt>
+            <dd>选择特征</dd>
+        </dl>
+        <dl class="dl3">
+            <dt>3</dt>
+            <dd>运行回测</dd>
+        </dl>
+        <dl class="dl4">
+            <dt>4</dt>
+            <dd>查看结果</dd>
+        </dl>
+        <h2>请选择输入数据的日期范围</h2>
+        <form>
+
+            <div class="tj-select" style="width: auto">
+                <div class="tj-sanji" style="width: auto">
+                    <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                        {{ date_start }}
+                    </a>
+                    <hr />
+                    <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
+                        {{ date_end }}
+                    </a>
+                    <label style="float: left; margin-left: 10px;">
+                        <input value="{{ history }}" id="search_history" checked="checked" type="checkbox" />空气数据
+                    </label>
+                    <label style="float: left; margin-left: 10px;">
+                        <input value="{{ weather }}" id="search_weather" checked="checked" type="checkbox" />天气数据
+                    </label>
+                    <a href="javascript:void(0);" class="tj-btn2" onclick="learn1_search()">查询</a>
+                    <a href="/report" class="tj-btn3">重置</a>
+                </div>
+            </div>
+
+            <ul>
+                {% if history == 1 %}
+                <li>
+                    {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ history_count }} 条空气数据
+                    <a class="bluebg_a" href="/data/history?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
+                </li>
+                {% endif %}
+                {% if weather == 1 %}
+                <li>
+                    {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ weather_count }} 条天气数据
+                    <a class="bluebg_a" href="/data/weather?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
+                </li>
+                {% endif %}
+            </dt>
+
+            <input type="button" value="下一步" class="kk" />
+        </form>
+    </div>
+
+</div>
+<!------banner--------->
+
+{% include "footer.html" %}
+
+<script>
+    function learn1_search() {
+        var search_date_start = $('#search_date_start').text().trim();
+        var search_date_end = $('#search_date_end').text().trim();
+        var search_history = $('#search_history').val();
+        var search_weather = $('#search_weather').val();
+
+        window.location = '/learn?date_start=' + search_date_start
+            + '&date_end=' + search_date_end
+            + '&history=' + search_history
+            + '&weather=' + search_weather;
+    }
+</script>
+
+</body>
+</html>

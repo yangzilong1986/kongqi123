@@ -773,7 +773,8 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con4 .dl1 dt{background:#6cc6f5;}
 #fd-con4 dl dd{color:#6cc6f5;}
 #fd-con4 .dl1 dt{background:#6cc6f5;}
-#fd-con4 h2{background:url(../images/right002.png) no-repeat left center;clear:both;height:80px;width:480px;margin:0 auto;font-size:18px;line-height:80px;text-indent:60px;}
+#fd-con4 ok{background:url(../images/right002.png) no-repeat left center;clear:both;height:80px;width:480px;margin:0 auto;font-size:18px;line-height:80px;text-indent:60px;}
+#fd-con4 h2{clear:both;width:60%;margin:0 auto;font-size:18px;line-height:40px;}
 
 /**my help***/
 .ulb{width:100%;}

@@ -433,6 +433,48 @@ def learn_index():
     return render_template('learn/index.html', **data)
 
 
+@app.route('/learn/step2')
+def learn_step2():
+    city_name = g.city_name
+
+    today = time.strftime("%Y-%m-%d", time.localtime())
+    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
+    day7 = day7_dt.strftime("%Y-%m-%d")
+
+    date_start = request.args.get('date_start', default=day7)
+    date_end = request.args.get('date_end', default=today)
+    history = request.args.get('history', default=1, type=int)
+    weather = request.args.get('weather', default=1, type=int)
+
+    condition = {
+        'city_name': city_name,
+        'date_start': date_start,
+        'date_end': date_end
+    }
+
+    history_client = History.factory()
+    weather_client = Weather.factory()
+    history_count = 0
+    weather_count = 0
+    if history == 1:
+        history_count = history_client.count_history(condition)
+    if weather == 1:
+        weather_count = weather_client.count_weather(condition)
+
+    data = dict()
+    data['current_page'] = 'learn'
+    data['req_args'] = dict(request.args.items())
+    data['city_name'] = city_name
+    data['date_start'] = date_start
+    data['date_end'] = date_end
+    data['history'] = history
+    data['weather'] = weather
+    data['history_count'] = history_count
+    data['weather_count'] = weather_count
+
+    return render_template('learn/step2.html', **data)
+
+
 @app.route('/learn/image')
 def learn_image():
 
