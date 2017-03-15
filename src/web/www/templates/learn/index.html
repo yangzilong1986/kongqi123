@@ -76,9 +76,9 @@
                     <a class="bluebg_a" href="/data/weather?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
                 </li>
                 {% endif %}
-            </dt>
+            </ul>
 
-            <input type="button" value="下一步" class="kk" />
+            <input type="button" value="下一步" onclick="go_next()" class="kk" />
         </form>
     </div>
 
@@ -95,6 +95,17 @@
         var search_weather = $('#search_weather').val();
 
         window.location = '/learn?date_start=' + search_date_start
+            + '&date_end=' + search_date_end
+            + '&history=' + search_history
+            + '&weather=' + search_weather;
+    }
+    function go_next() {
+        var search_date_start = $('#search_date_start').text().trim();
+        var search_date_end = $('#search_date_end').text().trim();
+        var search_history = $('#search_history').val();
+        var search_weather = $('#search_weather').val();
+
+        window.location = '/learn/step2?date_start=' + search_date_start
             + '&date_end=' + search_date_end
             + '&history=' + search_history
             + '&weather=' + search_weather;

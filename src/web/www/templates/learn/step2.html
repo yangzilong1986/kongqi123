@@ -40,45 +40,44 @@
             <dt>4</dt>
             <dd>查看结果</dd>
         </dl>
-        <h2>请选择输入数据的日期范围</h2>
+        <h2>请选择机器学习的特征数据</h2>
         <form>
-
-            <div class="tj-select" style="width: auto">
-                <div class="tj-sanji" style="width: auto">
-                    <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
-                        {{ date_start }}
-                    </a>
-                    <hr />
-                    <a id="search_date_end" href="javascript:void(0);" class="e-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
-                        {{ date_end }}
-                    </a>
-                    <label style="float: left; margin-left: 10px;">
-                        <input value="{{ history }}" id="search_history" checked="checked" type="checkbox" />空气数据
-                    </label>
-                    <label style="float: left; margin-left: 10px;">
-                        <input value="{{ weather }}" id="search_weather" checked="checked" type="checkbox" />天气数据
-                    </label>
-                    <a href="javascript:void(0);" class="tj-btn2" onclick="learn1_search()">查询</a>
-                    <a href="/report" class="tj-btn3">重置</a>
+            {% if history == 1 %}
+            <div style="margin-top: 20px;">
+                <h3>空气数据特征</h3>
+                <hr />
+                <div>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_aqi" />AQI</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_quality" />空气质量</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_pm25" />PM2.5</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_pm10" />PM10</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_so2" />SO2</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_co" />CO</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_no2" />NO2</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="histories[]" value="hd_o3" />O3</label>
                 </div>
             </div>
+            {% endif %}
+            {% if weather == 1 %}
+            <div style="margin-top: 20px;">
+                <h3>天气数据特征</h3>
+                <hr />
+                <div>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_am" />天气(白天)</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_pm" />天气(夜晚)</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_top" />温度(白天)</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_down" />温度(夜晚)</label>
+                    <br />
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_am_wind_type" />风向(白天)</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_pm_wind_type" />风向(夜晚)</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_am_wind_level" />风力(白天)</label>
+                    <label style="padding-left: 10px;"><input type="checkbox" name="weathers[]" value="weather_pm_wind_level" />风力(夜晚)</label>
+                </div>
+            </div>
+            {% endif %}
 
-            <ul>
-                {% if history == 1 %}
-                <li>
-                    {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ history_count }} 条空气数据
-                    <a class="bluebg_a" href="/data/history?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
-                </li>
-                {% endif %}
-                {% if weather == 1 %}
-                <li>
-                    {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ weather_count }} 条天气数据
-                    <a class="bluebg_a" href="/data/weather?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
-                </li>
-                {% endif %}
-            </dt>
-
-            <input type="button" value="下一步" class="kk" />
+            <input type="button" value="上一步" onclick="go_last()" class="kk" style="float: left" />
+            <input type="button" value="下一步" onclick="go_next()" class="kk" />
         </form>
     </div>
 
@@ -88,13 +87,19 @@
 {% include "footer.html" %}
 
 <script>
-    function learn1_search() {
-        var search_date_start = $('#search_date_start').text().trim();
-        var search_date_end = $('#search_date_end').text().trim();
-        var search_history = $('#search_history').val();
-        var search_weather = $('#search_weather').val();
+    var search_date_start = '{{ date_start }}';
+    var search_date_end = '{{ date_end }}';
+    var search_history = {{ history }};
+    var search_weather = {{ weather }};
 
+    function go_last() {
         window.location = '/learn?date_start=' + search_date_start
+            + '&date_end=' + search_date_end
+            + '&history=' + search_history
+            + '&weather=' + search_weather;
+    }
+    function go_next() {
+        window.location = '/learn/step3?date_start=' + search_date_start
             + '&date_end=' + search_date_end
             + '&history=' + search_history
             + '&weather=' + search_weather;
