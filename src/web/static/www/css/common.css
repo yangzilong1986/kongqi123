@@ -756,7 +756,7 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con3 .word{font-size:12px;color:#ec6f49;margin-left:6px;}
 
 
-#fd-con4{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:600px;}
+#fd-con4{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:700px;}
 #fd-con4 h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
 #fd-con4 .dl1{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line32.png) no-repeat 50px 20px;}
 #fd-con4 .dl3{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line31_03.png) no-repeat 50px 20px;}
@@ -767,7 +767,7 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con4 dt{background:#6cc6f5;height:44px;width:44px;border-radius:50%;line-height:44px;text-align:center;margin-bottom:10px;font-weight:bold;font-size:24px;color:#FFF;}
 #fd-con4 .dl3 dt{background:#ccc;}
 #fd-con4 .dl3 dd{color:#ccc;}
-#fd-con4 form{height:288px;width:600px;margin:0 auto;font-size:14px;}
+#fd-con4 form{width:600px;margin:0 auto;font-size:14px;}
 #fd-con4 .kk{height:40px;width:200px;margin-left:10px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:45px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei"}
 #fd-con4 .kk:hover{background:#e85123;}
 #fd-con4 form p{height:40px;width:60px;position:absolute;line-height:40px;right:440px;bottom:181px;}

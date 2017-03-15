@@ -43,7 +43,7 @@
         <h2>请选择机器学习的特征数据</h2>
         <form>
             {% if history == 1 %}
-            <div style="margin-top: 20px;">
+            <div style="margin-top: 10px;">
                 <h3>空气数据特征</h3>
                 <hr />
                 <div>
@@ -59,7 +59,7 @@
             </div>
             {% endif %}
             {% if weather == 1 %}
-            <div style="margin-top: 20px;">
+            <div style="margin-top: 10px;">
                 <h3>天气数据特征</h3>
                 <hr />
                 <div>
@@ -75,10 +75,28 @@
                 </div>
             </div>
             {% endif %}
+        </form>
+
+        <h2 style="margin-top: 20px;">请选择需要预测的数据</h2st>
+        <form>
+            <div style="margin-top: 10px;">
+                指标:
+                <select>
+                    <option>PM2.5</option>
+                </select>
+
+                天数:
+                <select>
+                    <option>1天</option>
+                    <option>2天</option>
+                    <option>3天</option>
+                </select>
+            </div>
 
             <input type="button" value="上一步" onclick="go_last()" class="kk" style="float: left" />
             <input type="button" value="下一步" onclick="go_next()" class="kk" />
         </form>
+
     </div>
 
 </div>
