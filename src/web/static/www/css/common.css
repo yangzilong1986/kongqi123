@@ -727,10 +727,12 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con2 .ulk .ulc{height:40px;width:180px;margin:0 auto;background:#ec6f49;line-height:40px;text-align:center;border-radius:4px;margin-top:20px;cursor:pointer;}
 #fd-con2 .ulk .ulc a{color:#fff;}
 #fd-con2 .ulk .ulc:hover{background:#E85123;}
+#fd-con2 h2{clear:both;height:80px;width:90%;text-align:center;font-size:18px;line-height:40px;}
+#fd-con2 form{width:600px;margin:0 auto;font-size:14px;}
+#fd-con2 .kk{height:40px;width:200px;margin-left:120px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:20px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei";}
+#fd-con2 .kk:hover{background:#E85123;}
 
-
-
-#fd-con3{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:600px;}
+#fd-con3{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:700px;}
 #fd-con3 h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
 #fd-con3 .dl1{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line32.png) no-repeat 50px 20px;}
 #fd-con3 .dl3{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line31_03.png) no-repeat 50px 20px;}
@@ -739,22 +741,19 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con3 .dl1{margin-left:10.8%;color:#6cc6f5;}
 #fd-con3 .dl4{width:50px;text-align:center;background:none;}
 #fd-con3 dt{background:#6cc6f5;height:44px;width:44px;border-radius:50%;line-height:44px;text-align:center;margin-bottom:10px;font-weight:bold;font-size:24px;color:#FFF;}
-
 #fd-con3 .dl4 dt{background:#ccc;}
 #fd-con3 .dl4 dd{color:#ccc;}
 #fd-con3 .dl1 dt{background:#6cc6f5;}
 #fd-con3 dl dd{color:#6cc6f5;}
-
 #fd-con3 .dl1 dt{background:#6cc6f5;}
 #fd-con3 h2{clear:both;height:80px;width:90%;text-align:center;font-size:18px;line-height:40px;}
-#fd-con3 form{height:220px;width:560px;margin:0 auto;font-size:14px;}
+#fd-con3 form{width:600px;margin:0 auto;font-size:14px;}
 #fd-con3 .kl{height:40px;width:300px; font-size:14px;background:none;border:1px solid #ccc;text-indent:10px;}
 #fd-con3 .ll{height:40px;width:300px;margin-top:20px;border:1px solid #ccc;background:transparent;text-indent:10px;}
 #fd-con3 .kk{height:40px;width:200px;margin-left:120px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:20px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei";}
 #fd-con3 .kk:hover{background:#E85123;}
 #fd-con3 form .si{margin-left:27px;}
 #fd-con3 .word{font-size:12px;color:#ec6f49;margin-left:6px;}
-
 
 #fd-con4{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:700px;}
 #fd-con4 h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
@@ -771,7 +770,6 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con4 .kk{height:40px;width:200px;margin-left:10px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:45px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei"}
 #fd-con4 .kk:hover{background:#e85123;}
 #fd-con4 form p{height:40px;width:60px;position:absolute;line-height:40px;right:440px;bottom:181px;}
-
 #fd-con4 .dl4 dt{background:#ccc;}
 #fd-con4 .dl4 dd{color:#ccc;}
 #fd-con4 .dl1 dt{background:#6cc6f5;}

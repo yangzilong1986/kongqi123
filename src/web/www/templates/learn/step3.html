@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>好空气网</title>
+    <link href="/static/www/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="/static/www/css/union.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/static/www/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/static/www/js/jquery.DB_tabMotionBanner.min.js"></script>
+    <script type="text/javascript" src="/static/www/js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="/static/www/js/main.js"></script>
+    <script type="text/javascript" src="/static/www/js/laydate/laydate.js"></script>
+</head>
+
+<body style="overflow:scroll;overflow-x:hidden">
+
+{% include "header.html" %}
+
+<!------banner--------->
+<div id="banner" class="yd-banner">
+    <div class="bg">
+        <span><img src="/static/www/images/yd-banner006.png" /></span>
+    </div>
+
+    <div id="fd-con3">
+        <h1>空气预测</h1>
+        <dl class="dl1">
+            <dt>1</dt>
+            <dd>输入数据</dd>
+        </dl>
+        <dl class="dl2">
+            <dt>2</dt>
+            <dd>选择特征</dd>
+        </dl>
+        <dl class="dl3">
+            <dt>3</dt>
+            <dd>运行回测</dd>
+        </dl>
+        <dl class="dl4">
+            <dt>4</dt>
+            <dd>查看结果</dd>
+        </dl>
+        <h2>请选择机器学习的特征数据</h2>
+        <form>
+
+        </form>
+
+        <input type="button" value="上一步" onclick="go_last()" class="kk" style="float: left" />
+        <input type="button" value="下一步" onclick="go_next()" class="kk" />
+    </div>
+
+</div>
+<!------banner--------->
+
+{% include "footer.html" %}
+
+<script>
+    var search_date_start = '{{ date_start }}';
+    var search_date_end = '{{ date_end }}';
+    var search_history = {{ history }};
+    var search_weather = {{ weather }};
+
+    function go_last() {
+        window.location = '/learn/step2?date_start=' + search_date_start
+            + '&date_end=' + search_date_end
+            + '&history=' + search_history
+            + '&weather=' + search_weather;
+    }
+    function go_next() {
+        window.location = '/learn/step4?date_start=' + search_date_start
+            + '&date_end=' + search_date_end
+            + '&history=' + search_history
+            + '&weather=' + search_weather;
+    }
+</script>
+
+</body>
+</html>
