@@ -9,6 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
 from web.www.core.history import History
+from web.www.core.learn import Learn
 from web.www.core.weather import Weather
 from web.www.core.crawl import Crawl
 
@@ -80,6 +81,57 @@ def my_job():
     print time.time()
 
 
+def run_learn():
+    learn_client = Learn.factory()
+    learn_info = learn_client.get_learn_new_job_info()
+    if not learn_info:
+        print 'no learn info skip'
+        return False
+
+    print learn_info
+
+    if 'city_name' not in learn_info or len(learn_info['city_name']) < 1:
+        learn_error(learn_info['learn_id'], '缺少城市名称')
+        return False
+
+    if 'date_start' not in learn_info or len(learn_info['date_start']) < 1:
+        learn_error(learn_info['learn_id'], '缺少开始日期')
+        return False
+
+    if 'date_end' not in learn_info or len(learn_info['date_end']) < 1:
+        learn_error(learn_info['learn_id'], '缺少结束日期')
+        return False
+
+    history_data = []
+    if learn_info['history'] == 1:
+        _history_data = learn_client.get_history_data(learn_info['city_name'], learn_info['date_start'], learn_info['date_end'])
+        if _history_data:
+            history_data = _history_data
+
+    weather_data = []
+    if learn_info['weather'] == 1:
+        _weather_data = learn_client.get_weather_data(learn_info['city_name'], learn_info['date_start'], learn_info['date_end'])
+        if _weather_data:
+            weather_data = _weather_data
+
+    data = history_data + weather_data
+    if not data:
+        learn_error(learn_info['learn_id'], '缺少结束日期')
+        return False
+
+    print data
+
+    print 'one learn finished'
+
+
+def learn_error(learn_id, error):
+    learn_client = Learn.factory()
+    data = {
+        'learn_status': Learn.JOB_ERROR,
+        'output_result': error
+    }
+    return learn_client.update_learn_info_by_id(learn_id, data)
+
 def run_crontab():
     # schedule.every(10).minutes.do(run_export_service)
     print 'crontab'
@@ -102,6 +154,7 @@ def run_crontab():
     # scheduler.add_job(my_job, 'interval', seconds=5)
     # scheduler.add_job(my_job, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
     scheduler.add_job(run_export_spider_job, 'cron', year='*', month='*', day=1, hour=0, minute=0, second=0)
+    scheduler.add_job(run_learn, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
 
     scheduler.start()
 

@@ -18,6 +18,7 @@ class Learn(object):
     JOB_READY = 1
     JOB_DOING = 2
     JOB_FINISH = 3
+    JOB_ERROR = 4
 
     @staticmethod
     def factory():
@@ -36,6 +37,18 @@ class Learn(object):
                 'learn_id': learn_id,
             }
             return get_table_one_row(conn, 'learn_job', condition)
+
+    @staticmethod
+    def get_learn_new_job_info():
+        with get_new_db() as conn:
+            sql = 'select * from learn_job where learn_status = 1 order by learn_id desc limit 1'
+            info = conn.execute(sql).fetchone()
+            return info
+
+    @staticmethod
+    def update_learn_info_by_id(learn_id, data):
+        with get_new_db() as conn:
+            return update_table_row(conn, 'learn_job', {'learn_id': learn_id}, data)
 
     @staticmethod
     def create_job(data):

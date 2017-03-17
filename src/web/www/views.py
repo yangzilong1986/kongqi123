@@ -476,6 +476,7 @@ def learn_step2():
         learn_client = Learn.factory()
         job_id = learn_client.create_job({
             'learn_status': Learn.JOB_READY,
+            'city_name': city_name,
             'date_start': date_start,
             'date_end': date_end,
             'history': history,
