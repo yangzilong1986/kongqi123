@@ -1,5 +1,6 @@
 # coding:utf-8
 import datetime
+import json
 import time
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
@@ -94,11 +95,11 @@ def run_learn():
         learn_error(learn_info['learn_id'], '缺少城市名称')
         return False
 
-    if 'date_start' not in learn_info or len(learn_info['date_start']) < 1:
+    if 'date_start' not in learn_info:
         learn_error(learn_info['learn_id'], '缺少开始日期')
         return False
 
-    if 'date_end' not in learn_info or len(learn_info['date_end']) < 1:
+    if 'date_end' not in learn_info:
         learn_error(learn_info['learn_id'], '缺少结束日期')
         return False
 
@@ -118,8 +119,26 @@ def run_learn():
     if not data:
         learn_error(learn_info['learn_id'], '缺少结束日期')
         return False
+    # print data
 
-    print data
+    histories = []
+    _histories = learn_info['histories']
+    if _histories:
+        histories = json.loads(_histories)
+
+    weathers = []
+    _weathers = learn_info['weathers']
+    if _weathers:
+        weathers = json.loads(_weathers)
+
+    key_list = histories + weathers
+    if not key_list:
+        learn_error(learn_info['learn_id'], '没有特征数据')
+        return False
+    print key_list
+
+    result = learn_client.output_tree(data, key_list)
+    print result
 
     print 'one learn finished'
 

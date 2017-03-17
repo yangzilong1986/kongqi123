@@ -472,6 +472,8 @@ def learn_step2():
 
         if history_count < 1 and weather_count < 1:
             return json.dumps({'status': False, 'message': u'选定的日期内没有数据,请返回上一步重新选择!'})
+        if (history_count + weather_count) < 7:
+            return json.dumps({'status': False, 'message': u'数据至少应该有7条(天)以上才能进行机器学习!'})
 
         learn_client = Learn.factory()
         job_id = learn_client.create_job({
