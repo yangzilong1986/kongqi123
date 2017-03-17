@@ -475,7 +475,7 @@ def learn_step2():
 
         learn_client = Learn.factory()
         job_id = learn_client.create_job({
-            'learn_status': 1,
+            'learn_status': Learn.JOB_READY,
             'date_start': date_start,
             'date_end': date_end,
             'history': history,
@@ -504,15 +504,29 @@ def learn_step2():
     return render_template('learn/step2.html', **data)
 
 
-@app.route('/learn/step3', methods=['GET'])
+@app.route('/learn/step3', methods=['GET', 'POST'])
 def learn_step3():
     city_name = g.city_name
+    learn_client = Learn.factory()
+
+    if request.method == 'POST':
+        learn_id = request.form.get('learn', type=int)
+        if not learn_id:
+            return json.dumps({'status': False, 'message': u'没有learn_id!'})
+
+        learn_info = learn_client.get_learn_info_by_id(learn_id)
+        if not learn_info:
+            return json.dumps({'status': False, 'message': u'没有learn_info!'})
+
+        if learn_info['learn_status'] != Learn.JOB_FINISH:
+            return json.dumps({'status': False, 'message': u'正在进行中!'})
+
+        return json.dumps({'status': True, 'message': u'已完成!'})
 
     learn_id = request.args.get('learn', type=int)
     if not learn_id:
         return redirect('/learn')
 
-    learn_client = Learn.factory()
     learn_info = learn_client.get_learn_info_by_id(learn_id)
     if not learn_info:
         return redirect('/learn')

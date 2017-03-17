@@ -15,6 +15,10 @@ from web.db import get_new_db
 
 class Learn(object):
 
+    JOB_READY = 1
+    JOB_DOING = 2
+    JOB_FINISH = 3
+
     @staticmethod
     def factory():
         if hasattr(Learn, '_obj'):
