@@ -1,8 +1,11 @@
 # coding:utf-8
-
+import math
 import pandas as pd
 import numpy as np
 import pydotplus
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import classification_report
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.tree import export_graphviz
 import itertools
@@ -92,6 +95,11 @@ class Learn(object):
         return weather_data
 
     @staticmethod
+    def chunks(arr, m):
+        n = int(math.ceil(len(arr) / float(m)))
+        return [arr[i:i + n] for i in range(0, len(arr), n)]
+
+    @staticmethod
     def get_history_data(city_name, start_date, end_date):
         history_client = History.factory()
         city_info = history_client.get_city_by_name(city_name)
@@ -122,28 +130,76 @@ class Learn(object):
         return history_data
 
     @staticmethod
-    def output_tree(data, test, key_list):
-        df = pd.DataFrame(data, columns=data[0].keys())
+    def output_tree(data, key_list):
+        print '-------------------------------------------------'
+        print key_list
+        # print data[0].keys()
+        # return
+        data_keys = data[0].keys()
+        real_keys = []
+        df = pd.DataFrame(data, columns=data_keys)
 
+        if 'hd_quality' in key_list:
+            df['hd_quality'] = df['level']
+            real_keys.append('hd_quality')
         if 'hd_date' in key_list:
             df['hd_date'] = pd.to_datetime(df['hd_date'])
+            real_keys.append('hd_date')
         if 'hd_pm25' in key_list:
             df['hd_pm25'] = df['hd_pm25'].astype(np.double)
+            real_keys.append('hd_pm25')
         if 'hd_pm10' in key_list:
             df['hd_pm10'] = df['hd_pm10'].astype(np.double)
+            real_keys.append('hd_pm10')
         if 'hd_so2' in key_list:
             df['hd_so2'] = df['hd_so2'].astype(np.double)
+            real_keys.append('hd_so2')
         if 'hd_co' in key_list:
             df['hd_co'] = df['hd_co'].astype(np.double)
+            real_keys.append('hd_co')
         if 'hd_no2' in key_list:
             df['hd_no2'] = df['hd_no2'].astype(np.double)
+            real_keys.append('hd_no2')
         if 'hd_o3' in key_list:
             df['hd_o3'] = df['hd_o3'].astype(np.double)
+            real_keys.append('hd_o3')
+        if 'hd_aqi' in key_list:
+            df['hd_aqi'] = df['hd_aqi'].astype(np.double)
+            real_keys.append('hd_aqi')
 
-        x = df[key_list].values
+        if 'weather_am' in key_list and 'weather_am' in data_keys:
+            df['weather_am'] = df['weather_am_index']
+            real_keys.append('weather_am')
+        if 'weather_pm' in key_list and 'weather_pm' in data_keys:
+            df['weather_pm'] = df['weather_pm_index']
+            real_keys.append('weather_pm')
+        if 'weather_am_wind_type' in key_list and 'weather_am_wind_type' in data_keys:
+            df['weather_am_wind_type'] = df['weather_am_wind_index']
+            real_keys.append('weather_am_wind_type')
+        if 'weather_pm_wind_type' in key_list and 'weather_pm_wind_type' in data_keys:
+            df['weather_pm_wind_type'] = df['weather_pm_wind_index']
+            real_keys.append('weather_pm_wind_type')
+        if 'weather_am_wind_level' in key_list and 'weather_am_wind_level' in data_keys:
+            df['weather_am_wind_level'] = df['weather_am_level_index']
+            real_keys.append('weather_am_wind_level')
+        if 'weather_pm_wind_level' in key_list and 'weather_pm_wind_level' in data_keys:
+            df['weather_pm_wind_level'] = df['weather_pm_level_index']
+            real_keys.append('weather_pm_wind_level')
+
+        print '===================================================================================='
+        if not real_keys:
+            return False
+        print real_keys
+
+        x = df[real_keys].values
         y = df['hd_pm25'].values
 
+        all_x = Learn.chunks(x, 2)
+        all_y = Learn.chunks(y, 2)
+        print '===================================================================================='
+
         '''
+        x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=14)
         x_test = [
             [48.2, 19.3, 0.858, 65.8, 80],  # 33.4,
             [72.3, 22, 1.171, 66.8, 68],  # 66.8,
@@ -151,18 +207,28 @@ class Learn(object):
         ]
         '''
 
-        clf = DecisionTreeRegressor()
-        clf = clf.fit(x, y)
-        y_1 = clf.predict(x_test)
+        clf = DecisionTreeRegressor(max_depth=3, random_state=14)
+        # clf.fit(x_train, y_train)
+        # y_predict = clf.predict(x_test)
 
-        feature_names = key_list
+        clf.fit(all_x[0], all_y[0])
+        y_1 = clf.predict(all_x[1])
+
+        # report = classification_report(y_predict, y_test, target_names=['hd_pm25'])
+        # print report
+        # print u"准确率为：{:.2f}".format(clf.score(all_x[1], all_y[1]))
+        # clf = clf.fit(x, y)
+        # y_1 = clf.predict(x_test)
+
+        feature_names = real_keys
         target_names = ['hd_pm25']
 
         dot_data = export_graphviz(clf, out_file=None, feature_names=feature_names, class_names=target_names,
                                    filled=True, rounded=True, special_characters=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
-        temp = graph.create_png()
-        print type(temp)
+        graph.write_png('somefile.png')
+        # temp = graph.create_png()
+        # print type(temp)
 
         # response = send_file(temp, as_attachment=True, attachment_filename='myfile.png')
         # response = send_file(temp, mimetype='image/png')

@@ -26,6 +26,7 @@ from sklearn import metrics
 # Use :func:`sklearn.model_selection.cross_val_score` instead.
 from sklearn.model_selection import cross_val_score
 
+
 import pandas as pd
 import numpy as np
 

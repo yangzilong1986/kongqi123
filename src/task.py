@@ -115,9 +115,24 @@ def run_learn():
         if _weather_data:
             weather_data = _weather_data
 
-    data = history_data + weather_data
+    data = []
+    if learn_info['history'] == 1 and learn_info['weather'] == 1:
+        if len(history_data) != len(weather_data):
+            learn_error(learn_info['learn_id'], '同时选择了天气数据和空气数据，但两者数据条数不匹配。')
+            return False
+        for index, item in enumerate(history_data):
+            item = dict(history_data[index].items() + weather_data[index].items())
+            # print item
+            data.append(item)
+        data = history_data
+
+    elif learn_info['history'] == 1:
+        data = history_data
+    elif learn_info['weather'] == 1:
+        data = weather_data
+
     if not data:
-        learn_error(learn_info['learn_id'], '缺少结束日期')
+        learn_error(learn_info['learn_id'], '缺少基本的数据')
         return False
     # print data
 
@@ -135,7 +150,7 @@ def run_learn():
     if not key_list:
         learn_error(learn_info['learn_id'], '没有特征数据')
         return False
-    print key_list
+    # print key_list
 
     result = learn_client.output_tree(data, key_list)
     print result
