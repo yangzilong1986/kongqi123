@@ -22,7 +22,7 @@
         <div class="cityinfo">
             <h1 class="bb">{{ city_name }}</h1>
             <p class="cc">{{ today_weather['date2'] }}时发布</p>
-            <span class="wethericon liang">空气良 51</span>
+            <span style="display: none" class="wethericon liang"></span>
         </div>
 
         <div class="wetherdetail">
@@ -31,11 +31,11 @@
                 {{ today_weather['text2'] }}
             </p>
             <ul>
-                <li>
+                <li style="text-align: left">
                     <i class="icon-shi"></i>
                     湿度 <span id="humidity">{{ today_weather['humidity'] }}</span>%
                 </li>
-                <li class="txt-r">
+                <li class="txt-r" style="display: none;">
                     <i class="icon-feng"></i>
                     <span id="winddir">{{ today_weather['direction'] }}</span>
                     <span id="windpower">{{ today_weather['speed'] }}</span>
@@ -55,8 +55,8 @@
                 {% for weather in forecast_weather %}
                 <li>
                     <p class="colora">{{ weather['day2'] }} {{ weather['date2'] }}</p>
-                    <p class="icon-tu"><i class="icon-xiaoyu"></i><br>{{ weather['text2'] }}</p>
-                    <p class="otherinfo"><span>{{ weather['low'] }}~{{ weather['high'] }}°</span>风力</p>
+                    <p class="icon-tu"><i class="icon-xiaoyu" style="display: none"></i><br>{{ weather['text2'] }}</p>
+                    <p class="otherinfo"><span>{{ weather['low'] }}~{{ weather['high'] }}°</span></p>
                 </li>
                 {% endfor %}
             </ul>
