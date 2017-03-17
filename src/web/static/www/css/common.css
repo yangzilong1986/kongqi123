@@ -118,7 +118,7 @@ a:hover { color:#2e2e2e;text-decoration: none;}
 .ly-banner .wetherdetail ul { border-top: 1px solid rgba(255,255,255,0.4); padding-top: 8px; }
 .ly-banner .wetherdetail li { float: left; width: 125px; color: #fff;font-size: 16px;}
 
-.morewether { margin-top: 35px; margin-left: -5px; overflow: hidden; padding-bottom: 5px; }
+.morewether { margin-top: 20px; margin-left: -5px; overflow: hidden; padding-bottom: 35px; }
 .morewether li { background-color: rgba(255,255,255,0.1); border-radius: 2px; box-shadow: 1px 1px 2px rgba(0,0,0,0.1), -1px -1px 2px rgba(0,0,0,0.1); color: #fff; float: left; font-size: 16px; height: 190px; margin-left: 5px; padding: 10px; text-align: center; width: 160px; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#19ffffff,endColorstr=#19ffffff); zoom: 1; }
 .morewether .colora { color: rgba(255,255,255,0.5); }
 .morewether .icon-tu { font-size: 24px; line-height: 24px; padding: 20px 0 10px; }
@@ -526,7 +526,7 @@ i.icon-kulian{background-position:-216px -216px}
 .ly-cen-mt .mode  .clia:hover{background:#E85123;}
 .ly-cen-mt .mode  .clia a{color:#fff;}
 
-#ly-con{clear:both;width:1000px;margin:0 auto;position:relative;height:auto;padding:0 0 0 0;}
+#ly-con{clear:both;width:1000px;margin:0 auto;position:relative;height:auto;padding:20px 0 0 0;}
 #ly-con .right{background:#fff;min-height:710px;width:96%;position:relative;float:right;padding:0 0 30px 0;border-radius:6px;margin-bottom:60px;}
 #ly-con .right .aa{min-height:50px;width:100%;border-bottom:2px solid #ccc;padding-top:20px;}
 #ly-con .right .aa h1{font-size:24px;text-indent:20px;float:left;}
@@ -695,7 +695,7 @@ i.icon-kulian{background-position:-216px -216px}
 .cen .sure{height:40px;width:200px;margin-left:270px;background:#ec6f49;border-radius:4px;line-height:40px;text-align:center;font-size:16px;color:#fff;cursor:pointer;margin-top:45px;}
 .cen .sure:hover{background:#E85123;}
 /**password**/
-#fd-con{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:auto;}
+#fd-con{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:relative;height:auto;min-height: 800px;}
 #fd-con h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
 #fd-con dl{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line31_03.png) no-repeat 50px 20px;}
 #fd-con .dl1{margin-left:10.8%;color:#6cc6f5;}
@@ -712,7 +712,7 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con .kk:hover{background:#e85123;}
 #fd-con form p{height:40px;width:60px;position:absolute;line-height:40px;right:440px;bottom:181px;}
 
-#fd-con2{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:600px;}
+#fd-con2{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:relative;min-height:800px;}
 #fd-con2 h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
 #fd-con2 dl{float:left;height:160px;width:25%;margin-top:30px;background:url(../images/images/line32.png) no-repeat 50px 20px;}
 #fd-con2 .dl1{margin-left:10.8%;color:#6cc6f5;}
@@ -732,7 +732,7 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con2 .kk{height:40px;width:200px;margin-left:120px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:20px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei";}
 #fd-con2 .kk:hover{background:#E85123;}
 
-#fd-con3{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:700px;}
+#fd-con3{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:relative;min-height:800px;}
 #fd-con3 h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
 #fd-con3 .dl1{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line32.png) no-repeat 50px 20px;}
 #fd-con3 .dl3{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line31_03.png) no-repeat 50px 20px;}
@@ -750,12 +750,12 @@ i.icon-kulian{background-position:-216px -216px}
 #fd-con3 form{width:600px;margin:0 auto;font-size:14px;}
 #fd-con3 .kl{height:40px;width:300px; font-size:14px;background:none;border:1px solid #ccc;text-indent:10px;}
 #fd-con3 .ll{height:40px;width:300px;margin-top:20px;border:1px solid #ccc;background:transparent;text-indent:10px;}
-#fd-con3 .kk{height:40px;width:200px;margin-left:120px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:20px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei";}
+#fd-con3 .kk{height:40px;width:200px;margin-left:20px;background:#ec6f49;outline:none;border-radius:4px;border:none;margin-top:20px;color:#fff;font-size:14px;cursor:pointer;font-family:"Microsoft Yahei";}
 #fd-con3 .kk:hover{background:#E85123;}
 #fd-con3 form .si{margin-left:27px;}
 #fd-con3 .word{font-size:12px;color:#ec6f49;margin-left:6px;}
 
-#fd-con4{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:absolute;height:700px;}
+#fd-con4{width:1000px;margin-left:-500px;background:#fff;left:50%;border-radius:4px;position:relative;min-height:800px;}
 #fd-con4 h1{height:80px;width:98%;margin:0 auto;font-size:24px;line-height:80px;text-indent:20px;border-bottom:2px solid #ccc;}
 #fd-con4 .dl1{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line32.png) no-repeat 50px 20px;}
 #fd-con4 .dl3{float:left;height:110px;width:25%;margin-top:30px;background:url(../images/images/line31_03.png) no-repeat 50px 20px;}
@@ -984,8 +984,8 @@ i.icon-kulian{background-position:-216px -216px}
 
 
 /**ly-ft**/
-.ft2{clear:both; height:240px; color: #9f9f9f; font-size: 14px;background:#333;position:relative;width:100%; padding:20px 0;}
-.ft2 .w02{height: 240px;background:#333 url(../images/ft-logo.gif) right center no-repeat;}
+.ft2{clear:both; height:40px; color: #9f9f9f; font-size: 14px;background:#333;position:relative;width:100%; padding:20px 0;}
+.ft2 .w02{height: 40px;background:#333 url(../images/ft-logo.gif) right center no-repeat;}
 .ft2 ul{float:left;margin-top:30px;}
 .ft2 .fli1{font-size:16px;}
 .ft2 .fli1 a{color:#c5c5c5;}
