@@ -42,7 +42,6 @@
         </dl>
         <h2>请选择输入数据的日期范围</h2>
         <form>
-
             <div class="tj-select" style="width: auto">
                 <div class="tj-sanji" style="width: auto">
                     <a id="search_date_start" href="javascript:void(0);" class="s-date" onclick="laydate({istime:false, format: 'YYYY-MM-DD'})">
@@ -65,21 +64,22 @@
 
             <ul>
                 {% if history == 1 %}
-                <li>
+                <li style="margin-top: 10px;">
                     {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ history_count }} 条空气数据
                     <a class="bluebg_a" href="/data/history?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
                 </li>
                 {% endif %}
                 {% if weather == 1 %}
-                <li>
+                <li style="margin-top: 10px;">
                     {{ city_name }} {{ date_start }} 至 {{ date_end }} 共有 {{ weather_count }} 条天气数据
                     <a class="bluebg_a" href="/data/weather?date_start={{ date_start }}&date_end={{ date_end }}" target="_blank"> 查看</a>
                 </li>
                 {% endif %}
             </ul>
+
+            <input type="button" value="下一步" onclick="go_next()" class="kk" />
         </form>
 
-        <input type="button" value="下一步" onclick="go_next()" class="kk" />
     </div>
 
 </div>
