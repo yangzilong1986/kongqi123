@@ -91,8 +91,13 @@
                     go_next();
                 });
             }
+            if (result.message == 4) {
+                alert_message(result.result, function () {
+                    window.location = '/learn'
+                });
+            }
         }, 'json');
-    }, 1000);
+    }, 3000);
 </script>
 
 </body>

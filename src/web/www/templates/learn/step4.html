@@ -43,7 +43,7 @@
         <h2>结果数据</h2>
         <form>
             <div style="height: 300px;text-align: center">
-                {{ learn_info['output_result'] }}
+                未来PM2.5的数值为：{{ learn_info['output_result'] }}, 生成的决策树为：
                 <hr />
                 <a target="_blank" href="{{ learn_info['output_file1'] }}">
                     <img height="250" src="{{ learn_info['output_file1'] }}" alt="" />
@@ -59,22 +59,8 @@
 {% include "footer.html" %}
 
 <script>
-    var search_date_start = '{{ date_start }}';
-    var search_date_end = '{{ date_end }}';
-    var search_history = {{ history }};
-    var search_weather = {{ weather }};
-
-    function go_last() {
-        window.location = '/learn/step3?date_start=' + search_date_start
-            + '&date_end=' + search_date_end
-            + '&history=' + search_history
-            + '&weather=' + search_weather;
-    }
     function go_next() {
-        window.location = '/learn?date_start=' + search_date_start
-            + '&date_end=' + search_date_end
-            + '&history=' + search_history
-            + '&weather=' + search_weather;
+        window.location = '/learn';
     }
 </script>
 

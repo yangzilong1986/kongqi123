@@ -118,7 +118,7 @@ def run_learn():
     data = []
     if learn_info['history'] == 1 and learn_info['weather'] == 1:
         if len(history_data) != len(weather_data):
-            learn_error(learn_info['learn_id'], '同时选择了天气数据和空气数据，但两者数据条数不匹配。')
+            learn_error(learn_info['learn_id'], '选择了天气和空气数据，但两者数据量不匹配。')
             return False
         for index, item in enumerate(history_data):
             item = dict(history_data[index].items() + weather_data[index].items())
@@ -156,7 +156,7 @@ def run_learn():
     result = learn_client.output_tree(learn_info['learn_id'], data, key_list)
     print result
 
-    learn_ok(learn_info['learn_id'], result, '/static/data/' + str(learn_info['learn_id']) + '.png')
+    learn_ok(learn_info['learn_id'], result[0], '/static/data/' + str(learn_info['learn_id']) + '.png')
 
     print 'one learn finished'
 
