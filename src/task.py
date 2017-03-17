@@ -156,7 +156,7 @@ def run_learn():
     result = learn_client.output_tree(learn_info['learn_id'], data, key_list)
     print result
 
-    learn_ok(learn_info['learn_id'], result)
+    learn_ok(learn_info['learn_id'], result, '/static/data/' + str(learn_info['learn_id']) + '.png')
 
     print 'one learn finished'
 
@@ -170,11 +170,12 @@ def learn_error(learn_id, error):
     return learn_client.update_learn_info_by_id(learn_id, data)
 
 
-def learn_ok(learn_id, result):
+def learn_ok(learn_id, result, output_file1):
     learn_client = Learn.factory()
     data = {
         'learn_status': Learn.JOB_FINISH,
-        'output_result': json.dumps(result)
+        'output_result': json.dumps(result),
+        'output_file1': output_file1
     }
     return learn_client.update_learn_info_by_id(learn_id, data)
 

@@ -87,8 +87,8 @@
             }
             if (result.message == 3) {
                 clearInterval(i);
-                alert_message('抓取已完成！', function () {
-
+                alert_message('机器学习已完成，按确定查看结果！', function () {
+                    go_next();
                 });
             }
         }, 'json');

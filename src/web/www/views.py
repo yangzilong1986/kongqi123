@@ -521,10 +521,12 @@ def learn_step3():
         if not learn_info:
             return json.dumps({'status': False, 'message': u'没有learn_info!'})
 
-        if learn_info['learn_status'] != Learn.JOB_FINISH:
-            return json.dumps({'status': False, 'message': u'正在进行中!'})
+        if learn_info['learn_status'] == Learn.JOB_ERROR:
+            return json.dumps({'status': True, 'message': learn_info['learn_status'], 'result': learn_info['output_result']})
+        if learn_info['learn_status'] == Learn.JOB_FINISH:
+            return json.dumps({'status': True, 'message': learn_info['learn_status'], 'result': learn_info['output_result']})
 
-        return json.dumps({'status': True, 'message': u'已完成!'})
+        return json.dumps({'status': False, 'message': learn_info['learn_status']})
 
     learn_id = request.args.get('learn', type=int)
     if not learn_id:
@@ -547,40 +549,20 @@ def learn_step3():
 def learn_step4():
     city_name = g.city_name
 
-    today = time.strftime("%Y-%m-%d", time.localtime())
-    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
-    day7 = day7_dt.strftime("%Y-%m-%d")
+    learn_id = request.args.get('learn', type=int)
+    if not learn_id:
+        return redirect('/learn')
 
-    date_start = request.args.get('date_start', default=day7)
-    date_end = request.args.get('date_end', default=today)
-    history = request.args.get('history', default=1, type=int)
-    weather = request.args.get('weather', default=1, type=int)
-
-    condition = {
-        'city_name': city_name,
-        'date_start': date_start,
-        'date_end': date_end
-    }
-
-    history_client = History.factory()
-    weather_client = Weather.factory()
-    history_count = 0
-    weather_count = 0
-    if history == 1:
-        history_count = history_client.count_history(condition)
-    if weather == 1:
-        weather_count = weather_client.count_weather(condition)
+    learn_client = Learn.factory()
+    learn_info = learn_client.get_learn_info_by_id(learn_id)
+    if not learn_info:
+        return redirect('/learn')
 
     data = dict()
     data['current_page'] = 'learn'
     data['req_args'] = dict(request.args.items())
     data['city_name'] = city_name
-    data['date_start'] = date_start
-    data['date_end'] = date_end
-    data['history'] = history
-    data['weather'] = weather
-    data['history_count'] = history_count
-    data['weather_count'] = weather_count
+    data['learn_info'] = learn_info
 
     return render_template('learn/step4.html', **data)
 

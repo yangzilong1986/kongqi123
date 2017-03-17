@@ -42,11 +42,14 @@
         </dl>
         <h2>结果数据</h2>
         <form>
-            <div style="height: 300px;">
-
+            <div style="height: 300px;text-align: center">
+                {{ learn_info['output_result'] }}
+                <hr />
+                <a target="_blank" href="{{ learn_info['output_file1'] }}">
+                    <img height="250" src="{{ learn_info['output_file1'] }}" alt="" />
+                </a>
             </div>
-            <input type="button" value="上一步" onclick="go_last()" class="kk" style="float: left" />
-            <input type="button" value="重新开始" onclick="go_next()" class="kk" />
+            <input type="button" value="重新开始" style="margin-left: 150px;" onclick="go_next()" class="kk" />
         </form>
     </div>
 
