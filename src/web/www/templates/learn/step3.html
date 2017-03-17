@@ -40,14 +40,17 @@
             <dt>4</dt>
             <dd>查看结果</dd>
         </dl>
-        <h2>正在执行</h2>
+        <h2>运行回测</h2>
         <form>
-            <div style="height: 300px">
-                <img src="/static/www/images/ICON/loading.gif" />
-                <span>正在进行...</span>
+            <div style="height: 300px;text-align: center">
+                <img src="/static/www/images/ICON/loading.gif" /><br />
+                <span>
+                    正在按输入的数据条件和选择的特征进行机器学习，<br />
+                    按不同的数据量和特征，这可能需要几分钟的时间，<br />
+                    请稍等...
+                </span>
             </div>
-            <input type="button" value="上一步" onclick="go_last()" class="kk" style="float: left" />
-            <input type="button" value="下一步" onclick="go_next()" class="kk" />
+            <input type="button" id="go_next" value="下一步" onclick="go_next()" style="margin-left: 150px; display: none" class="kk" />
         </form>
 
     </div>
@@ -58,10 +61,11 @@
 {% include "footer.html" %}
 
 <script>
-    var search_date_start = '{{ date_start }}';
-    var search_date_end = '{{ date_end }}';
-    var search_history = {{ history }};
-    var search_weather = {{ weather }};
+    var search_date_start = '{{ learn_info['date_start'] }}';
+    var search_date_end = '{{ learn_info['date_end'] }}';
+    var search_history = {{ learn_info['history'] }};
+    var search_weather = {{ learn_info['weather'] }};
+    var learn_id = '{{ learn_info['learn_id'] }}';
 
     function go_last() {
         window.location = '/learn/step2?date_start=' + search_date_start
@@ -70,11 +74,25 @@
             + '&weather=' + search_weather;
     }
     function go_next() {
-        window.location = '/learn/step4?date_start=' + search_date_start
-            + '&date_end=' + search_date_end
-            + '&history=' + search_history
-            + '&weather=' + search_weather;
+        window.location = '/learn/step4?learn=' + learn_id;
     }
+    var i = setInterval(function () {
+        $.post('/learn/step3', {learn: learn_id}, function (result) {
+            if (!result) {
+                alert('远程服务器没响应');
+                return false;
+            }
+            if (!result.status) {
+                return false;
+            }
+            if (result.message == 3) {
+                clearInterval(i);
+                alert_message('抓取已完成！', function () {
+
+                });
+            }
+        }, 'json');
+    }, 1000);
 </script>
 
 </body>

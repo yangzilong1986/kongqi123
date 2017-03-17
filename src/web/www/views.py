@@ -534,6 +534,7 @@ def learn_step3():
     data = dict()
     data['current_page'] = 'learn'
     data['req_args'] = dict(request.args.items())
+    data['learn_info'] = learn_info
     data['city_name'] = city_name
 
     return render_template('learn/step3.html', **data)
