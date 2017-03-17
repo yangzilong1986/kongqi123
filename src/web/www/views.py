@@ -10,6 +10,7 @@ from core.weather import Weather
 from core.yahoo import Yahoo
 from core.spider import Spider
 from core.crawl import Crawl
+from core.learn import Learn
 
 STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
 
@@ -514,6 +515,10 @@ def learn_step3():
         history_count = history_client.count_history(condition)
     if weather == 1:
         weather_count = weather_client.count_weather(condition)
+
+    learn_client = Learn.factory()
+    source = learn_client.get_data(city_name, date_start, date_end, weather, history)
+
 
     data = dict()
     data['current_page'] = 'learn'

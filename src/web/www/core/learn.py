@@ -26,37 +26,36 @@ class Learn(object):
         return obj
 
     @staticmethod
-    def get_data(city_name, start_date, end_date, type):
-        city_name = g.city_name
-        start_date = '2016-01-01'
-        end_date = '2016-12-31'
-
-        history_client = History.factory()
+    def get_weather_data(city_name, start_date, end_date):
         weather_client = Weather.factory()
-
-        city_info = history_client.get_city_by_name(city_name)
-        if not city_info:
-            print u'不存在的城市: %s' % (city_name, )
-            return
-
         weather_city = weather_client.get_city_by_name(city_name)
-        if not city_info:
+        if not weather_city:
             print u'不存在的天气数据城市: %s' % (city_name, )
-            return
-
-        city_id = city_info['city_id']
-        aqi_data = history_client.load_daily_city_data(city_id, start_date, end_date)
-        if not aqi_data:
-            print u'城市没有数据: %s' % (city_name, )
-            return
+            return []
 
         weather_city_id = weather_city['city_id']
         weather_data = weather_client.load_daily_weather_data(weather_city_id, start_date, end_date)
         if not weather_data:
             print u'城市没有数据: %s' % (city_name, )
-            return
+            return []
 
-        for row in aqi_data:
+        return  weather_data
+
+    @staticmethod
+    def get_history_data(city_name, start_date, end_date):
+        history_client = History.factory()
+        city_info = history_client.get_city_by_name(city_name)
+        if not city_info:
+            print u'不存在的城市: %s' % (city_name, )
+            return []
+
+        city_id = city_info['city_id']
+        history_data = history_client.load_daily_city_data(city_id, start_date, end_date)
+        if not history_data:
+            print u'城市没有数据: %s' % (city_name, )
+            return []
+
+        for row in history_data:
             if row['hd_quality'] == u'优':
                 row['level'] = 1
             elif row['hd_quality'] == u'良':
@@ -70,9 +69,10 @@ class Learn(object):
             elif row['hd_quality'] == u'严重污染':
                 row['level'] = 6
 
+        return history_data
+
     @staticmethod
     def output_tree(data):
-
         df = pd.DataFrame(data, columns=data[0].keys())
 
         df['hd_date'] = pd.to_datetime(df['hd_date'])
