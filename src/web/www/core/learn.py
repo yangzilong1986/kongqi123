@@ -26,6 +26,11 @@ class Learn(object):
         return obj
 
     @staticmethod
+    def create_job(data):
+        with get_new_db() as conn:
+            return insert_table(conn, 'learn_job', data)
+
+    @staticmethod
     def get_weather_data(city_name, start_date, end_date):
         weather_client = Weather.factory()
         weather_city = weather_client.get_city_by_name(city_name)

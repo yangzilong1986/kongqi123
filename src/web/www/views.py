@@ -446,6 +446,7 @@ def learn_step2():
     date_end = request.args.get('date_end', default=today)
     history = request.args.get('history', default=1, type=int)
     weather = request.args.get('weather', default=1, type=int)
+    day_num = request.args.get('day_num', default=1, type=int)
 
     condition = {
         'city_name': city_name,
@@ -472,6 +473,18 @@ def learn_step2():
         if history_count < 1 and weather_count < 1:
             return json.dumps({'status': False, 'message': u'选定的日期内没有数据,请返回上一步重新选择!'})
 
+        learn_client = Learn.factory()
+        learn_client.create_job({
+            'learn_status': 1,
+            'date_start': date_start,
+            'date_end': date_end,
+            'history': history,
+            'weather': weather,
+            'histories': json.dumps(histories),
+            'weathers': json.dumps(weathers),
+            'target': 'PM25',
+            'day_num': day_num
+        })
         return json.dumps({'status': True, 'message': u'ok'})
 
     data = dict()
@@ -517,6 +530,7 @@ def learn_step3():
         weather_count = weather_client.count_weather(condition)
 
     learn_client = Learn.factory()
+
     source = learn_client.get_data(city_name, date_start, date_end, weather, history)
 
 

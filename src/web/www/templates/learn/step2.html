@@ -75,6 +75,7 @@
                 </div>
             </div>
             {% endif %}
+            <input type="hidden" id="day_num" name="day_num" value="1" />
         </form>
 
         <h2 style="margin-top: 20px;">请选择需要预测的数据</h2st>
@@ -86,7 +87,7 @@
                 </select>
 
                 天数:
-                <select id="day_num">
+                <select id="select_day" onchange="$('#day_num').val($('#select_day').val())">
                     <option value="1">1天</option>
                     <option value="2">2天</option>
                     <option value="3">3天</option>
@@ -121,7 +122,8 @@
             + '&date_end=' + search_date_end
             + '&history=' + search_history
             + '&weather=' + search_weather;
-        $.post(url, $('#step2_form').serialize(), function (result) {
+        var data = $('#step2_form').serialize();
+        $.post(url, data, function (result) {
             if (!result) {
                 alert('远程服务器没响应');
                 return false;
