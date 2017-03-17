@@ -26,6 +26,14 @@ class Learn(object):
         return obj
 
     @staticmethod
+    def get_learn_info_by_id(learn_id):
+        with get_new_db() as conn:
+            condition = {
+                'learn_id': learn_id,
+            }
+            return get_table_one_row(conn, 'learn_job', condition)
+
+    @staticmethod
     def create_job(data):
         with get_new_db() as conn:
             return insert_table(conn, 'learn_job', data)

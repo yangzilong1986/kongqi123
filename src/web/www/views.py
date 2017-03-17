@@ -474,7 +474,7 @@ def learn_step2():
             return json.dumps({'status': False, 'message': u'选定的日期内没有数据,请返回上一步重新选择!'})
 
         learn_client = Learn.factory()
-        learn_client.create_job({
+        job_id = learn_client.create_job({
             'learn_status': 1,
             'date_start': date_start,
             'date_end': date_end,
@@ -485,7 +485,10 @@ def learn_step2():
             'target': 'PM25',
             'day_num': day_num
         })
-        return json.dumps({'status': True, 'message': u'ok'})
+        if not job_id:
+            return json.dumps({'status': False, 'message': u'建立机器学习任务失败!'})
+
+        return json.dumps({'status': True, 'message': job_id})
 
     data = dict()
     data['current_page'] = 'learn'
@@ -505,45 +508,19 @@ def learn_step2():
 def learn_step3():
     city_name = g.city_name
 
-    today = time.strftime("%Y-%m-%d", time.localtime())
-    day7_dt = datetime.datetime.now() - datetime.timedelta(days=7)
-    day7 = day7_dt.strftime("%Y-%m-%d")
-
-    date_start = request.args.get('date_start', default=day7)
-    date_end = request.args.get('date_end', default=today)
-    history = request.args.get('history', default=1, type=int)
-    weather = request.args.get('weather', default=1, type=int)
-
-    condition = {
-        'city_name': city_name,
-        'date_start': date_start,
-        'date_end': date_end
-    }
-
-    history_client = History.factory()
-    weather_client = Weather.factory()
-    history_count = 0
-    weather_count = 0
-    if history == 1:
-        history_count = history_client.count_history(condition)
-    if weather == 1:
-        weather_count = weather_client.count_weather(condition)
+    learn_id = request.args.get('learn', type=int)
+    if not learn_id:
+        return redirect('/learn')
 
     learn_client = Learn.factory()
-
-    source = learn_client.get_data(city_name, date_start, date_end, weather, history)
-
+    learn_info = learn_client.get_learn_info_by_id(learn_id)
+    if not learn_info:
+        return redirect('/learn')
 
     data = dict()
     data['current_page'] = 'learn'
     data['req_args'] = dict(request.args.items())
     data['city_name'] = city_name
-    data['date_start'] = date_start
-    data['date_end'] = date_end
-    data['history'] = history
-    data['weather'] = weather
-    data['history_count'] = history_count
-    data['weather_count'] = weather_count
 
     return render_template('learn/step3.html', **data)
 

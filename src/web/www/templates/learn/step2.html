@@ -132,12 +132,7 @@
                 alert_message(result.message);
                 return false;
             }
-
-            window.location = '/learn/step3?date_start=' + search_date_start
-                + '&date_end=' + search_date_end
-                + '&history=' + search_history
-                + '&weather=' + search_weather
-                + '&day_num=' + $('#day_num').val()
+            window.location = '/learn/step3?learn=' + result.message;
         }, 'json');
     }
 </script>
