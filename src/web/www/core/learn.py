@@ -130,7 +130,7 @@ class Learn(object):
         return history_data
 
     @staticmethod
-    def output_tree(data, key_list):
+    def output_tree(filename, data, key_list):
         print '-------------------------------------------------'
         print key_list
         # print data[0].keys()
@@ -213,6 +213,7 @@ class Learn(object):
 
         clf.fit(all_x[0], all_y[0])
         y_1 = clf.predict(all_x[1])
+        print 'result: ', y_1
 
         # report = classification_report(y_predict, y_test, target_names=['hd_pm25'])
         # print report
@@ -226,7 +227,8 @@ class Learn(object):
         dot_data = export_graphviz(clf, out_file=None, feature_names=feature_names, class_names=target_names,
                                    filled=True, rounded=True, special_characters=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
-        graph.write_png('somefile.png')
+        graph.write_png('web/static/data/' + str(filename) + '.png')
+
         # temp = graph.create_png()
         # print type(temp)
 
@@ -234,4 +236,6 @@ class Learn(object):
         # response = send_file(temp, mimetype='image/png')
 
         # return Response(temp, mimetype='image/png')
+
+        return y_1.tolist()
 

@@ -125,6 +125,7 @@ def run_learn():
             # print item
             data.append(item)
         data = history_data
+        # todo
 
     elif learn_info['history'] == 1:
         data = history_data
@@ -152,8 +153,10 @@ def run_learn():
         return False
     # print key_list
 
-    result = learn_client.output_tree(data, key_list)
+    result = learn_client.output_tree(learn_info['learn_id'], data, key_list)
     print result
+
+    learn_ok(learn_info['learn_id'], result)
 
     print 'one learn finished'
 
@@ -165,6 +168,16 @@ def learn_error(learn_id, error):
         'output_result': error
     }
     return learn_client.update_learn_info_by_id(learn_id, data)
+
+
+def learn_ok(learn_id, result):
+    learn_client = Learn.factory()
+    data = {
+        'learn_status': Learn.JOB_FINISH,
+        'output_result': json.dumps(result)
+    }
+    return learn_client.update_learn_info_by_id(learn_id, data)
+
 
 def run_crontab():
     # schedule.every(10).minutes.do(run_export_service)
