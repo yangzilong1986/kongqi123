@@ -14,8 +14,16 @@ from core.learn import Learn
 
 STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
 
-app = Flask(__name__, static_folder=STATIC_PATH)
-app.config.from_object('config.MainConfig')
+
+def create_app(config=None):
+    app = Flask(__name__, static_folder=STATIC_PATH)
+    if config is not None:
+        app.config.from_pyfile(config)
+    else:
+        app.config.from_object('config.MainConfig')
+    return app
+
+app = create_app()
 
 
 @app.before_request

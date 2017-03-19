@@ -3,7 +3,8 @@
 
 def run_www(port=8000):
     port = int(port)
-    from web.www.views import app
+    from web.www.views import create_app
+    app = create_app()
     app.run('0.0.0.0', port=port, debug=True)
     '''
     try:
