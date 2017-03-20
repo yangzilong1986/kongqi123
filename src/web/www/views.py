@@ -11,7 +11,10 @@ from core.yahoo import Yahoo
 from core.spider import Spider
 from core.crawl import Crawl
 from core.learn import Learn
-from server import app
+# from server import app
+# from run import app
+from web.www import create_app
+app = create_app()
 
 
 @app.before_request

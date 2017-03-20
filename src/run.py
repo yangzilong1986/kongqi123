@@ -1,10 +1,12 @@
 # coding:utf-8
+from web.www import create_app
+from web.www.views import app
+
+# app = create_app()
 
 
-def run_www(port=8000):
+def run_www(port=5000):
     port = int(port)
-    from web.www.views import create_app
-    app = create_app()
     app.run('0.0.0.0', port=port, debug=True)
     '''
     try:
