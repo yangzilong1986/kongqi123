@@ -2,7 +2,7 @@
 # coding:utf-8
 
 import os
-from web.www.views import create_app
+from web import create_app
 from flask_script import Manager, Shell
 
 if os.path.exists('.env'):

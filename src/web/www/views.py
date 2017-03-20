@@ -11,19 +11,7 @@ from core.yahoo import Yahoo
 from core.spider import Spider
 from core.crawl import Crawl
 from core.learn import Learn
-
-STATIC_PATH = abspath(dirname(abspath(__file__)) + '/../static/')
-
-
-def create_app(config=None):
-    app = Flask(__name__, static_folder=STATIC_PATH)
-    if config is not None:
-        app.config.from_pyfile(config)
-    else:
-        app.config.from_object('config.MainConfig')
-    return app
-
-app = create_app()
+from server import app
 
 
 @app.before_request
