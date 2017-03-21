@@ -18,6 +18,7 @@ Flask-Script==2.0.5
 funcsigs==1.0.2
 functools32==3.2.3.post2
 futures==3.0.5
+graphviz==0.5.2
 gunicorn==19.6.0
 idna==2.2
 incremental==16.10.1
