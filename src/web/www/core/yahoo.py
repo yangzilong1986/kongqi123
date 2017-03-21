@@ -34,7 +34,7 @@ class Yahoo(object):
     @staticmethod
     def get_woeid_by_name(name):
         if not isinstance(name, unicode):
-            name = name.encode('utf-8')
+            name = name.decode('utf-8')
 
         result = Yahoo.get_geo_places_info(name)
         if not result:
@@ -200,7 +200,7 @@ class Yahoo(object):
         '''
 
         if not isinstance(name, unicode):
-            name = name.encode('utf-8')
+            name = name.decode('utf-8')
 
         name_md5 = generate_md5(name)
         redis_key = "yahoo_geo_place_city_%s" % name_md5
@@ -209,7 +209,7 @@ class Yahoo(object):
             print 'load result from remote.'
             base_url = YAHOO_CONFIG.get('BASE_URL')
             yql_query = "select * from geo.places where text = '%s'" % name
-            print yql_query, type(yql_query)
+            # print yql_query, type(yql_query)
             yql_url = base_url + urllib.urlencode({'q': yql_query.encode('utf-8')}) + "&format=json"
             result = urllib2.urlopen(yql_url).read()
             if not result:
