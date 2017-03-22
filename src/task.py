@@ -235,6 +235,7 @@ def run_crontab():
     # scheduler.add_job(my_job, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
     scheduler.add_job(run_export_spider_job, 'cron', year='*', month='*', day=1, hour=0, minute=0, second=0)
     scheduler.add_job(run_learn, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
+    scheduler.add_job(run_do_spider_job, 'cron', year='*', month='*', day='*', hour=22, minute=0, second=0)
 
     scheduler.start()
 
