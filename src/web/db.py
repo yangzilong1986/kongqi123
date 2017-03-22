@@ -9,11 +9,19 @@ from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
 from spider.model import Base
 
 log = logging.getLogger('db')
+db_params = dict(
+    echo=False,
+    echo_pool=True,
+    # encoding=db_config['charset'],
+    pool_recycle=1800,  # 数据库链接时间
+    pool_size=20,
+    logging_name='sqlalchemy',
+)
 try:
-    engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, pool_size=SQLALCHEMY_POOL_SIZE)
+    engine = create_engine(SQLALCHEMY_DATABASE_URI_MYSQL, **db_params)
     # DB_Session = sessionmaker(bind=engine, autocommit=True)
-    DB_Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    Base.metadata.create_all(engine)
+    # DB_Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    # Base.metadata.create_all(engine)
 except Exception, e:
     print e.message
     exit()
@@ -68,8 +76,8 @@ class session_context(object):
             log.error('error:%s' % (e.message,))
 
 
-def get_session():
-    return session_context(DB_Session())
+# def get_session():
+#    return session_context(DB_Session())
 
 
 if __name__ == '__main__':
