@@ -63,13 +63,13 @@ class Learn(object):
         weather_client = Weather.factory()
         weather_city = weather_client.get_city_by_name(city_name)
         if not weather_city:
-            print u'不存在的天气数据城市: %s' % (city_name, )
+            # print u'不存在的天气数据城市: %s' % (city_name, )
             return []
 
         weather_city_id = weather_city['city_id']
         weather_data = weather_client.load_daily_weather_data(weather_city_id, start_date, end_date)
         if not weather_data:
-            print u'城市没有数据: %s' % (city_name, )
+            # print u'城市没有数据: %s' % (city_name, )
             return []
 
         condition = {
@@ -104,13 +104,13 @@ class Learn(object):
         history_client = History.factory()
         city_info = history_client.get_city_by_name(city_name)
         if not city_info:
-            print u'不存在的城市: %s' % (city_name, )
+            # print u'不存在的城市: %s' % (city_name, )
             return []
 
         city_id = city_info['city_id']
         history_data = history_client.load_daily_city_data(city_id, start_date, end_date)
         if not history_data:
-            print u'城市没有数据: %s' % (city_name, )
+            # print u'城市没有数据: %s' % (city_name, )
             return []
 
         for row in history_data:
@@ -131,8 +131,8 @@ class Learn(object):
 
     @staticmethod
     def output_tree(filename, data, key_list):
-        print '-------------------------------------------------'
-        print key_list
+        # print '-------------------------------------------------'
+        # print key_list
         # print data[0].keys()
         # return
         data_keys = data[0].keys()
@@ -186,17 +186,17 @@ class Learn(object):
             df['weather_pm_wind_level'] = df['weather_pm_level_index']
             real_keys.append('weather_pm_wind_level')
 
-        print '===================================================================================='
+        # print '===================================================================================='
         if not real_keys:
             return False
-        print real_keys
+        # print real_keys
 
         x = df[real_keys].values
         y = df['hd_pm25'].values
 
         all_x = Learn.chunks(x, 2)
         all_y = Learn.chunks(y, 2)
-        print '===================================================================================='
+        # print '===================================================================================='
 
         '''
         x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=14)
@@ -213,7 +213,7 @@ class Learn(object):
 
         clf.fit(all_x[0], all_y[0])
         y_1 = clf.predict(all_x[1])
-        print 'result: ', y_1
+        # print 'result: ', y_1
 
         # report = classification_report(y_predict, y_test, target_names=['hd_pm25'])
         # print report

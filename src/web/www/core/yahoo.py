@@ -206,7 +206,7 @@ class Yahoo(object):
         redis_key = "yahoo_geo_place_city_%s" % name_md5
         result = redis_client.get(redis_key)
         if not result:
-            print 'load result from remote.'
+            # print 'load result from remote.'
             base_url = YAHOO_CONFIG.get('BASE_URL')
             yql_query = "select * from geo.places where text = '%s'" % name
             # print yql_query, type(yql_query)
@@ -216,7 +216,8 @@ class Yahoo(object):
                 return False
             redis_client.set(redis_key, result)
         else:
-            print 'load result from cache.'
+            pass
+            # print 'load result from cache.'
 
         data = json.loads(result)
         if 'query' not in data:
@@ -430,7 +431,7 @@ class Yahoo(object):
         redis_key = "yahoo_weather_forecast_woeid_%d" % woeid
         result = redis_client.get(redis_key)
         if not result:
-            print 'load result from remote.'
+            # print 'load result from remote.'
             base_url = YAHOO_CONFIG.get('BASE_URL')
             yql_query = "select * from weather.forecast where woeid = %d and u = 'c'" % woeid
             yql_url = base_url + urllib.urlencode({'q': yql_query}) + "&format=json"
@@ -439,7 +440,8 @@ class Yahoo(object):
                 return False
             redis_client.set(redis_key, result, 60 * 60)
         else:
-            print 'load result from cache.'
+            pass
+            # print 'load result from cache.'
 
         data = json.loads(result)
         if 'query' not in data:
@@ -452,7 +454,7 @@ class Yahoo(object):
         if result == 'null':
             return False
 
-        print result
+        # print result
         return result
 
     @staticmethod

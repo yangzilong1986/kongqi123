@@ -124,13 +124,13 @@ http://api.gpsspg.com/convert/coord/?key=1601EDEFA68FBC18E7A00038745E8699&oid=30
 def test_baidu2gps2():
     p = [{'lat': '31.159351', 'lng': '121.487012'}]
     p2 = baidu2gps(p)
-    print 'p(%s)=>p2(%s)' % (p, p2)
+    # print 'p(%s)=>p2(%s)' % (p, p2)
 
 
 def test_baidu2gps_cache():
     p = [{'lat': '31.159351', 'lng': '121.487012'}]
     p2 = get_gps_with_cache(p)
-    print 'p(%s)=>p2(%s)' % (p, p2)
+    # print 'p(%s)=>p2(%s)' % (p, p2)
 
 
 def test_get_service_gps_point():
@@ -143,8 +143,8 @@ def test_get_service_gps_point():
     rows = conn.execute("select * from service where coordinate<>'' order by  coordinate limit 90,30")
     points = [str2point(row['coordinate']) for row in rows.fetchall()]
     points2 = get_gps_with_cache(points)
-    print 'points2'
-    print points2
+    # print 'points2'
+    # print points2
 
 
 # #### 坐标转换 end ######

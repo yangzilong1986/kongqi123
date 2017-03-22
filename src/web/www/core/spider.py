@@ -40,9 +40,9 @@ class Spider(object):
             result = requests.post(url, data=payload).json()
             # {u'status': u'ok', u'node_name': u'wangwindows', u'jobid': u'2d4c6a16fef611e6ad02f8bc12734617'}
             # print json.dumps(result, indent=4, ensure_ascii=False)
-            print url, payload, result
+            # print url, payload, result
         except Exception, e:
-            print url, payload, result
+            # print url, payload, result
             print e.message
 
         return result
