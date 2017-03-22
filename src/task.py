@@ -11,6 +11,7 @@ from sqlalchemy.orm import sessionmaker
 from config import SQLALCHEMY_DATABASE_URI_MYSQL, SQLALCHEMY_POOL_SIZE
 from web.www.core.history import History
 from web.www.core.learn import Learn
+from web.www.core.spider import Spider
 from web.www.core.weather import Weather
 from web.www.core.crawl import Crawl
 
@@ -76,6 +77,37 @@ def run_export_spider_job(current_date=''):
         if not crawl_client.create_crawl_job_info(data):
             print 'create job failed: city: %s, type, %d' % (name, Crawl.JOB_TYPE_WEATHER, )
         print 'create job success! city: %s, type, %d' % (name, Crawl.JOB_TYPE_WEATHER, )
+
+
+def run_do_spider_job(current_date=''):
+    current = datetime.datetime.now()
+    if current_date:
+        current = datetime.datetime.strptime(current_date, '%Y-%m')
+
+    sp = Spider.factory()
+    crawl_client = Crawl.factory()
+
+    all_job = crawl_client.get_all_job({
+        'job_year': current.year,
+        'job_month': current.month,
+    })
+    if not all_job:
+        print 'not job list'
+        return
+
+    for job_info in all_job:
+        m = job_info['job_month']
+        if int(m) < 10:
+            m = '0' + str(m)
+        month = str(job_info['job_year']) + '-' + str(m)
+
+        result = sp.schedule_job(spider=job_info['job_spider'], setting=[],
+                                 jobid=job_info['job_id'], city_name=job_info['city_name'], month=month)
+        print job_info, result
+        if not result:
+            print u'启动任务失败!'
+            continue
+        # break
 
 
 def my_job():

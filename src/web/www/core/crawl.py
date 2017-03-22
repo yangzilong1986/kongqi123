@@ -66,3 +66,10 @@ class Crawl(object):
             data = [dict(row) for row in conn.execute(sql, param).fetchall()]
 
             return data
+
+    @staticmethod
+    def get_all_job(condition):
+        with get_new_db() as conn:
+            result = get_table_rows(conn, 'crawl_job', condition)
+            return result
+
