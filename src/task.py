@@ -118,7 +118,7 @@ def run_learn():
     learn_client = Learn.factory()
     learn_info = learn_client.get_learn_new_job_info()
     if not learn_info:
-        print 'no learn info skip'
+        # print 'no learn info skip'
         return False
 
     print learn_info
@@ -233,7 +233,7 @@ def run_crontab():
 
     # scheduler.add_job(my_job, 'interval', seconds=5)
     # scheduler.add_job(my_job, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
-    scheduler.add_job(run_export_spider_job, 'cron', year='*', month='*', day=1, hour=0, minute=0, second=0)
+    scheduler.add_job(run_export_spider_job, 'cron', year='*', month='*', day=1, hour=1, minute=1, second=1)
     scheduler.add_job(run_learn, 'cron', year='*', month='*', day='*', hour='*', minute='*', second='*')
     scheduler.add_job(run_do_spider_job, 'cron', year='*', month='*', day='*', hour=22, minute=0, second=0)
 
